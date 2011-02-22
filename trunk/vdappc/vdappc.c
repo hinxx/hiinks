@@ -104,7 +104,7 @@ main(int argc,char *argv[])
     w = ((w&0xff)<<24) | ((w&0xff00)<<8) | ((w&0xff0000)>>8) |
         ((w&0xff000000)>>24);
     printf("%08lX:  %08lX\t%s\t%s\n",fh?foff:(unsigned long)p,
-           w,opcode,operands);
+    		(unsigned long)w,opcode,operands);
 #else
     printf("%08lX:  %08lX\t%s\t%s\n",fh?foff:(unsigned long)p,
            fh?buf[0]:*(unsigned long *)p,opcode,operands);
