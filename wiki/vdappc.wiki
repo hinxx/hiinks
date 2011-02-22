@@ -23,3 +23,7 @@ Code from http://wiird.l0nk.org/wp/download, http://wiird.l0nk.org/dl/src-vdappc
 === 22 Feb 2011 ===
   * build on Linux (Ubuntu 10.10),
   * offset is parsed correctly
+
+== Download ==
+
+See the SVN [http://code.google.com/p/hiinks/source/checkout trunk].
