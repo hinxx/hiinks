@@ -82,7 +82,7 @@ main(int argc,char *argv[])
   }
   
     if (argc==3 && isdigit((unsigned long)argv[2][0])) {
-    sscanf(argv[2],"%i",(unsigned long *)&foff);
+    sscanf(argv[2],"%lli",(unsigned long long *)&foff);
   }
 
   for (;;) {
