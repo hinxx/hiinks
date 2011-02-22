@@ -1,0 +1,25 @@
+#summary PowerPC disassembler V1.4  (c)1998-2001 by Frank Wille.
+#labels vdappc,wii,ppc
+
+= vdappc =
+{{{
+$ ./bin/vdappc
+vdappc V1.3  (c)1998-2001 by Frank Wille
+PowerPC disassembler V1.4  (c)1998-2001 by Frank Wille
+Modified by Kenobi for WiiRd GUI 26/05/2008
+Modified by Link for Gekko instructions 04/08/2008
+Build date: Feb 22 2011, 16:43:23 (Gekko build!)
+
+Usage: ./bin/vdappc file|address {offset}
+}}}
+
+= Details =
+
+== Import ==
+Code from http://wiird.l0nk.org/wp/download, http://wiird.l0nk.org/dl/src-vdappc.zip.
+
+
+== Changes ==
+=== 22 Feb 2011 ===
+  * build on Linux (Ubuntu 10.10),
+  * offset is parsed correctly
