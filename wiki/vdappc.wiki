@@ -20,6 +20,9 @@ Code from http://wiird.l0nk.org/wp/download, http://wiird.l0nk.org/dl/src-vdappc
 
 
 == Changes ==
+=== 23 Feb 2011 ===
+  * Makefile changes
+
 === 22 Feb 2011 ===
   * build on Linux (Ubuntu 10.10),
   * offset is parsed correctly
