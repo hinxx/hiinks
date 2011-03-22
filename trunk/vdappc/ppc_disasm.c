@@ -1635,11 +1635,11 @@ ppc_word *PPC_Disassemble(struct DisasmPara_PPC *dp)
                  break;
                  
               case 30:
-                 gps2(dp,in,"nmadd",4);
+                 gps2(dp,in,"nmsub",4);
                  break;
               
               case 31:
-                 gps2(dp,in,"nmsub",4);
+                 gps2(dp,in,"nmadd",4);
                  break;
                  
               case 6:
