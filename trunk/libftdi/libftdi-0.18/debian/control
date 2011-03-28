@@ -1,0 +1,61 @@
+Source: libftdi
+Section: libs
+Priority: optional
+Maintainer: Aurelien Jarno <aurel32@debian.org>
+Build-Depends: debhelper (>= 5), quilt, libusb-dev (>= 2:0.1.11), pkg-config (>= 0.18), doxygen, libboost-dev, swig, python-all-dev (>= 2.4), python-support (>= 0.3)
+Standards-Version: 3.9.0
+Homepage: http://www.intra2net.com/en/developer/libftdi/
+
+Package: libftdi1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library to control and program the FTDI USB controller
+ This library could talk to FTDI's FT232 and FT245 type USB chips from 
+ userspace. It uses libusb to communicate with the chips.
+ .
+ Functionalities include the possibility to use the chips in standard
+ mode, in bitbang mode, and to read or write the serial EEPROM.
+ .
+ This is the C version of the library.
+
+Package: libftdi-dev
+Section: libdevel
+Architecture: any
+Depends: libftdi1 (= ${binary:Version}), libusb-dev (>= 0.1.11), ${misc:Depends}
+Description: Development files for libftdi
+ This package contains the header files and static library needed to
+ compile applications that use libftdi.
+
+Package: libftdipp1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library to control and program the FTDI USB controller
+ This library could talk to FTDI's FT232 and FT245 type USB chips from 
+ userspace. It uses libusb to communicate with the chips.
+ .
+ Functionalities include the possibility to use the chips in standard
+ mode, in bitbang mode, and to read or write the serial EEPROM.
+ .
+ This is the C++ version of the library.
+
+Package: libftdipp-dev
+Section: libdevel
+Architecture: any
+Depends: libftdi-dev (= ${binary:Version}), libboost-dev (>= 1.33), ${misc:Depends}
+Description: Development files for libftdipp
+ This package contains the header files and static library needed to
+ compile applications that use libftdipp.
+
+Package: python-ftdi
+Section: python
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Provides: ${python:Provides}
+Description: Python module to control and program the FTDI USB controller
+ This Python module could talk to FTDI's FT232 and FT245 type USB chips from 
+ userspace. It uses libusb to communicate with the chips.
+ .
+ Functionalities include the possibility to use the chips in standard
+ mode, in bitbang mode, and to read or write the serial EEPROM.

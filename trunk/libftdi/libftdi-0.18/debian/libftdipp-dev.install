@@ -1,0 +1,5 @@
+main/usr/include/*.hpp			usr/include
+main/usr/lib/libftdipp.a		usr/lib
+main/usr/lib/libftdipp.la		usr/lib
+main/usr/lib/libftdipp.so		usr/lib
+main/usr/lib/pkgconfig/libftdipp.pc	usr/lib/pkgconfig
