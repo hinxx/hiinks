@@ -38,7 +38,6 @@
 /* stuff needed for async write */
 #ifdef LIBFTDI_LINUX_ASYNC_MODE
 #include <sys/ioctl.h>
-#include <sys/time.h>
 #include <sys/select.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -50,6 +49,39 @@
         return code;                       \
    } while(0);
 
+
+#if defined( __WIN32__) && !defined(__MINGW32__)
+#include <windows.h>
+#define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
+struct timeval {
+        long    tv_sec;
+        long    tv_usec;
+};
+int gettimeofday(  struct timeval *tv, void null)
+{
+    FILETIME ft;
+    unsigned __int64 tmpres = 0;
+    if(tv)
+    {
+        GetSystemTimeAsFileTime(&ft);
+        tmpres |= ft.dwHighDateTime;
+        tmpres <<= 32;
+        tmpres |= ft.dwLowDateTime;
+
+        /*converting file time to unix epoch*/
+        tmpres /= 10;  /*convert into microseconds*/
+        tmpres -= DELTA_EPOCH_IN_MICROSECS; 
+        tv->tv_sec = (LONG)(tmpres / 1000000UL);
+        tv->tv_usec = (LONG)(tmpres % 1000000UL);
+    }
+    /* Warning: Timezone not handled (and not needed here) */
+    return 0;
+}
+#else
+    // Include sys/time.h on non-Windows platforms
+    // as gettimeofday() needs it.
+    #include <sys/time.h>
+#endif
 
 /**
     Internal function to close usb device pointer.
@@ -1299,7 +1331,7 @@ static int _usb_get_async_urbs_pending(struct ftdi_context *ftdi)
 static void _usb_async_cleanup(struct ftdi_context *ftdi, int wait_for_more, int timeout_msec)
 {
     struct timeval tv;
-    struct usbdevfs_urb *urb=NULL;
+    struct usbdevfs_urb *urb;
     int ret;
     fd_set writefds;
     int keep_going=0;
@@ -1313,6 +1345,9 @@ static void _usb_async_cleanup(struct ftdi_context *ftdi, int wait_for_more, int
 
     do
     {
+        ret = -1;
+        urb = NULL;
+
         while (_usb_get_async_urbs_pending(ftdi)
                 && (ret = ioctl(ftdi->usb_dev->fd, USBDEVFS_REAPURBNDELAY, &urb)) == -1
                 && errno == EAGAIN)
@@ -1334,7 +1369,6 @@ static void _usb_async_cleanup(struct ftdi_context *ftdi, int wait_for_more, int
             urb->usercontext = FTDI_URB_USERCONTEXT_COOKIE;
 
             /* try to get more urbs that are ready now, but don't wait anymore */
-            urb=NULL;
             keep_going=1;
         }
         else
@@ -1373,6 +1407,7 @@ static int _usb_bulk_write_async(struct ftdi_context *ftdi, int ep, char *bytes,
     do
     {
         /* find a free urb buffer we can use */
+        i = 0;
         urb=NULL;
         for (cleanup_count=0; urb==NULL && cleanup_count <= 1; cleanup_count++)
         {
@@ -1528,6 +1563,7 @@ int ftdi_read_data(struct ftdi_context *ftdi, unsigned char *buf, int size)
 {
     int offset = 0, ret = 1, i, num_of_chunks, chunk_remains;
     int packet_size;
+    struct timeval tv_start, tv_current;
 
     if (ftdi == NULL || ftdi->usb_dev == NULL)
         ftdi_error_return(-666, "USB device unavailable");
@@ -1559,6 +1595,7 @@ int ftdi_read_data(struct ftdi_context *ftdi, unsigned char *buf, int size)
         offset += ftdi->readbuffer_remaining;
     }
     // do the actual USB read
+    gettimeofday(&tv_start,NULL);
     while (offset < size && ret > 0)
     {
         ftdi->readbuffer_remaining = 0;
@@ -1595,14 +1632,6 @@ int ftdi_read_data(struct ftdi_context *ftdi, unsigned char *buf, int size)
                 else
                     ret -= 2*(num_of_chunks-1)+chunk_remains;
             }
-        }
-        else if (ret <= 2)
-        {
-            // no more data to read?
-            return offset;
-        }
-        if (ret > 0)
-        {
             // data still fits in buf?
             if (offset+ret <= size)
             {
@@ -1632,6 +1661,10 @@ int ftdi_read_data(struct ftdi_context *ftdi, unsigned char *buf, int size)
                 return offset;
             }
         }
+        gettimeofday(&tv_current,NULL);
+        if(((tv_current.tv_sec - tv_start.tv_sec)*1000000+(tv_current.tv_usec - tv_start.tv_usec)) 
+           > ftdi->usb_read_timeout)
+            return offset;
     }
     // never reached
     return -127;
@@ -2105,6 +2138,8 @@ void ftdi_eeprom_setsize(struct ftdi_context *ftdi, struct ftdi_eeprom *eeprom, 
 */
 void ftdi_eeprom_initdefaults(struct ftdi_eeprom *eeprom)
 {
+    int i;
+
     if (eeprom == NULL)
         return;
 
@@ -2113,7 +2148,7 @@ void ftdi_eeprom_initdefaults(struct ftdi_eeprom *eeprom)
 
     eeprom->self_powered = 1;
     eeprom->remote_wakeup = 1;
-    eeprom->BM_type_chip = 1;
+    eeprom->chip_type = TYPE_BM;
 
     eeprom->in_is_isochronous = 0;
     eeprom->out_is_isochronous = 0;
@@ -2127,6 +2162,12 @@ void ftdi_eeprom_initdefaults(struct ftdi_eeprom *eeprom)
     eeprom->manufacturer = NULL;
     eeprom->product = NULL;
     eeprom->serial = NULL;
+    for (i=0; i < 5; i++)
+    {
+        eeprom->cbus_function[i] = 0;
+    }
+    eeprom->high_current = 0;
+    eeprom->invert = 0;
 
     eeprom->size = FTDI_DEFAULT_EEPROM_SIZE;
 }
@@ -2159,12 +2200,16 @@ void ftdi_eeprom_free(struct ftdi_eeprom *eeprom)
     Build binary output from ftdi_eeprom structure.
     Output is suitable for ftdi_write_eeprom().
 
+    \note This function doesn't handle FT2232x devices. Only FT232x.
     \param eeprom Pointer to ftdi_eeprom
     \param output Buffer of 128 bytes to store eeprom image to
 
-    \retval >0: used eeprom size
+    \retval >0: free eeprom size
     \retval -1: eeprom size (128 bytes) exceeded by custom strings
     \retval -2: Invalid eeprom pointer
+    \retval -3: Invalid cbus function setting
+    \retval -4: Chip doesn't support invert
+    \retval -5: Chip doesn't support high current drive
 */
 int ftdi_eeprom_build(struct ftdi_eeprom *eeprom, unsigned char *output)
 {
@@ -2172,6 +2217,7 @@ int ftdi_eeprom_build(struct ftdi_eeprom *eeprom, unsigned char *output)
     unsigned short checksum, value;
     unsigned char manufacturer_size = 0, product_size = 0, serial_size = 0;
     int size_check;
+    const int cbus_max[5] = {13, 13, 13, 13, 9};
 
     if (eeprom == NULL)
         return -2;
@@ -2183,6 +2229,18 @@ int ftdi_eeprom_build(struct ftdi_eeprom *eeprom, unsigned char *output)
     if (eeprom->serial != NULL)
         serial_size = strlen(eeprom->serial);
 
+    // highest allowed cbus value
+    for (i = 0; i < 5; i++)
+    {
+        if ((eeprom->cbus_function[i] > cbus_max[i]) ||
+            (eeprom->cbus_function[i] && eeprom->chip_type != TYPE_R)) return -3;
+    }
+    if (eeprom->chip_type != TYPE_R)
+    {
+        if (eeprom->invert) return -4;
+        if (eeprom->high_current) return -5;
+    }
+
     size_check = eeprom->size;
     size_check -= 28; // 28 are always in use (fixed)
 
@@ -2190,7 +2248,7 @@ int ftdi_eeprom_build(struct ftdi_eeprom *eeprom, unsigned char *output)
     // it seems that the FTDI chip will not read these strings from the lower half
     // Each string starts with two bytes; offset and type (0x03 for string)
     // the checksum needs two bytes, so without the string data that 8 bytes from the top half
-    if (eeprom->size>=256)size_check = 120;
+    if (eeprom->size>=256) size_check = 120;
     size_check -= manufacturer_size*2;
     size_check -= product_size*2;
     size_check -= serial_size*2;
@@ -2202,7 +2260,12 @@ int ftdi_eeprom_build(struct ftdi_eeprom *eeprom, unsigned char *output)
     // empty eeprom
     memset (output, 0, eeprom->size);
 
-    // Addr 00: Stay 00 00
+    // Addr 00: High current IO
+    output[0x00] = eeprom->high_current ? HIGH_CURRENT_DRIVE : 0;
+    // Addr 01: IN endpoint size (for R type devices, different for FT2232)
+    if (eeprom->chip_type == TYPE_R) {
+        output[0x01] = 0x40;
+    }
     // Addr 02: Vendor ID
     output[0x02] = eeprom->vendor_id;
     output[0x03] = eeprom->vendor_id >> 8;
@@ -2213,11 +2276,22 @@ int ftdi_eeprom_build(struct ftdi_eeprom *eeprom, unsigned char *output)
 
     // Addr 06: Device release number (0400h for BM features)
     output[0x06] = 0x00;
-
-    if (eeprom->BM_type_chip == 1)
-        output[0x07] = 0x04;
-    else
-        output[0x07] = 0x02;
+    switch (eeprom->chip_type) {
+        case TYPE_AM:
+            output[0x07] = 0x02;
+            break;
+        case TYPE_BM:
+            output[0x07] = 0x04;
+            break;
+        case TYPE_2232C:
+            output[0x07] = 0x05;
+            break;
+        case TYPE_R:
+            output[0x07] = 0x06;
+            break;
+        default:
+            output[0x07] = 0x00;
+    }
 
     // Addr 08: Config descriptor
     // Bit 7: always 1
@@ -2257,8 +2331,8 @@ int ftdi_eeprom_build(struct ftdi_eeprom *eeprom, unsigned char *output)
         j = j | 16;
     output[0x0A] = j;
 
-    // Addr 0B: reserved
-    output[0x0B] = 0x00;
+    // Addr 0B: Invert data lines
+    output[0x0B] = eeprom->invert & 0xff;
 
     // Addr 0C: USB version low byte when 0x0A bit 4 is set
     // Addr 0D: USB version high byte when 0x0A bit 4 is set
@@ -2281,9 +2355,23 @@ int ftdi_eeprom_build(struct ftdi_eeprom *eeprom, unsigned char *output)
     // Addr 13: Length of serial string
     output[0x13] = serial_size*2 + 2;
 
+    // Addr 14: CBUS function: CBUS0, CBUS1
+    // Addr 15: CBUS function: CBUS2, CBUS3
+    // Addr 16: CBUS function: CBUS5
+    output[0x14] = eeprom->cbus_function[0] | (eeprom->cbus_function[1] << 4);
+    output[0x15] = eeprom->cbus_function[2] | (eeprom->cbus_function[3] << 4);
+    output[0x16] = eeprom->cbus_function[4];
+    // Addr 17: Unknown
+
     // Dynamic content
-    i=0x14;
-    if (eeprom->size>=256) i = 0x80;
+    // In images produced by FTDI's FT_Prog for FT232R strings start at 0x18
+    // Space till 0x18 should be considered as reserved.
+    if (eeprom->chip_type >= TYPE_R) {
+        i = 0x18;
+    } else {
+        i = 0x14;
+    }
+    if (eeprom->size >= 256) i = 0x80;
 
 
     // Output manufacturer
@@ -2378,7 +2466,8 @@ int ftdi_eeprom_decode(struct ftdi_eeprom *eeprom, unsigned char *buf, int size)
     // empty eeprom struct
     memset(eeprom, 0, sizeof(struct ftdi_eeprom));
 
-    // Addr 00: Stay 00 00
+    // Addr 00: High current IO
+    eeprom->high_current = (buf[0x02] & HIGH_CURRENT_DRIVE);
 
     // Addr 02: Vendor ID
     eeprom->vendor_id = buf[0x02] + (buf[0x03] << 8);
@@ -2389,14 +2478,17 @@ int ftdi_eeprom_decode(struct ftdi_eeprom *eeprom, unsigned char *buf, int size)
     value = buf[0x06] + (buf[0x07]<<8);
     switch (value)
     {
+        case 0x0600:
+            eeprom->chip_type = TYPE_R;
+            break;
         case 0x0400:
-            eeprom->BM_type_chip = 1;
+            eeprom->chip_type = TYPE_BM;
             break;
         case 0x0200:
-            eeprom->BM_type_chip = 0;
+            eeprom->chip_type = TYPE_AM;
             break;
         default: // Unknown device
-            eeprom->BM_type_chip = 0;
+            eeprom->chip_type = 0;
             break;
     }
 
@@ -2429,7 +2521,8 @@ int ftdi_eeprom_decode(struct ftdi_eeprom *eeprom, unsigned char *buf, int size)
     if (j&0x08) eeprom->use_serial = 1;
     if (j&0x10) eeprom->change_usb_version = 1;
 
-    // Addr 0B: reserved
+    // Addr 0B: Invert data lines
+    eeprom->invert = buf[0x0B];
 
     // Addr 0C: USB version low byte when 0x0A bit 4 is set
     // Addr 0D: USB version high byte when 0x0A bit 4 is set
@@ -2455,6 +2548,19 @@ int ftdi_eeprom_decode(struct ftdi_eeprom *eeprom, unsigned char *buf, int size)
     serial_size = buf[0x13]/2;
     if (serial_size > 0) eeprom->serial = malloc(serial_size);
     else eeprom->serial = NULL;
+
+    // Addr 14: CBUS function: CBUS0, CBUS1
+    // Addr 15: CBUS function: CBUS2, CBUS3
+    // Addr 16: CBUS function: CBUS5
+    if (eeprom->chip_type == TYPE_R) {
+        eeprom->cbus_function[0] = buf[0x14] & 0x0f;
+        eeprom->cbus_function[1] = (buf[0x14] >> 4) & 0x0f;
+        eeprom->cbus_function[2] = buf[0x15] & 0x0f;
+        eeprom->cbus_function[3] = (buf[0x15] >> 4) & 0x0f;
+        eeprom->cbus_function[4] = buf[0x16] & 0x0f;
+    } else {
+        for (j=0; j<5; j++) eeprom->cbus_function[j] = 0;
+    }
 
     // Decode manufacturer
     i = buf[0x0E] & 0x7f; // offset
