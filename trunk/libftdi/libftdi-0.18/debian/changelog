@@ -1,3 +1,10 @@
+libftdi (0.18-2) unstable; urgency=low
+
+  * Add changes from upstream GIT source
+    (http://www.intra2net.com/en/developer/libftdi/).
+  
+ -- Hinko Kocevar <hinkocevar@gmail.com>  Mon, 28 Mar 2011 03:02:01 +0000
+
 libftdi (0.18-1build1) natty; urgency=low
 
   * Rebuild to add support for python 2.7.

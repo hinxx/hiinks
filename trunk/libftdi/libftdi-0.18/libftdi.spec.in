@@ -2,7 +2,7 @@
 Summary:   Library to program and control the FTDI USB controller
 Name:      libftdi
 Version:   @VERSION@
-Release:   1
+Release:   2
 License:   LGPL for libftdi and GPLv2+linking exception for the C++ wrapper
 Group:     System Environment/Libraries
 Vendor:    Intra2net AG
