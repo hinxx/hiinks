@@ -1,0 +1,10 @@
+#summary libftdi for USBGecko.
+#labels ubuntu,libftdi,wii,usbgecko,gecko,debug,code,souce
+
+= Introduction =
+
+USBGecko needs the libftdi (http://www.intra2net.com/en/developer/libftdi/index.php). Current Ubuntu 10.10 version is 0.18-1, that still has the Python binding bug present - can not use 'unsigned int *' type.
+
+To overcome this issue one needs to manually patch the libftdi 0.18 sources (or use GIT sources).
+
+Here I'm hosting the libftdi 0.18 Ubuntu 10.10 source package + latest (28 Mar 2011) GIT sources. The tree can be compiled directly to Ubuntu DEB package - see Ubuntu-README.txt.
