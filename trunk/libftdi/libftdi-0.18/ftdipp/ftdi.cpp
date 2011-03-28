@@ -2,11 +2,11 @@
                           ftdi.cpp  -  C++ wraper for libftdi
                              -------------------
     begin                : Mon Oct 13 2008
-    copyright            : (C) 2008 by Marek Vavruša
+    copyright            : (C) 2008 by Marek Vavru??a
     email                : opensource@intra2net.com and marek@vavrusa.com
  ***************************************************************************/
 /*
-Copyright (C) 2008 by Marek Vavruša
+Copyright (C) 2008 by Marek Vavru??a
 
 The software in this package is distributed under the GNU General
 Public License version 2 (with a special exception described below).
@@ -283,7 +283,7 @@ int Context::bitbang_disable()
 
 int Context::set_bitmode(unsigned char bitmask, unsigned char mode)
 {
-    return set_bitmode(bitmask, mode);
+    return ftdi_set_bitmode(d->ftdi, bitmask, mode);
 }
 
 int Context::set_bitmode(unsigned char bitmask, enum ftdi_mpsse_mode mode)
