@@ -3,7 +3,7 @@
 
 = libftdi =
 
-USBGecko needs the libftdi (http://www.intra2net.com/en/developer/libftdi/index.php). Current Ubuntu 10.10 version is 0.18-1, that still has the Python binding bug present - can not use 'unsigned int *' type.
+USBGecko needs the libftdi (http://www.intra2net.com/en/developer/libftdi/index.php). Current Ubuntu 10.10 version is 0.18-1, that still has the Python binding bug present - can not use 'unsigned int *' type. See http://developer.intra2net.com/mailarchive/html/libftdi/2010/msg00362.html.
 
 To overcome this issue one needs to manually patch the libftdi 0.18 sources (or use GIT sources).
 
