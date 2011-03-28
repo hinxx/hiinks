@@ -4,3 +4,4 @@
 04_async_mode.diff
 09_rebootstrap.diff
 10_python_bindings.diff
+11_git_source.diff
