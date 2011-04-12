@@ -1,0 +1,33 @@
+#summary Minimalistic TV control.
+#labels python,vlc,tv,media,center
+
+= Introduction =
+
+pyTv is intended to be used on set-top box, such as Asrock ION330.
+
+I'm currently using XBMC for my media player and I'm not really satisfied how it performs. Also, I would like to have the control on small code base 
+where I can add / remove features as needed.
+
+= Details =
+
+What I need:
+ * Video format playback
+ * Live TV (UDP stream) playback
+ * Music format playback
+ * Photobook
+ * IR Remote controlled
+ * Minimal and ergonomic UI
+ * Other
+
+What I would also like:
+ * IMDB support
+ * EPG support
+ * playlists
+ * etc..
+
+= Software =
+
+I intend on using python and all sorts of useful modules such as:
+ * libVLC 1.1 python bindings - http://wiki.videolan.org/Python_bindings
+ * pyQt4 - http://www.riverbankcomputing.co.uk/software/pyqt/download
+ * pyLirc - http://sourceforge.net/projects/pylirc/
