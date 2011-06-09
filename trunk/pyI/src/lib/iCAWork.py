@@ -113,6 +113,8 @@ class iCAput(iThreader):
 
     def handle_result(self, data, result):
         self.res.append((data, result))
+        if hasattr(self, "monitorCB"):
+            self.monitorCB(data)
 
     def prerun(self):
         self.res = []

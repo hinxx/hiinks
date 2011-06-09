@@ -26,48 +26,35 @@ os.putenv('EPICS_CA_ADDR_LIST', ips)
 import sys
 import time
 
-from PyQt4 import QtCore, QtGui, Qt
+from PyQt4 import QtCore, QtGui, uic
 
-from ui.win1 import Ui_MainWindow
-from lib.iIOCList import iIOCList
+from lib.iCA import iCA
+
 from widgets.iPVSingle import iPVSingle
 
 
 class Main(QtGui.QMainWindow):
-
-    iocList = iIOCList()
-    uiPanels = dict()
-
     def __init__(self, parent = None):
         QtGui.QMainWindow.__init__(self, None)
 
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        # CA access layer
+        self.caAccess = iCA(self)
+
+        #iocList = iIOCList()
+        self.uiPanels = dict()
+
+        # Dictionary containing all known IOCs (IOCname: uIOC object)
+        self.iocList = dict()
+
+        self.ui = uic.loadUi('ui/win1.ui', self)
         self.uiInit()
 
-#        QtCore.QObject.connect(self.ui.pushButton_exit, QtCore.SIGNAL("clicked()"), self.doClose)
-
-#        QtCore.QObject.connect(self.ui.pushButton_get, QtCore.SIGNAL("clicked()"), self.pvGet)
-#        QtCore.QObject.connect(self.ui.pushButton_put, QtCore.SIGNAL("clicked()"), self.pvPut)
-#        QtCore.QObject.connect(self.ui.pushButton_monitor, QtCore.SIGNAL("clicked()"), self.pvMonitor)
-#        QtCore.QObject.connect(self.ui.pushButton_unmonitor, QtCore.SIGNAL("clicked()"), self.pvUnmonitor)
-
-        #self.iocList = iIOCList()
-
-        self.iocList.addIOC("hinkoHost")
-        self.iocList.addIOC("hinkoHost1")
-        self.iocList.addIOC("hinkoHost2")
-        self.iocList.addIOC("hinkoHost3")
-
-        self.iocList.dump()
         print "main.init: DONE"
 
         self.uiToolboxChange(0)
 
     def uiInit(self):
         print "uiInit:"
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
 
         QtCore.QObject.connect(self.ui.pushButton_exit, QtCore.SIGNAL("clicked()"), self.doClose)
         QtCore.QObject.connect(self.ui.toolBox, QtCore.SIGNAL("currentChanged(int)"), self.uiToolboxChange)
@@ -82,7 +69,7 @@ class Main(QtGui.QMainWindow):
         self.uiPanel = None
         #self.uiPanels["iParamSingle"] = iParamSingle(iocList = self.iocList)
         #self.uiPanels["iParamMulti"] = iParamMulti(iocList = self.iocList)
-        self.uiPanels["iPVSingle"] = iPVSingle(iocList = self.iocList)
+        self.uiPanels["iPVSingle"] = iPVSingle(self, self.caAccess)
 
     def uiToolboxChange(self, index):
         page = self.ui.toolBox.itemText(index)
@@ -113,74 +100,12 @@ class Main(QtGui.QMainWindow):
         self.uiPanels[panel].show()
         self.uiPanel = panel
 
-#    def pvGet(self):
-#        print "main.pvGet:"
-#
-#        iocName = str(self.ui.lineEdit_iocName.text())
-#        pvName = str(self.ui.lineEdit_pvName.text())
-#
-#        iioc = self.iocList.find(iocName)
-#        print "main.pvGet: IOC=", iioc, ", name=", iioc.iocName
-#
-#        iioc.pvGet(pvName, self.pvGetSlot)
-#
-#    def pvPut(self):
-#        print "main.pvPut:"
-#
-#        iocName = str(self.ui.lineEdit_iocName.text())
-#        pvName = str(self.ui.lineEdit_pvName.text())
-#        pvValue = str(self.ui.lineEdit_pvValueWrite.text())
-#
-#        iioc = self.iocList.find(iocName)
-#
-#        iioc.pvPut(pvName, pvValue)
-#
-#    def pvMonitor(self):
-#        print "main.pvMonitor:"
-#
-#        iocName = str(self.ui.lineEdit_iocName.text())
-#        pvName = str(self.ui.lineEdit_pvName.text())
-#
-#        iioc = self.iocList.find(iocName)
-#
-#        iioc.pvMonitorStart(pvName)
-#
-#    def pvUnmonitor(self):
-#        print "main.pvUnmonitor:"
-#
-#        iocName = str(self.ui.lineEdit_iocName.text())
-#        pvName = str(self.ui.lineEdit_pvName.text())
-#
-#        iioc = self.iocList.find(iocName)
-#
-#        iioc.pvMonitorStop(pvName)
-
-#===============================================================================
-# # Test slots
-#===============================================================================
-
-    @QtCore.pyqtSlot('QObject*')
-    def pvGetSlot(self, iPV):
-        print "main.pvGetSlot: iPV=", iPV, ", value=", iPV.value
-
-    @QtCore.pyqtSlot('QObject*')
-    def pvPutSlot(self, iPV):
-        print "main.pvPutSlot: iPV=", iPV, ", value=", iPV.value
-
-    @QtCore.pyqtSlot('QObject*')
-    def pvMonitorSlot(self, iPV):
-        print "main.pvMonitorSlot: iPV=", iPV, ", value=", iPV.value
-
-    @QtCore.pyqtSlot('QObject*')
-    def pvConnectSlot(self, iPV):
-        print "main.pvConnectSlot: iPV=", iPV, ", connected=", iPV.isConnected()
-
 #===============================================================================
 # Close
 #===============================================================================
     def close(self):
         print "main.close:"
-        self.iocList.close()
+        self.caAccess.close()
         app.closeAllWindows()
 
     def doClose(self):
