@@ -288,11 +288,6 @@
           <string>Connected</string>
          </property>
         </column>
-        <column>
-         <property name="text">
-          <string>Unmonitor</string>
-         </property>
-        </column>
        </widget>
       </item>
      </layout>

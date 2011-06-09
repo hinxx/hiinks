@@ -28,25 +28,43 @@ class iCA(QtCore.QObject):
         self.iCAThr = iCAThread(True)
         self.iCAThr.start()
 
-    def get(self, workList):
+    def get(self, pvList):
+        #print "iCA.get: pvList=", pvList
+
+        workList = []
+        for pvName, pvValue in pvList:
+            workList.append(iCAobj(self, pvName))
+
         #print "iCA.get: workList=", workList
 
         # Create and schedule GET work
-        caWork = iCAget(self, workList, len(workList), self.workDoneCallback, self.monitorCallback)
+        caWork = iCAget(self, workList, len(workList), self.workDoneCallback, self.getCallback)
         self.iCAThr.schedule(caWork)
 
         return caWork
 
-    def put(self, workList):
+    def put(self, pvList):
+        #print "iCA.put: pvList=", pvList
+
+        workList = []
+        for pvName, pvValue in pvList:
+            workList.append(iCAobj(self, pvName, pvValue))
+
         #print "iCA.put: workList=", workList
 
         # Create and schedule PUT work
-        caWork = iCAput(self, workList, len(workList), self.workDoneCallback, self.monitorCallback)
+        caWork = iCAput(self, workList, len(workList), self.workDoneCallback, self.putCallback)
         self.iCAThr.schedule(caWork)
 
         return caWork
 
-    def monitor(self, workList):
+    def monitor(self, pvList):
+        #print "iCA.monitor: pvList=", pvList
+
+        workList = []
+        for pvName, pvValue in pvList:
+            workList.append(iCAobj(self, pvName))
+
         #print "iCA.monitor: workList=", workList
 
         # Create and schedule MONITOR work
@@ -61,7 +79,7 @@ class iCA(QtCore.QObject):
 
     def getCallback(self, caJob):
         print "iCA.getCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
-        #print "iCA.getCallback: Emit sigPut(QObject*) for ", caJob.pvName
+        #print "iCA.getCallback: Emit sigGett(QObject*) for ", caJob.pvName
         self.sigGet.emit(caJob)
 
     def putCallback(self, caJob):
@@ -90,8 +108,6 @@ class iCA(QtCore.QObject):
         #self.iCAThr.join(1.0)
         self.iCAThr.join()
         self.iCAThr = None
-        #ca.finalize_libca()
-        #ca.show_cache()
 
         nrRecievers = self.receivers(QtCore.SIGNAL('sigConnect(QObject*)'))
         print "iCA.close; sigConnect disconnected, left receivers count=", nrRecievers
@@ -149,17 +165,20 @@ if __name__ == "__main__":
         print
         print "------ round 1 --------"
         print
-        pv1 = iCAobj(e, "hinkoHost:P:ai1")
-        pv2 = iCAobj(e, "hinkoHost:P:ai2")
-        pv3 = iCAobj(e, "hinkoHost:P:ai3")
-        e.get([pv1, pv2, pv3])
+#        pv1 = iCAobj(e, "hinkoHost:P:ai1")
+#        pv2 = iCAobj(e, "hinkoHost:P:ai2")
+#        pv3 = iCAobj(e, "hinkoHost:P:ai3")
+#        e.get([pv1, pv2, pv3])
+        l = [("hinkoHost:P:ai1", None), ("hinkoHost:P:ai2", None), ("hinkoHost:P:ai3", None)]
+        e.get(l)
         time.sleep(3)
         #ca.show_cache()
 
         print
         print "------ round 2 --------"
         print
-        e.get([pv1, pv2, pv3])
+#        e.get([pv1, pv2, pv3])
+        e.get(l)
         time.sleep(3)
         #ca.show_cache()
 
@@ -179,7 +198,6 @@ if __name__ == "__main__":
         pv3 = iCAobj(e, "hinkoHost:P:ai3", 33)
         e.put([pv1, pv2, pv3])
         time.sleep(3)
-        #ca.show_cache()
 
         print
         print "------ END!!! --------"
@@ -197,14 +215,12 @@ if __name__ == "__main__":
         pv3 = iCAobj(e, "hinkoHost:P:ai3", 33)
         e.put([pv1, pv2, pv3])
         time.sleep(3)
-        #ca.show_cache()
 
         print
         print "------ GET round 1 --------"
         print
         e.get([pv1, pv2, pv3])
         time.sleep(3)
-        #ca.show_cache()
 
         print
         print "------ END!!! --------"
@@ -223,14 +239,12 @@ if __name__ == "__main__":
         pv3 = iCAobj(e, "hinkoHost:P:ai3")
         mon = e.monitor([pv1, pv2, pv3])
         time.sleep(5)
-        #ca.show_cache()
 
         print
         print "------ round 1 stopping monitor  --------"
         print
         e.monitorStop(mon)
         time.sleep(5)
-        #ca.show_cache()
 
         print
         print "------ END!!! --------"

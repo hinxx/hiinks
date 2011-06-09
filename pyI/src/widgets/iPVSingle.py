@@ -3,27 +3,26 @@ Created on Jun 7, 2011
 
 @author: hinko
 '''
-## Add ui path to library
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
-from PyQt4 import QtCore, QtGui
-from ui.uiPVSingle import Ui_PVSingle
-
+from PyQt4 import QtCore, QtGui, uic
 
 class iPVSingle(QtGui.QWidget):
-    iocList = None
-    pvMonitors = dict()
 
-    def __init__(self, parent = None, iocList = None):
+    def __init__(self, parent, caAccess):
         QtGui.QWidget.__init__(self, parent)
         print "iPVSingle.init:"
 
-        print "iPVSingle.init iocList: ", iocList
-        self.iocList = iocList
+        self.pvMonitors = dict()
 
-        self.ui = Ui_PVSingle()
-        self.ui.setupUi(self)
+        self.caAccess = caAccess
+        QtCore.QObject.connect(self.caAccess,
+                               QtCore.SIGNAL("sigGet(QObject*)"), self.caGetSlot)
+        QtCore.QObject.connect(self.caAccess,
+                               QtCore.SIGNAL("sigPut(QObject*)"), self.caPutSlot)
+        QtCore.QObject.connect(self.caAccess,
+                               QtCore.SIGNAL("sigMonitor(QObject*)"), self.caMonitorSlot)
+
+        self.ui = uic.loadUi('ui/uiPVSingle.ui', self)
 
         QtCore.QObject.connect(self.ui.pushButton_get,
                                QtCore.SIGNAL("clicked()"), self.pvGet)
@@ -37,28 +36,36 @@ class iPVSingle(QtGui.QWidget):
                                QtCore.SIGNAL("itemSelectionChanged()"), self.tableSelect)
         self.ui.pushButton_unmonitor.setDisabled(True)
 
+    def show(self):
+        print "iPVSingle.show:"
+
+    def hide(self):
+        print "iPVSingle.hide:"
+
     def pvGet(self):
         iocName = str(self.ui.lineEdit_iocName.text())
         pvName = str(self.ui.lineEdit_pvName.text())
 
-        iioc = self.iocList.find(iocName)
-        print "iPVSingle.pvGet: IOC=", iioc.iocName, ", PV=", pvName
+        if len(iocName) == 0 or len(pvName) == 0:
+            return
 
-        self.pvConnectSlot(iioc.pvObject(pvName))
-        iioc.pvSubscribeConnect(pvName, self.pvConnectSlot)
-
-        iioc.pvGet(pvName, self.pvGetSlot)
+        print "iPVSingle.pvGet: IOC=", iocName, ", PV=", pvName
+        fullName = iocName + pvName
+        o = (fullName, None)
+        self.caAccess.get([o])
 
     def pvPut(self):
-        print "iPVSingle.pvPut:"
-
         iocName = str(self.ui.lineEdit_iocName.text())
         pvName = str(self.ui.lineEdit_pvName.text())
         pvValue = str(self.ui.lineEdit_pvValueWrite.text())
 
-        iioc = self.iocList.find(iocName)
+        if len(iocName) == 0 or len(pvName) == 0:
+            return
 
-        iioc.pvPut(pvName, pvValue)
+        print "iPVSingle.pvPut: IOC=", iocName, ", PV=", pvName, ", value=", pvValue
+        fullName = iocName + pvName
+        o = (fullName, pvValue)
+        self.caAccess.put([o])
 
     def pvMonitor(self):
         print "iPVSingle.pvMonitor:"
@@ -66,9 +73,12 @@ class iPVSingle(QtGui.QWidget):
         iocName = str(self.ui.lineEdit_iocName.text())
         pvName = str(self.ui.lineEdit_pvName.text())
 
-        iioc = self.iocList.find(iocName)
+        if len(iocName) == 0 or len(pvName) == 0:
+            return
 
-        fullName = iioc.iocName + pvName
+        print "iPVSingle.pvMonitor: IOC=", iocName, ", PV=", pvName
+        fullName = iocName + pvName
+
         if fullName in self.pvMonitors:
             print "uPVSingle.pvMonitor: Already monitoring PV:", fullName
             return
@@ -82,16 +92,12 @@ class iPVSingle(QtGui.QWidget):
         self.ui.tableWidget.setItem(row, 1, item)
         item = QtGui.QTableWidgetItem("UDF")
         self.ui.tableWidget.setItem(row, 2, item)
-        item = QtGui.QTableWidgetItem("UDF")
-        self.ui.tableWidget.setItem(row, 3, item)
 
-#        self.ui.tableWidget.setColumnWidth(0, 180)
         self.ui.tableWidget.resizeColumnToContents(0)
 
         print "iPVSingle.pvMonitor: Start monitoring PV=", fullName
-        #self.pvMonitors[fullName] = iioc.pvMonitorStart(pvName, self.pvMonitorSlot)
-        self.pvMonitors[fullName] = iioc.pvObject(pvName)
-        iioc.pvMonitorStart(pvName, self.pvMonitorSlot)
+        o = (fullName, None)
+        self.pvMonitors[fullName] = self.caAccess.monitor([o])
 
     def pvUnmonitor(self):
         print "iPVSingle.pvUnmonitor:"
@@ -109,8 +115,7 @@ class iPVSingle(QtGui.QWidget):
                 print "uPVSingle.pvUnmonitor: removing monitor for:", pvName
 
                 pv = self.pvMonitors[pvName]
-                iioc = self.iocList.find(pv.iocName)
-                iioc.pvMonitorStop(pv.pvName, self.pvMonitorSlot)
+                self.caAccess.monitorStop(pv)
                 del self.pvMonitors[pvName]
 
                 rows.append(item.row())
@@ -125,36 +130,49 @@ class iPVSingle(QtGui.QWidget):
             self.ui.pushButton_unmonitor.setEnabled(True)
         else:
             self.ui.pushButton_unmonitor.setDisabled(True)
+
 #===============================================================================
 # CA callback slots
 #===============================================================================
 
     @QtCore.pyqtSlot('QObject*')
-    def pvGetSlot(self, iPV):
-        print "iPVSingle.pvGetSlot: iPV=", iPV, ", value=", iPV.value
-        self.ui.label_pvValueRead.setText(str(iPV.value))
+    def caGetSlot(self, caJob):
+        print "iPVSingle.caGetSlot: iPV=", caJob.pvName, ", value=", caJob.pvGetValue
+        iocName = str(self.ui.lineEdit_iocName.text())
+        pvName = str(self.ui.lineEdit_pvName.text())
+        fullName = iocName + pvName
+        if fullName == caJob.pvName:
+            self.ui.label_pvValueRead.setText(str(caJob.pvGetValue))
+
+            print "iPVSingle.caGetSlot: iPV=", caJob.pvName, ", connected=", caJob.connected
+            if caJob.connected:
+                self.ui.label_pvConnected.setText(str("True"))
+            else:
+                self.ui.label_pvConnected.setText(str("False"))
 
     @QtCore.pyqtSlot('QObject*')
-    def pvPutSlot(self, iPV):
-        print "iPVSingle.pvPutSlot: iPV=", iPV, ", value=", iPV.value
+    def caPutSlot(self, caJob):
+        print "iPVSingle.caPutSlot: iPV=", caJob.pvName, ", value=", caJob.pvGetValue
+        iocName = str(self.ui.lineEdit_iocName.text())
+        pvName = str(self.ui.lineEdit_pvName.text())
+        fullName = iocName + pvName
+        if fullName == caJob.pvName:
+            self.ui.label_pvValueRead.setText(str(caJob.pvGetValue))
+
+            print "iPVSingle.caPutSlot: iPV=", caJob.pvName, ", connected=", caJob.connected
+            if caJob.connected:
+                self.ui.label_pvConnected.setText(str("True"))
+            else:
+                self.ui.label_pvConnected.setText(str("False"))
 
     @QtCore.pyqtSlot('QObject*')
-    def pvMonitorSlot(self, iPV):
-        print "iPVSingle.pvMonitorSlot: iPV=", iPV, ", value=", iPV.value
-        if not iPV.fullName in self.pvMonitors:
+    def caMonitorSlot(self, caJob):
+        print "iPVSingle.caMonitorSlot: PV=", caJob.pvName, ", value=", caJob.pvGetValue
+        if not caJob.pvName in self.pvMonitors:
             return
 
-        for nameItem in self.ui.tableWidget.findItems(iPV.fullName, QtCore.Qt.MatchExactly):
+        for nameItem in self.ui.tableWidget.findItems(caJob.pvName, QtCore.Qt.MatchExactly):
             item = self.ui.tableWidget.item(nameItem.row(), nameItem.column() + 1)
-            item.setText(str(iPV.value))
+            item.setText(str(caJob.pvGetValue))
             item = self.ui.tableWidget.item(nameItem.row(), nameItem.column() + 2)
-            item.setText(str(iPV.isConnected()))
-
-    @QtCore.pyqtSlot('QObject*')
-    def pvConnectSlot(self, iPV):
-        conn = iPV.isConnected()
-        print "iPVSingle.pvConnectSlot: iPV=", iPV, ", connected=", conn
-        if conn:
-            self.ui.label_pvConnected.setText(str("True"))
-        else:
-            self.ui.label_pvConnected.setText(str("False"))
+            item.setText(str(caJob.connected))
