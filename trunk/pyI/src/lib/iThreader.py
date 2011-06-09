@@ -5,9 +5,12 @@ Created on Jun 8, 2011
 '''
 
 import threading, Queue
+from PyQt4 import QtCore
 
-class iThreader:
-    def __init__(self, numthreads, workDoneCB):
+class iThreader(QtCore.QObject):
+    def __init__(self, parent, numthreads = 1, workDoneCB = None):
+        QtCore.QObject.__init__(self, parent)
+
         self._numthreads = numthreads
         self.workDoneCB = None
 
