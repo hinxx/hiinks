@@ -13,9 +13,8 @@ from iThreader import iThreader
 from iCAobj import iCAobj
 
 class iCAget(iThreader):
-    def __init__(self, workList, numthreads, workDoneCB, monitorCB):
-        iThreader.__init__(self, numthreads, workDoneCB)
-        self.doRun = True
+    def __init__(self, parent, workList, numthreads = 1, workDoneCB = None, monitorCB = None):
+        iThreader.__init__(self, parent, numthreads, workDoneCB)
         self.workList = workList
         if callable(monitorCB):
             self.monitorCB = monitorCB
@@ -42,7 +41,10 @@ class iCAget(iThreader):
 
         if not ca.isConnected(chid):
             print "iCAget.handle_data: PV still not connected! PV=", pvData.pvName
+            pvData.connected = False
             return pvData.success
+
+        pvData.connected = True
 
         #print "iCAget.handle_data: PV is connected, PV=", pvName
 
@@ -65,9 +67,8 @@ class iCAget(iThreader):
 
 
 class iCAput(iThreader):
-    def __init__(self, workList, numthreads, workDoneCB, monitorCB):
-        iThreader.__init__(self, numthreads, workDoneCB)
-        self.doRun = True
+    def __init__(self, parent, workList, numthreads, workDoneCB, monitorCB):
+        iThreader.__init__(self, parent, numthreads, workDoneCB)
         self.workList = workList
         if callable(monitorCB):
             self.monitorCB = monitorCB
@@ -94,7 +95,10 @@ class iCAput(iThreader):
 
         if not ca.isConnected(chid):
             print "iCAput.handle_data: PV still not connected! PV=", pvData.pvName
+            pvData.connected = False
             return pvData.success
+
+        pvData.connected = True
 
         #print "iCAput.handle_data: PV is connected, PV=", pvName
 
@@ -118,9 +122,8 @@ class iCAput(iThreader):
 
 
 class iCAmonitor(iThreader):
-    def __init__(self, workList, numthreads, workDoneCB, monitorCB):
-        iThreader.__init__(self, numthreads, workDoneCB)
-        self.doRun = True
+    def __init__(self, parent, workList, numthreads, workDoneCB, monitorCB):
+        iThreader.__init__(self, parent, numthreads, workDoneCB)
         self.workList = workList
         self.eventID = None
         if callable(monitorCB):
@@ -167,7 +170,10 @@ class iCAmonitor(iThreader):
 
         if not ca.isConnected(chid):
             print "iCAmonitor.handle_data: PV still not connected! PV=", pvData.pvName
+            pvData.connected = False
             return pvData.success
+
+        pvData.connected = True
 
         #print "iCAmonitor.handle_data: PV is connected, PV=", pvName
 

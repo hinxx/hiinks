@@ -13,6 +13,11 @@ from iCAobj import iCAobj
 from iCAWork import iCAget, iCAmonitor, iCAput, iCAThread
 
 class iCA(QtCore.QObject):
+    sigGet = QtCore.pyqtSignal('QObject*')
+    sigPut = QtCore.pyqtSignal('QObject*')
+    sigMonitor = QtCore.pyqtSignal('QObject*')
+    sigConnect = QtCore.pyqtSignal('QObject*')
+    sigDone = QtCore.pyqtSignal('QObject*')
 
     iCAThr = None
 
@@ -23,20 +28,20 @@ class iCA(QtCore.QObject):
         self.iCAThr = iCAThread(True)
         self.iCAThr.start()
 
-    def put(self, workList):
-        #print "iCA.put: workList=", workList
-
-        # Create and schedule PUT work
-        caWork = iCAput(workList, len(workList), self.workDoneCallback, self.monitorCallback)
-        self.iCAThr.schedule(caWork)
-
-        return caWork
-
     def get(self, workList):
         #print "iCA.get: workList=", workList
 
         # Create and schedule GET work
-        caWork = iCAget(workList, len(workList), self.workDoneCallback, self.monitorCallback)
+        caWork = iCAget(self, workList, len(workList), self.workDoneCallback, self.monitorCallback)
+        self.iCAThr.schedule(caWork)
+
+        return caWork
+
+    def put(self, workList):
+        #print "iCA.put: workList=", workList
+
+        # Create and schedule PUT work
+        caWork = iCAput(self, workList, len(workList), self.workDoneCallback, self.monitorCallback)
         self.iCAThr.schedule(caWork)
 
         return caWork
@@ -45,7 +50,7 @@ class iCA(QtCore.QObject):
         #print "iCA.monitor: workList=", workList
 
         # Create and schedule MONITOR work
-        caWork = iCAmonitor(workList, len(workList), self.workDoneCallback, self.monitorCallback)
+        caWork = iCAmonitor(self, workList, len(workList), self.workDoneCallback, self.monitorCallback)
         self.iCAThr.schedule(caWork)
 
         return caWork
@@ -54,14 +59,29 @@ class iCA(QtCore.QObject):
         print "iCA.monitorStop: caWork=", caWork
         caWork.stopMonitor()
 
+    def getCallback(self, caJob):
+        print "iCA.getCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
+        #print "iCA.getCallback: Emit sigPut(QObject*) for ", caJob.pvName
+        self.sigGet.emit(caJob)
+
+    def putCallback(self, caJob):
+        print "iCA.putCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
+        #print "iCA.putCallback: Emit sigPut(QObject*) for ", caJob.pvName
+        self.sigPut.emit(caJob)
+
     def monitorCallback(self, caJob):
         print "iCA.monitorCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
+        #print "iCA.monitortCallback: Emit sigPut(QObject*) for ", caJob.pvName
+        self.sigMonitor.emit(caJob)
 
     def workDoneCallback(self, caWork):
         #print "iCA.workDoneCallback: caWork=", caWork
-        for caJob, caResult in caWork.res:
-            #print "iCA.workDoneCallback: caJob, caResult", caJob, caResult
-            print "iCA.workDoneCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
+        #for caJob, caResult in caWork.res:
+        #    #print "iCA.workDoneCallback: caJob, caResult", caJob, caResult
+        #    print "iCA.workDoneCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
+
+        print "iCA.workDoneCallback: Emit sigDone(QObject*) for ", caWork
+        self.sigDone.emit(caWork)
 
     def close(self):
         print "iCA.close: Closing main CA thread=", self.iCAThr
@@ -72,6 +92,42 @@ class iCA(QtCore.QObject):
         self.iCAThr = None
         #ca.finalize_libca()
         #ca.show_cache()
+
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigConnect(QObject*)'))
+        print "iCA.close; sigConnect disconnected, left receivers count=", nrRecievers
+        if nrRecievers > 0:
+            self.sigConnect.disconnect()
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigConnect(QObject*)'))
+        print "iCA.close; sigConnect disconnected, left receivers count=", nrRecievers
+
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigGet(QObject*)'))
+        print "iCA.close; sigGet disconnected, left receivers count=", nrRecievers
+        if nrRecievers > 0:
+            self.sigGet.disconnect()
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigGet(QObject*)'))
+        print "iCA.close; sigGet disconnected, left receivers count=", nrRecievers
+
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigPut(QObject*)'))
+        print "iCA.close; sigPut disconnected, left receivers count=", nrRecievers
+        if nrRecievers > 0:
+            self.sigPut.disconnect()
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigPut(QObject*)'))
+        print "iCA.close; sigPut disconnected, left receivers count=", nrRecievers
+
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigMonitor(QObject*)'))
+        print "iCA.close; sigMonitor disconnected, left receivers count=", nrRecievers
+        if nrRecievers > 0:
+            self.sigMonitor.disconnect()
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigMonitor(QObject*)'))
+        print "iCA.close; sigMonitor disconnected, left receivers count=", nrRecievers
+
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigDone(QObject*)'))
+        print "iCA.close; sigDone disconnected, left receivers count=", nrRecievers
+        if nrRecievers > 0:
+            self.sigDone.disconnect()
+        nrRecievers = self.receivers(QtCore.SIGNAL('sigDone(QObject*)'))
+        print "iCA.close; sigDone disconnected, left receivers count=", nrRecievers
+
         print "iCA.close: DONE!"
 
 
@@ -93,9 +149,9 @@ if __name__ == "__main__":
         print
         print "------ round 1 --------"
         print
-        pv1 = iCAobj("hinkoHost:P:ai1")
-        pv2 = iCAobj("hinkoHost:P:ai2")
-        pv3 = iCAobj("hinkoHost:P:ai3")
+        pv1 = iCAobj(e, "hinkoHost:P:ai1")
+        pv2 = iCAobj(e, "hinkoHost:P:ai2")
+        pv3 = iCAobj(e, "hinkoHost:P:ai3")
         e.get([pv1, pv2, pv3])
         time.sleep(3)
         #ca.show_cache()
@@ -118,9 +174,9 @@ if __name__ == "__main__":
         print
         print "------ round 1 --------"
         print
-        pv1 = iCAobj("hinkoHost:P:ai1", 11)
-        pv2 = iCAobj("hinkoHost:P:ai2", 22)
-        pv3 = iCAobj("hinkoHost:P:ai3", 33)
+        pv1 = iCAobj(e, "hinkoHost:P:ai1", 11)
+        pv2 = iCAobj(e, "hinkoHost:P:ai2", 22)
+        pv3 = iCAobj(e, "hinkoHost:P:ai3", 33)
         e.put([pv1, pv2, pv3])
         time.sleep(3)
         #ca.show_cache()
@@ -136,9 +192,9 @@ if __name__ == "__main__":
         print
         print "------ PUT round 1 --------"
         print
-        pv1 = iCAobj("hinkoHost:P:ai1", 11)
-        pv2 = iCAobj("hinkoHost:P:ai2", 22)
-        pv3 = iCAobj("hinkoHost:P:ai3", 33)
+        pv1 = iCAobj(e, "hinkoHost:P:ai1", 11)
+        pv2 = iCAobj(e, "hinkoHost:P:ai2", 22)
+        pv3 = iCAobj(e, "hinkoHost:P:ai3", 33)
         e.put([pv1, pv2, pv3])
         time.sleep(3)
         #ca.show_cache()
@@ -162,9 +218,9 @@ if __name__ == "__main__":
         print
         print "------ round 1 starting monitor --------"
         print
-        pv1 = iCAobj("hinkoHost:P:ai1")
-        pv2 = iCAobj("hinkoHost:P:ai2")
-        pv3 = iCAobj("hinkoHost:P:ai3")
+        pv1 = iCAobj(e, "hinkoHost:P:ai1")
+        pv2 = iCAobj(e, "hinkoHost:P:ai2")
+        pv3 = iCAobj(e, "hinkoHost:P:ai3")
         mon = e.monitor([pv1, pv2, pv3])
         time.sleep(5)
         #ca.show_cache()
@@ -182,7 +238,7 @@ if __name__ == "__main__":
         e.close()
 
     # run the test
-    #test_get_only()
+    test_get_only()
     #test_put_only()
     #test_put_get()
-    test_monitor_only()
+    #test_monitor_only()
