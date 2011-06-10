@@ -7,7 +7,6 @@ Created on Jun 3, 2011
 from PyQt4 import QtCore, QtGui
 from lib.iHelper import *
 from ui.uiParamSingle import Ui_ParamSingle
-from widgets.iWidgets import iTreeWidget, iTreeWidgetItem
 
 class iParamSingle(QtGui.QWidget):
 
@@ -64,21 +63,6 @@ class iParamSingle(QtGui.QWidget):
         self.ui.treeWidget.setColumnWidth(2, 100)
         self.ui.treeWidget.setFocusPolicy(QtCore.Qt.NoFocus)
 
-    def removePVs(self):
-        # Remove all IOC PVs
-        print "iParamSingle.removePVs:"
-        self.ui.treeWidget.clear()
-        return
-
-        for x in range(0, self.ui.treeWidget.topLevelItemCount()):
-            item = self.ui.treeWidget.topLevelItem(x)
-            for c in range(0, item.childCount()):
-                child = item.child(c)
-                print "iParamSingle.removePVs: calling item.doPvGet() for ", child.pvGetName
-
-                item.takeChild(c)
-
-
     def doChangeIOC(self):
         print "iParamSingle.doChangeIOC: current iocName=", self.iocName
         iocName = str(self.ui.lineEdit_iocName.text())
@@ -114,7 +98,7 @@ class iParamSingle(QtGui.QWidget):
 
                         fullName = self.iocName + pvGetName(pvObj)
                         if pvIsModeValue(pvObj):
-                            print "uParamSingle.doPVRefresh: PV name=", fullName
+                            print "iParamSingle.doPVRefresh: PV name=", fullName
                             o = (fullName, None)
                             pvList.append(o)
 
