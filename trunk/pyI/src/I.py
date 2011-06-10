@@ -26,12 +26,13 @@ os.putenv('EPICS_CA_ADDR_LIST', ips)
 import sys
 import time
 
-from PyQt4 import QtCore, QtGui, uic
+from PyQt4 import QtCore, QtGui
 
 from lib.iCA import iCA
 from ui.win1 import Ui_MainWindow
 from iPVSingle import iPVSingle
 from iParamSingle import iParamSingle
+from iParamMulti import iParamMulti
 
 class Main(QtGui.QMainWindow):
     def __init__(self, parent = None):
@@ -64,12 +65,12 @@ class Main(QtGui.QMainWindow):
 
         QtCore.QObject.connect(self.ui.pushButton_parametersSingle,
                                QtCore.SIGNAL("clicked()"), self.uiParamSingleShow)
-#        QtCore.QObject.connect(self.ui.pushButton_parametersMulti,
-#                               QtCore.SIGNAL("clicked()"), self.uiParamMultiShow)
+        QtCore.QObject.connect(self.ui.pushButton_parametersMulti,
+                               QtCore.SIGNAL("clicked()"), self.uiParamMultiShow)
 
         self.uiPanel = None
         self.uiPanels["iParamSingle"] = iParamSingle(None, self.caAccess)
-        #self.uiPanels["iParamMulti"] = iParamMulti(iocList = self.iocList)
+        self.uiPanels["iParamMulti"] = iParamMulti(None, self.caAccess)
         self.uiPanels["iPVSingle"] = iPVSingle(None, self.caAccess)
 
     def uiToolboxChange(self, index):
@@ -82,13 +83,16 @@ class Main(QtGui.QMainWindow):
         elif page == "Parameters":
             if self.uiPanel == "iParamSingle":
                 self.uiPanelShow("Parameters", "iParamSingle")
-#            elif self.uiPanel == "uParamMulti":
-#                self.uiParamMultiShow()
+            elif self.uiPanel == "iParamMulti":
+                self.uiPanelShow("Parameters", "iParamMulti")
         else:
             print "main.uiToolboxChange: unknown"
 
     def uiParamSingleShow(self):
         self.uiPanelShow("Parameters", "iParamSingle")
+
+    def uiParamMultiShow(self):
+        self.uiPanelShow("Parameters", "iParamMulti")
 
     def uiPanelShow(self, page, panel):
         print "main.uiPanelShow: ", page, panel

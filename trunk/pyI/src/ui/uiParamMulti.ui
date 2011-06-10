@@ -36,7 +36,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_iocName">
+      <widget class="QLineEdit" name="lineEdit_pvName">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -50,7 +50,26 @@
         </size>
        </property>
        <property name="text">
-        <string>:ENV:ENV_KX_SP</string>
+        <string>:ENV:ENV_ILK_X_LOW</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_changePV">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Change PV</string>
        </property>
       </widget>
      </item>
@@ -82,6 +101,14 @@
      <property name="itemsExpandable">
       <bool>true</bool>
      </property>
+     <attribute name="headerDefaultSectionSize">
+      <number>100</number>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>IOC name</string>
+      </property>
+     </column>
      <column>
       <property name="text">
        <string>Property</string>
