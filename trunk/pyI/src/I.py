@@ -29,9 +29,9 @@ import time
 from PyQt4 import QtCore, QtGui, uic
 
 from lib.iCA import iCA
-
-from widgets.iPVSingle import iPVSingle
-
+from ui.win1 import Ui_MainWindow
+from iPVSingle import iPVSingle
+from iParamSingle import iParamSingle
 
 class Main(QtGui.QMainWindow):
     def __init__(self, parent = None):
@@ -46,7 +46,6 @@ class Main(QtGui.QMainWindow):
         # Dictionary containing all known IOCs (IOCname: uIOC object)
         self.iocList = dict()
 
-        self.ui = uic.loadUi('ui/win1.ui', self)
         self.uiInit()
 
         print "main.init: DONE"
@@ -55,21 +54,23 @@ class Main(QtGui.QMainWindow):
 
     def uiInit(self):
         print "uiInit:"
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
 
         QtCore.QObject.connect(self.ui.pushButton_exit, QtCore.SIGNAL("clicked()"), self.doClose)
         QtCore.QObject.connect(self.ui.toolBox, QtCore.SIGNAL("currentChanged(int)"), self.uiToolboxChange)
 
         #self.ui.scrollAreaWidgetContents.hide()
 
-#        QtCore.QObject.connect(self.ui.pushButton_parametersSingle,
-#                               QtCore.SIGNAL("clicked()"), self.uiParamSingleShow)
+        QtCore.QObject.connect(self.ui.pushButton_parametersSingle,
+                               QtCore.SIGNAL("clicked()"), self.uiParamSingleShow)
 #        QtCore.QObject.connect(self.ui.pushButton_parametersMulti,
 #                               QtCore.SIGNAL("clicked()"), self.uiParamMultiShow)
 
         self.uiPanel = None
-        #self.uiPanels["iParamSingle"] = iParamSingle(iocList = self.iocList)
+        self.uiPanels["iParamSingle"] = iParamSingle(None, self.caAccess)
         #self.uiPanels["iParamMulti"] = iParamMulti(iocList = self.iocList)
-        self.uiPanels["iPVSingle"] = iPVSingle(self, self.caAccess)
+        self.uiPanels["iPVSingle"] = iPVSingle(None, self.caAccess)
 
     def uiToolboxChange(self, index):
         page = self.ui.toolBox.itemText(index)
@@ -78,27 +79,27 @@ class Main(QtGui.QMainWindow):
 
         if page == "Overview":
             self.uiPanelShow("Overview", "iPVSingle")
-#        elif page == "Parameters":
-#            if self.uiPanel == "uParamSingle":
-#                self.uiParamSingleShow()
+        elif page == "Parameters":
+            if self.uiPanel == "iParamSingle":
+                self.uiPanelShow("Parameters", "iParamSingle")
 #            elif self.uiPanel == "uParamMulti":
 #                self.uiParamMultiShow()
         else:
             print "main.uiToolboxChange: unknown"
 
+    def uiParamSingleShow(self):
+        self.uiPanelShow("Parameters", "iParamSingle")
+
     def uiPanelShow(self, page, panel):
         print "main.uiPanelShow: ", page, panel
 
-#        for k, v in self.uiPanels.items():
-#            v.hide()
-
         if self.uiPanel:
-            self.uiPanel.hide()
+            self.uiPanels[self.uiPanel].hide()
             self.uiPanels[self.uiPanel] = self.ui.scrollArea.takeWidget()
-
-        self.ui.scrollArea.setWidget(self.uiPanels[panel])
-        self.uiPanels[panel].show()
         self.uiPanel = panel
+
+        self.ui.scrollArea.setWidget(self.uiPanels[self.uiPanel])
+        self.uiPanels[self.uiPanel].show()
 
 #===============================================================================
 # Close

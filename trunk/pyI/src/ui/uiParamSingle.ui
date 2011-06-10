@@ -76,7 +76,7 @@
     </layout>
    </item>
    <item>
-    <widget class="uTreeWidget" name="treeWidget">
+    <widget class="QTreeWidget" name="treeWidget">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>
@@ -151,13 +151,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>uTreeWidget</class>
-   <extends>QTreeWidget</extends>
-   <header>widgets/uTreeWidget.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

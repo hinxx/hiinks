@@ -4,7 +4,8 @@ Created on Jun 7, 2011
 @author: hinko
 '''
 
-from PyQt4 import QtCore, QtGui, uic
+from PyQt4 import QtCore, QtGui
+from ui.uiPVSingle import Ui_PVSingle
 
 class iPVSingle(QtGui.QWidget):
 
@@ -22,7 +23,9 @@ class iPVSingle(QtGui.QWidget):
         QtCore.QObject.connect(self.caAccess,
                                QtCore.SIGNAL("sigMonitor(QObject*)"), self.caMonitorSlot)
 
-        self.ui = uic.loadUi('ui/uiPVSingle.ui', self)
+        #self.ui = uic.loadUi('ui/uiPVSingle.ui', self)
+        self.ui = Ui_PVSingle()
+        self.ui.setupUi(self)
 
         QtCore.QObject.connect(self.ui.pushButton_get,
                                QtCore.SIGNAL("clicked()"), self.pvGet)
