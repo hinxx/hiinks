@@ -30,7 +30,6 @@ class iParamMulti(QtGui.QWidget):
         QtCore.QObject.connect(self.caAccess,
                                QtCore.SIGNAL("sigDone(QObject*)"), self.caWorkDoneSlot)
 
-        #self.ui = uic.loadUi('ui/uiParamMulti.ui', self)
         self.ui = Ui_ParamMulti()
         self.ui.setupUi(self)
 
@@ -88,58 +87,42 @@ class iParamMulti(QtGui.QWidget):
     def doPVRefresh(self):
         print "iParamMulti.doPVRefresh:"
         pvList = []
-        for x in range(0, self.ui.treeWidget.topLevelItemCount()):
-            item = self.ui.treeWidget.topLevelItem(x)
-            print "iParamMulti.doPVRefresh: PV item=", item
-            for pvName, pvItem, iocObj, pvObj in self.itemList:
-                if pvItem == item:
 
-                    if not pvObj:
-                        raise ValueError, 'iParamMulti.doPVRefresh: iPV object not found: ' + pvName
-
-                    fullName = iocObj.name + pvGetName(pvObj)
-                    if pvIsModeValue(pvObj):
-                        print "iParamMulti.doPVRefresh: PV name=", fullName
-                        o = (fullName, None)
-                        pvList.append(o)
-
-                    break
+        for pvName, pvItem, iocObj, pvObj in self.itemList:
+            fullName = iocObj.name + pvGetName(pvObj)
+            if pvIsModeValue(pvObj):
+                print "iParamMulti.doPVRefresh: PV name=", fullName
+                o = (fullName, None)
+                pvList.append(o)
 
         self.caAccess.get(pvList)
 
     def doPVApply(self):
         print "iParamMulti.doPVApply:"
         pvList = []
-        for x in range(0, self.ui.treeWidget.topLevelItemCount()):
-            item = self.ui.treeWidget.topLevelItem(x)
-            if item.checkState(3) == QtCore.Qt.Checked:
-                print "iParamMulti.doPVApply: PV item=", item
-                for pvName, pvItem, iocObj, pvObj in self.itemList:
-                    if pvItem == item:
-                        widget = self.ui.treeWidget.itemWidget(pvItem, 2)
-                        pvValue = None
-                        if isinstance(widget, QtGui.QLineEdit):
-                            pvValue = str(widget.text())
-                        elif isinstance(widget, QtGui.QComboBox):
-                            pvValue = widget.currentIndex()
 
-                        if not pvObj:
-                            raise ValueError, 'iParamMulti.doPVApply: iPV object not found:', pvName
+        for pvName, pvItem, iocObj, pvObj in self.itemList:
+            if not pvItem.checkState(3) == QtCore.Qt.Checked:
+                continue
 
-                        fullName = None
-                        if pvIsModeValue(pvObj):
-                            fullName = iocObj.name + pvPutName(pvObj)
-#                        elif pvIsModeCommand(pvObj):
-#                            pvValue = 1
-#                            fullName = iocObj.name + pvCmdName(pvObj)
+            widget = self.ui.treeWidget.itemWidget(pvItem, 2)
+            pvValue = None
+            if isinstance(widget, QtGui.QLineEdit):
+                pvValue = str(widget.text())
+            elif isinstance(widget, QtGui.QComboBox):
+                pvValue = widget.currentIndex()
 
-                        print "iParamMulti.doPVApply: PV name=", fullName, "=", pvValue
+            fullName = None
+            if pvIsModeValue(pvObj):
+                fullName = iocObj.name + pvPutName(pvObj)
+            else:
+                raise ValueError, 'iParamMulti.doPVApply: invalid iPV mode:', pvObj.mode
 
-                        break
+            print "iParamMulti.doPVApply: PV name=", fullName, "=", pvValue
 
-                o = (fullName, pvValue)
-                pvList.append(o)
-                pvItem.setCheckState(3, False)
+            o = (fullName, pvValue)
+            pvList.append(o)
+            pvItem.setCheckState(3, False)
 
         self.caWork = self.caAccess.put(pvList)
 
@@ -152,15 +135,12 @@ class iParamMulti(QtGui.QWidget):
         print "iParamMulti.caGetSlot: iPV=", caJob.pvName, ", value=", caJob.pvGetValue
 
         for pvName, pvItem, iocObj, pvObj in self.itemList:
-            if not pvObj:
-                raise ValueError, 'iParamMulti.caGetSlot: iPV object not found: ' + pvName
             fullName = iocObj.name + pvGetName(pvObj)
 
             if not pvIsModeValue(pvObj):
                 continue
 
             if fullName == caJob.pvName:
-
                 widget = self.ui.treeWidget.itemWidget(pvItem, 2)
                 if isinstance(widget, QtGui.QLabel):
                     widget.setText(str(caJob.pvGetValue))
@@ -191,8 +171,6 @@ class iParamMulti(QtGui.QWidget):
             print "iParamSingle.caWorkDoneSlot: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
 
             for pvName, pvItem, iocObj, pvObj in self.itemList:
-                if not pvObj:
-                    raise ValueError, 'iParamSingle.caWorkDoneSlot: iPV object not found: ' + pvName
                 fullName = iocObj.name + pvPutName(pvObj)
 
                 if not pvIsModeValue(pvObj):
@@ -213,7 +191,7 @@ class iParamMulti(QtGui.QWidget):
 #===============================================================================
 # Tree items
 #===============================================================================
-    def addTreeTopLevel(self):
+    def addItems(self):
         pvObj = pvListFind(self.pvList, pv = self.pvName)
         if not pvObj:
             return
@@ -281,16 +259,6 @@ class iParamMulti(QtGui.QWidget):
 
         if len(self.itemList) != 0:
             return
-#
-#        item = QtGui.QTreeWidgetItem(["Dummy"])
-#        self.ui.treeWidget.addTopLevelItem(item)
-#        self.addTreeChildren(item)
-#
-#        item = QtGui.QTreeWidgetItem(["More dummies"])
-#        self.ui.treeWidget.addTopLevelItem(item)
-#        self.addTreeChildren(item)
 
-        #item = QtGui.QTreeWidgetItem(["Parameter"])
-        #self.ui.treeWidget.addTopLevelItem(item)
-        self.addTreeTopLevel()
+        self.addItems()
 
