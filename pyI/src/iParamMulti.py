@@ -192,26 +192,24 @@ class iParamMulti(QtGui.QWidget):
 # Tree items
 #===============================================================================
     def addItems(self):
-        pvObj = pvListFind(self.pvList, pv = self.pvName)
+        pvObj = pvListFind(self.pvList, name = self.pvName)
         if not pvObj:
             return
 
         for iocObj in self.iocList:
-            fullName = iocObj.name + pvObj.pv
+            fullName = iocObj.name + pvObj.name
             item = QtGui.QTreeWidgetItem([iocObj.name, pvObj.name])
             self.ui.treeWidget.addTopLevelItem(item)
 
             self.itemList.append((fullName, item, iocObj, pvObj))
 
     def changeItemWidget(self):
-        pvObjNew = pvListFind(self.pvList, pv = self.pvName)
+        pvObjNew = pvListFind(self.pvList, name = self.pvName)
         if not pvObjNew:
             return
 
         itemList = []
-        #for x in range(0, self.ui.treeWidget.topLevelItemCount()):
         for pvName, pvItem, iocObj, pvObj in self.itemList:
-            #pvItem = self.ui.treeWidget.topLevelItem(x)
             print "iParamSingle.changeItemWidget: PV pvItem=", pvItem
 
             fullName = iocObj.name + pvPutName(pvObjNew)
@@ -244,7 +242,7 @@ class iParamMulti(QtGui.QWidget):
 
             if pvObjNew.widget:
                 self.ui.treeWidget.setItemWidget(pvItem, 2, widget)
-                print "uParamSingle.changeItemWidget: PV=", pvObjNew.pv
+                print "uParamSingle.changeItemWidget: PV=", pvObjNew.name
 
             itemList.append((fullName, pvItem, iocObj, pvObjNew))
 
@@ -253,7 +251,7 @@ class iParamMulti(QtGui.QWidget):
 
     def batchDummy(self):
 
-        pvObj = pvListFind(self.pvList, pv = self.pvName)
+        pvObj = pvListFind(self.pvList, name = self.pvName)
         if not pvObj:
             return
 

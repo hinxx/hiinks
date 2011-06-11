@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iocList
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+	xsi:noNamespaceSchemaLocation="iIOClist.xsd"
+>
+
+	<ioc>
+		<name>hinkoHost</name>
+		<group>rack</group>
+		<ip>ip</ip>
+		<value></value>
+		<enabled>True</enabled>
+		<comment></comment>
+		<text></text>
+	</ioc>
+	<ioc>
+		<name>hinkoHost1</name>
+		<group>rack</group>
+		<ip>ip</ip>
+		<value></value>
+		<enabled>True</enabled>
+		<comment></comment>
+		<text></text>
+	</ioc>
+	<ioc>
+		<name>hinkoHost2</name>
+		<group>rack</group>
+		<ip>ip</ip>
+		<value></value>
+		<enabled>True</enabled>
+		<comment></comment>
+		<text></text>
+	</ioc>
+	<ioc>
+		<name>hinkoHost3</name>
+		<group>rack</group>
+		<ip>ip</ip>
+		<value></value>
+		<enabled>True</enabled>
+		<comment></comment>
+		<text></text>
+	</ioc>
+
+</iocList>

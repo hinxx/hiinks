@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    
+    <xsd:complexType name="ioc_type">
+    	<xsd:sequence>
+    		<xsd:element name="name" type="xsd:string"></xsd:element>
+    		<xsd:element name="text" type="xsd:string"></xsd:element>
+    		<xsd:element name="group" type="xsd:string"></xsd:element>
+    		<xsd:element name="ip" type="xsd:string"></xsd:element>
+    		<xsd:element name="enabled" type="xsd:boolean"></xsd:element>
+    		<xsd:element name="comment" type="xsd:string"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="iocList_type">
+    	<xsd:sequence>
+    		<xsd:element name="ioc" type="ioc_type" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:element name="iocList" type="iocList_type"></xsd:element>
+</xsd:schema>
