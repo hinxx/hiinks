@@ -4,6 +4,8 @@ Created on Jun 6, 2011
 @author: hinko
 '''
 
+from lib.iConf import iLog
+
 import os
 
 # Set EPICS base stuff
@@ -38,6 +40,8 @@ class Main(QtGui.QMainWindow):
     def __init__(self, parent = None):
         QtGui.QMainWindow.__init__(self, None)
 
+        iLog.debug("Log started")
+
         # CA access layer
         self.caAccess = iCA(self)
 
@@ -49,12 +53,11 @@ class Main(QtGui.QMainWindow):
 
         self.uiInit()
 
-        print "main.init: DONE"
-
         self.uiToolboxChange(0)
 
     def uiInit(self):
-        print "uiInit:"
+        iLog.debug("enter")
+
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -74,9 +77,10 @@ class Main(QtGui.QMainWindow):
         self.uiPanels["iPVSingle"] = iPVSingle(None, self.caAccess)
 
     def uiToolboxChange(self, index):
+        iLog.debug("enter")
+
         page = self.ui.toolBox.itemText(index)
-        print "main.uiToolboxChange: current index", index, page
-        print "main.uiToolboxChange: self.uiPanel", self.uiPanel
+        iLog.debug("page=%s, panel=%s" % (page, self.uiPanel))
 
         if page == "Overview":
             self.uiPanelShow("Overview", "iPVSingle")
@@ -86,22 +90,26 @@ class Main(QtGui.QMainWindow):
             elif self.uiPanel == "iParamMulti":
                 self.uiPanelShow("Parameters", "iParamMulti")
         else:
-            print "main.uiToolboxChange: unknown"
+            iLog.error("unknown page=%s" % page)
 
     def uiParamSingleShow(self):
+        iLog.debug("enter")
         self.uiPanelShow("Parameters", "iParamSingle")
 
     def uiParamMultiShow(self):
+        iLog.debug("enter")
         self.uiPanelShow("Parameters", "iParamMulti")
 
     def uiPanelShow(self, page, panel):
-        print "main.uiPanelShow: ", page, panel
+        iLog.debug("enter")
 
         if self.uiPanel:
             self.uiPanels[self.uiPanel].hide()
             self.uiPanels[self.uiPanel] = self.ui.scrollArea.takeWidget()
         self.uiPanel = panel
+        iLog.debug("page=%s, panel=%s" % (page, panel))
 
+        # TODO: remove Qt signals from the hidden widget!
         self.ui.scrollArea.setWidget(self.uiPanels[self.uiPanel])
         self.uiPanels[self.uiPanel].show()
 
@@ -109,12 +117,14 @@ class Main(QtGui.QMainWindow):
 # Close
 #===============================================================================
     def close(self):
-        print "main.close:"
+        iLog.debug("enter")
+
         self.caAccess.close()
         app.closeAllWindows()
 
     def doClose(self):
-        print "main.doClose:"
+        iLog.debug("enter")
+
         self.close()
 
 ###############################################################################

@@ -4,6 +4,7 @@ Created on Jun 8, 2011
 @author: hinko
 '''
 
+from lib.iConf import iLog
 
 import sys
 import time
@@ -22,13 +23,15 @@ class iCA(QtCore.QObject):
     iCAThr = None
 
     def __init__(self, parent = None):
-
         QtCore.QObject.__init__(self, parent)
+        iLog.debug("enter")
 
         self.iCAThr = iCAThread(True)
         self.iCAThr.start()
 
     def get(self, pvList):
+        iLog.debug("enter")
+
         #print "iCA.get: pvList=", pvList
 
         workList = []
@@ -44,6 +47,8 @@ class iCA(QtCore.QObject):
         return caWork
 
     def put(self, pvList):
+        iLog.debug("enter")
+
         #print "iCA.put: pvList=", pvList
 
         workList = []
@@ -59,6 +64,8 @@ class iCA(QtCore.QObject):
         return caWork
 
     def monitor(self, pvList):
+        iLog.debug("enter")
+
         #print "iCA.monitor: pvList=", pvList
 
         workList = []
@@ -74,35 +81,45 @@ class iCA(QtCore.QObject):
         return caWork
 
     def monitorStop(self, caWork):
-        print "iCA.monitorStop: caWork=", caWork
+        #print "iCA.monitorStop: caWork=", caWork
         caWork.stopMonitor()
 
     def getCallback(self, caJob):
-        print "iCA.getCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
+        iLog.debug("enter")
+
+        #print "iCA.getCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
         #print "iCA.getCallback: Emit sigGett(QObject*) for ", caJob.pvName
         self.sigGet.emit(caJob)
 
     def putCallback(self, caJob):
-        print "iCA.putCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
+        iLog.debug("enter")
+
+        #print "iCA.putCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
         #print "iCA.putCallback: Emit sigPut(QObject*) for ", caJob.pvName
         self.sigPut.emit(caJob)
 
     def monitorCallback(self, caJob):
-        print "iCA.monitorCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
+        iLog.debug("enter")
+
+        #print "iCA.monitorCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
         #print "iCA.monitortCallback: Emit sigPut(QObject*) for ", caJob.pvName
         self.sigMonitor.emit(caJob)
 
     def workDoneCallback(self, caWork):
+        iLog.debug("enter")
+
         #print "iCA.workDoneCallback: caWork=", caWork
         #for caJob, caResult in caWork.res:
         #    #print "iCA.workDoneCallback: caJob, caResult", caJob, caResult
         #    print "iCA.workDoneCallback: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
 
-        print "iCA.workDoneCallback: Emit sigDone(QObject*) for ", caWork
+        #print "iCA.workDoneCallback: Emit sigDone(QObject*) for ", caWork
         self.sigDone.emit(caWork)
 
     def close(self):
-        print "iCA.close: Closing main CA thread=", self.iCAThr
+        iLog.debug("enter")
+
+        iLog.debug("closing CA thread ..")
         self.iCAThr.close()
         self.iCAThr.schedule(None)
         #self.iCAThr.join(1.0)
@@ -110,41 +127,39 @@ class iCA(QtCore.QObject):
         self.iCAThr = None
 
         nrRecievers = self.receivers(QtCore.SIGNAL('sigConnect(QObject*)'))
-        print "iCA.close; sigConnect disconnected, left receivers count=", nrRecievers
+        #print "iCA.close; sigConnect disconnected, left receivers count=", nrRecievers
         if nrRecievers > 0:
             self.sigConnect.disconnect()
         nrRecievers = self.receivers(QtCore.SIGNAL('sigConnect(QObject*)'))
-        print "iCA.close; sigConnect disconnected, left receivers count=", nrRecievers
+        #print "iCA.close; sigConnect disconnected, left receivers count=", nrRecievers
 
         nrRecievers = self.receivers(QtCore.SIGNAL('sigGet(QObject*)'))
-        print "iCA.close; sigGet disconnected, left receivers count=", nrRecievers
+        #print "iCA.close; sigGet disconnected, left receivers count=", nrRecievers
         if nrRecievers > 0:
             self.sigGet.disconnect()
         nrRecievers = self.receivers(QtCore.SIGNAL('sigGet(QObject*)'))
-        print "iCA.close; sigGet disconnected, left receivers count=", nrRecievers
+        #print "iCA.close; sigGet disconnected, left receivers count=", nrRecievers
 
         nrRecievers = self.receivers(QtCore.SIGNAL('sigPut(QObject*)'))
-        print "iCA.close; sigPut disconnected, left receivers count=", nrRecievers
+        #print "iCA.close; sigPut disconnected, left receivers count=", nrRecievers
         if nrRecievers > 0:
             self.sigPut.disconnect()
         nrRecievers = self.receivers(QtCore.SIGNAL('sigPut(QObject*)'))
-        print "iCA.close; sigPut disconnected, left receivers count=", nrRecievers
+        #print "iCA.close; sigPut disconnected, left receivers count=", nrRecievers
 
         nrRecievers = self.receivers(QtCore.SIGNAL('sigMonitor(QObject*)'))
-        print "iCA.close; sigMonitor disconnected, left receivers count=", nrRecievers
+        #print "iCA.close; sigMonitor disconnected, left receivers count=", nrRecievers
         if nrRecievers > 0:
             self.sigMonitor.disconnect()
         nrRecievers = self.receivers(QtCore.SIGNAL('sigMonitor(QObject*)'))
-        print "iCA.close; sigMonitor disconnected, left receivers count=", nrRecievers
+        #print "iCA.close; sigMonitor disconnected, left receivers count=", nrRecievers
 
         nrRecievers = self.receivers(QtCore.SIGNAL('sigDone(QObject*)'))
-        print "iCA.close; sigDone disconnected, left receivers count=", nrRecievers
+        #print "iCA.close; sigDone disconnected, left receivers count=", nrRecievers
         if nrRecievers > 0:
             self.sigDone.disconnect()
         nrRecievers = self.receivers(QtCore.SIGNAL('sigDone(QObject*)'))
-        print "iCA.close; sigDone disconnected, left receivers count=", nrRecievers
-
-        print "iCA.close: DONE!"
+        #print "iCA.close; sigDone disconnected, left receivers count=", nrRecievers
 
 
 if __name__ == "__main__":

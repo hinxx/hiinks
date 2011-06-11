@@ -3,7 +3,7 @@ Created on Jun 9, 2011
 
 @author: hinko
 '''
-import iConf
+from iConf import *
 
 #===============================================================================
 # XML and DOM handling
@@ -24,7 +24,7 @@ def domGetElement(domObj, tag, default = None):
     if len(tags) == 0:
         return default
     if len(tags) != 1:
-        raise SystemExit, "domGetElement: invalid nr of elements!"
+        raise ValueError, "domGetElement: invalid nr of elements: " + len(tags)
 
     return domGetText(tags[0].childNodes)
 
@@ -34,6 +34,8 @@ def domGetElement(domObj, tag, default = None):
 
 class iIOC(object):
     def __init__(self, name, **kwargs):
+        iLog.debug("enter")
+
         self.name = name
         self.ip = None
         self.group = None
@@ -55,22 +57,24 @@ class iIOC(object):
             else:
                 raise ValueError, 'iIOC: invalid key: ' + k
 
+
     def dump(self):
-        print "iIOC.dump:"
-        print " .name     ", self.name
-        print " .text     ", self.text
-        print " .enabled  ", self.enabled
-        print " .ip       ", self.ip
-        print " .group    ", self.group
-        print " .comment  ", self.comment
+        iLog.debug(".name     =%s" % self.name)
+        iLog.debug(".text     =%s" % self.text)
+        iLog.debug(".enabled  =%s" % self.enabled)
+        iLog.debug(".ip       =%s" % self.ip)
+        iLog.debug(".group    =%s" % self.group)
+        iLog.debug(".comment  =%s" % self.comment)
 
 def iocList(xmlFile = None):
+    iLog.debug("enter")
+
     l = []
 
     if not xmlFile:
-        xmlFile = iConf.iDefaultIOClistXmlFile
+        xmlFile = iDefaultIOClistXmlFile
 
-    print "pvList: parsing XML file", xmlFile
+    iLog.debug("parsing XML xmlFile=%s" % xmlFile)
     dom = xml.dom.minidom.parse(xmlFile)
     if not dom:
         raise ValueError, "pvList: Failed to parse XML file " + xmlFile
@@ -100,7 +104,7 @@ def iocList(xmlFile = None):
                    )
         l.append(item)
 
-    print "pvList: IOC list: size=", len(l)
+    iLog.debug("IOC item count=%s" % len(l))
 
     return l
 
@@ -122,6 +126,7 @@ def iocListDummy():
 #===============================================================================
 class iPV(object):
     def __init__(self, name, **kwargs):
+        iLog.debug("enter")
         self.name = name
 
         # Supplied in kwargs
@@ -177,30 +182,32 @@ class iPV(object):
                 raise ValueError, 'iPV: invalid key:', k
 
     def dump(self):
-        print "iPV.dump:"
-        print " .name      ", self.name
-        print " .text      ", self.text
-        print " .enabled   ", self.enabled
-        print " .value     ", self.value
-        print " .getSuffix ", self.getSuffix
-        print " .putSuffix ", self.putSuffix
-        print " .cmdSuffix ", self.cmdSuffix
-        print " .mode      ", self.mode
-        print " .group     ", self.group
-        print " .access    ", self.access
-        print " .format    ", self.format
-        print " .widget    ", self.widget
-        print " .strings   ", self.strings
-        print " .enums     ", self.enums
-        print " .comment   ", self.comment
+        iLog.debug("enter")
+        iLog.debug(".name      =%s" % self.name)
+        iLog.debug(".text      =%s" % self.text)
+        iLog.debug(".enabled   =%s" % self.enabled)
+        iLog.debug(".value     =%s" % self.value)
+        iLog.debug(".getSuffix =%s" % self.getSuffix)
+        iLog.debug(".putSuffix =%s" % self.putSuffix)
+        iLog.debug(".cmdSuffix =%s" % self.cmdSuffix)
+        iLog.debug(".mode      =%s" % self.mode)
+        iLog.debug(".group     =%s" % self.group)
+        iLog.debug(".access    =%s" % self.access)
+        iLog.debug(".format    =%s" % self.format)
+        iLog.debug(".widget    =%s" % self.widget)
+        iLog.debug(".strings   =%s" % self.strings)
+        iLog.debug(".enums     =%s" % self.enums)
+        iLog.debug(".comment   =%s" % self.comment)
 
 def pvList(xmlFile = None):
+    iLog.debug("enter")
+
     l = []
 
     if not xmlFile:
-        xmlFile = iConf.iDefaultPVlistXmlFile
+        xmlFile = iDefaultPVlistXmlFile
 
-    print "pvList: parsing XML file", xmlFile
+    iLog.debug("parsing XML xmlFile=%s" % xmlFile)
     dom = xml.dom.minidom.parse(xmlFile)
     if not dom:
         raise ValueError, "pvList: Failed to parse XML file " + xmlFile
@@ -221,28 +228,19 @@ def pvList(xmlFile = None):
                     'value', 'comment']:
             txt = domGetElement(domE, tag, default = '')
             x[tag] = txt
-            print "pvList: tag ", tag, "=", txt
-            #print "pvList: x", repr(x)
 
         # .. handle enums - create dict() val: str
         xx = []
         domEnums = domE.getElementsByTagName('enums')
-        print "domEnums=", domEnums
         for domEnum in domEnums:
-            print "domEnum=", domEnum
             domEnum1 = domEnum.getElementsByTagName('enum')
-            print "domEnum1=", domEnum1
             for domEnum2 in domEnum1:
-                print "domEnum2=", domEnum2
                 v = domEnum2.getAttribute("val")
                 s = domEnum2.getAttribute("str")
                 xx.append((v, s))
-                print "pvList: enum ", v, "=", s
-                print "pvList: xx ", repr(xx)
 
         # set enums dict()
         x['enums'] = xx
-        print "pvList: x", repr(x)
 
         # create PV object
         item = iPV(x['name'],
@@ -264,7 +262,7 @@ def pvList(xmlFile = None):
         l.append(item)
         #item.dump()
 
-    print "pvList: IOC list: size=", len(l)
+    iLog.debug("PV item count=%s" % len(l))
 
     return l
 
@@ -292,46 +290,74 @@ def pvListDummy():
     return pvList
 
 def pvListFind(pvList, **kwargs):
+    iLog.debug("enter")
 
     for k, v in kwargs.items():
         for pv in pvList:
             if hasattr(pv, k):
-                print "pvListFind: comparing:", eval('pv.' + k), "==", v
+                #print "pvListFind: comparing:", eval('pv.' + k), "==", v
                 if eval('pv.' + k) == v:
                     return pv
             else:
                 raise ValueError, 'pvListFind: invalid key: ' + k
 
+        raise ValueError, 'pvListFind: not found: ' + k
+
 def pvGetName(pv):
+    #iLog.debug("enter")
+
     if hasattr(pv, 'getSuffix'):
         if pv.getSuffix:
+            iLog.debug("=%s" % pv.name + pv.getSuffix)
             return pv.name + pv.getSuffix
+
+    iLog.debug("=%s" % pv.name)
     return pv.name
 
 def pvPutName(pv):
+    #iLog.debug("enter")
+
     if hasattr(pv, 'putSuffix'):
         if pv.putSuffix:
+            iLog.debug("=%s" % pv.name + pv.putSuffix)
             return pv.name + pv.putSuffix
+
+    iLog.debug("=%s" % pv.name)
     return pv.name
 
 def pvCmdName(pv):
+    #iLog.debug("enter")
+
     if hasattr(pv, 'cmdSuffix'):
         if pv.cmdSuffix:
+            iLog.debug("=%s" % pv.name + pv.cmdSuffix)
             return pv.name + pv.cmdSuffix
+
+    iLog.debug("=%s" % pv.name)
     return pv.name
 
 def pvIsModeValue(pv):
+    #iLog.debug("enter")
+
     if hasattr(pv, 'mode'):
         if pv.mode:
             if pv.mode == 'value':
+                iLog.debug("mode is %s" % pv.mode)
                 return True
+
+    iLog.debug("mode is NOT %s" % pv.mode)
     return False
 
 def pvIsModeCommand(pv):
+    #iLog.debug("enter")
+
     if hasattr(pv, 'mode'):
         if pv.mode:
             if pv.mode == 'command':
+                iLog.debug("mode is %s" % pv.mode)
                 return True
+
+    iLog.debug("mode is NOT %s" % pv.mode)
     return False
 
 

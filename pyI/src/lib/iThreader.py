@@ -3,6 +3,7 @@ Created on Jun 8, 2011
 
 @author: hinko
 '''
+from iConf import *
 
 import threading, Queue
 from PyQt4 import QtCore
@@ -16,7 +17,7 @@ class iThreader(QtCore.QObject):
 
         if callable(workDoneCB):
             self.workDoneCB = workDoneCB
-            print "iThreader.init: workDoneCB=", workDoneCB
+            iLog.debug("workDoneCB=%s" % workDoneCB)
 
     def get_data(self):
         raise NotImplementedError, "You must implement get_data as a function that returns an iterable"
