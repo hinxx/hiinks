@@ -194,8 +194,8 @@ class iParamSingle(QtGui.QWidget):
             if pvObj.group != group:
                 continue
 
-            fullName = self.iocName + pvObj.pv
-            pvItem = QtGui.QTreeWidgetItem([pvObj.name])
+            fullName = self.iocName + pvObj.name
+            pvItem = QtGui.QTreeWidgetItem([pvObj.text])
             parent.addChild(pvItem)
 
             if pvObj.widget == 'QLabel':
@@ -210,8 +210,12 @@ class iParamSingle(QtGui.QWidget):
                 widget.setText("UDF")
                 pvItem.setCheckState(2, False)
             elif pvObj.widget == "QComboBox":
+                pvObj.dump()
                 widget = QtGui.QComboBox()
-                widget.addItems(pvObj.strings)
+                l = []
+                for v, s in pvObj.enums:
+                    l.append(s)
+                widget.addItems(l)
                 pvItem.setCheckState(2, False)
             else:
                 pvItem.setText(1, "UDF")
@@ -234,12 +238,12 @@ class iParamSingle(QtGui.QWidget):
         item = QtGui.QTreeWidgetItem(["Dummy"])
         self.ui.treeWidget.addTopLevelItem(item)
         self.addItems('dummy', item)
-
-        item = QtGui.QTreeWidgetItem(["More dummies"])
-        self.ui.treeWidget.addTopLevelItem(item)
-        self.addItems('dummy2', item)
+#
+#        item = QtGui.QTreeWidgetItem(["More dummies"])
+#        self.ui.treeWidget.addTopLevelItem(item)
+#        self.addItems('dummy2', item)
 
         item = QtGui.QTreeWidgetItem(["Interlock"])
         self.ui.treeWidget.addTopLevelItem(item)
-        self.addItems('Interlock', item)
+        self.addItems('interlock', item)
 
