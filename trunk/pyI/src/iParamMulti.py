@@ -4,6 +4,8 @@ Created on Jun 3, 2011
 @author: hinko
 '''
 
+from lib.iConf import iLog
+
 from PyQt4 import QtCore, QtGui
 from lib.iHelper import *
 from ui.uiParamMulti import Ui_ParamMulti
@@ -12,7 +14,7 @@ from ui.uiParamMulti import Ui_ParamMulti
 class iParamMulti(QtGui.QWidget):
     def __init__(self, parent, caAccess):
         QtGui.QWidget.__init__(self, parent)
-        print "iParamMulti.init:"
+        iLog.debug("enter")
 
         self.pvName = None
         self.pvList = pvList()
@@ -44,16 +46,16 @@ class iParamMulti(QtGui.QWidget):
         self.populate()
 
     def show(self):
-        print "iParamMulti.show:"
+        iLog.debug("enter")
 
     def hide(self):
-        print "iParamMulti.hide:"
+        iLog.debug("enter")
 
     def close(self):
-        print "iParamMulti.close:"
+        iLog.debug("enter")
 
     def populate(self):
-        print "iParamMulti.populate:"
+        iLog.debug("enter")
 
         self.batchDummy()
 
@@ -64,41 +66,45 @@ class iParamMulti(QtGui.QWidget):
         self.ui.treeWidget.setFocusPolicy(QtCore.Qt.NoFocus)
 
     def doChangePV(self):
-        print "iParamMulti.doChangePV: current pvName=", self.pvName
+        iLog.debug("enter")
+
+        iLog.debug("current pvName=%s" % self.pvName)
         pvName = str(self.ui.lineEdit_pvName.text())
-        print "iParamMulti.doChangePV: have pvName=", pvName
+        iLog.debug("have pvName=%s" % pvName)
 
         if not len(pvName):
-            print "iParamMulti.doChangePV: invalid have pvName=", pvName
+            iLog.error("invalid/empty pvName=%s" % pvName)
             return
 
         if self.pvName == pvName:
-            print "iParamMulti.doChangePV: already showing pvName=", pvName
+            iLog.debug("already showing pvName=%s" % pvName)
             return
 
         self.pvName = pvName
 
-        print "iParamMulti.doChangePV: new pvName=", self.pvName
+        iLog.debug("new pvName=%s" % self.pvName)
 
         self.populate()
         self.changeItemWidget()
         self.doPVRefresh()
 
     def doPVRefresh(self):
-        print "iParamMulti.doPVRefresh:"
+        iLog.debug("enter")
+
         pvList = []
 
         for pvName, pvItem, iocObj, pvObj in self.itemList:
             fullName = iocObj.name + pvGetName(pvObj)
             if pvIsModeValue(pvObj):
-                print "iParamMulti.doPVRefresh: PV name=", fullName
+                iLog.debug("pvName=%s" % fullName)
                 o = (fullName, None)
                 pvList.append(o)
 
         self.caAccess.get(pvList)
 
     def doPVApply(self):
-        print "iParamMulti.doPVApply:"
+        iLog.debug("enter")
+
         pvList = []
 
         for pvName, pvItem, iocObj, pvObj in self.itemList:
@@ -118,7 +124,7 @@ class iParamMulti(QtGui.QWidget):
             else:
                 raise ValueError, 'iParamMulti.doPVApply: invalid iPV mode:', pvObj.mode
 
-            print "iParamMulti.doPVApply: PV name=", fullName, "=", pvValue
+            iLog.debug("pvName=%s, pvValue=%s" % (fullName, pvValue))
 
             o = (fullName, pvValue)
             pvList.append(o)
@@ -132,7 +138,7 @@ class iParamMulti(QtGui.QWidget):
 
     @QtCore.pyqtSlot('QObject*')
     def caGetSlot(self, caJob):
-        print "iParamMulti.caGetSlot: iPV=", caJob.pvName, ", value=", caJob.pvGetValue
+        iLog.debug("enter")
 
         for pvName, pvItem, iocObj, pvObj in self.itemList:
             fullName = iocObj.name + pvGetName(pvObj)
@@ -149,26 +155,30 @@ class iParamMulti(QtGui.QWidget):
                 elif isinstance(widget, QtGui.QComboBox):
                     widget.setCurrentIndex(caJob.pvGetValue)
 
-                print "iParamMulti.caGetSlot: PV name=", pvName, "=", caJob.pvGetValue
+                iLog.debug("pvName=%s, value=%s, success=%s" % (caJob.pvName, caJob.pvGetValue, caJob.success))
 
     @QtCore.pyqtSlot('QObject*')
     def caPutSlot(self, caJob):
-        print "iParamMulti.caPutSlot: iPV=", caJob.pvName, ", value=", caJob.pvGetValue
+        iLog.debug("enter")
+        iLog.debug("pvName=%s, value=%s, success=%s" % (caJob.pvName, caJob.pvGetValue, caJob.success))
 
     @QtCore.pyqtSlot('QObject*')
     def caMonitorSlot(self, caJob):
-        print "iParamMulti.caMonitorSlot: PV=", caJob.pvName, ", value=", caJob.pvGetValue
+        iLog.debug("enter")
+        iLog.debug("pvName=%s, value=%s, success=%s" % (caJob.pvName, caJob.pvGetValue, caJob.success))
 
     @QtCore.pyqtSlot('QObject*')
     def caWorkDoneSlot(self, caWork):
-        print "iParamMulti.caWorkDoneSlot: caWork=", caWork
+        iLog.debug("enter")
+
+        iLog.debug("caWork=%s" % caWork)
         if not caWork == self.caWork:
-            print "iParamMulti.caWorkDoneSlot: not our work self.caWork=", self.caWork
+            iLog.debug("skipping caWork=%s, want self.caWork=%s" % (caWork, self.caWork))
             return
 
         pvList = []
         for caJob, caResult in caWork.res:
-            print "iParamSingle.caWorkDoneSlot: PV=", caJob.pvName, "=", caJob.pvGetValue, "SUCCESS=", caJob.success
+            iLog.debug("pvName=%s, value=%s, success=%s" % (caJob.pvName, caJob.pvGetValue, caJob.success))
 
             for pvName, pvItem, iocObj, pvObj in self.itemList:
                 fullName = iocObj.name + pvPutName(pvObj)
@@ -179,9 +189,8 @@ class iParamMulti(QtGui.QWidget):
                 if not fullName == caJob.pvName:
                     continue
 
-                print "iParamSingle.caWorkDoneSlot: PUT PV=", fullName
+                iLog.debug("doing GET for PUT, %s => %s" % (fullName, iocObj.name + pvGetName(pvObj)))
                 fullName = iocObj.name + pvGetName(pvObj)
-                print "iParamSingle.caWorkDoneSlot: GET PV=", fullName
                 o = (fullName, None)
                 pvList.append(o)
 
@@ -192,6 +201,8 @@ class iParamMulti(QtGui.QWidget):
 # Tree items
 #===============================================================================
     def addItems(self):
+        iLog.debug("enter")
+
         pvObj = pvListFind(self.pvList, name = self.pvName)
         if not pvObj:
             return
@@ -204,13 +215,14 @@ class iParamMulti(QtGui.QWidget):
             self.itemList.append((fullName, item, iocObj, pvObj))
 
     def changeItemWidget(self):
+        iLog.debug("enter")
+
         pvObjNew = pvListFind(self.pvList, name = self.pvName)
         if not pvObjNew:
             return
 
         itemList = []
         for pvName, pvItem, iocObj, pvObj in self.itemList:
-            print "iParamSingle.changeItemWidget: PV pvItem=", pvItem
 
             fullName = iocObj.name + pvPutName(pvObjNew)
             pvItem.setText(1, pvObjNew.name)
@@ -242,7 +254,8 @@ class iParamMulti(QtGui.QWidget):
 
             if pvObjNew.widget:
                 self.ui.treeWidget.setItemWidget(pvItem, 2, widget)
-                print "uParamSingle.changeItemWidget: PV=", pvObjNew.name
+
+            iLog.debug("new pvName=%s" % pvObjNew.name)
 
             itemList.append((fullName, pvItem, iocObj, pvObjNew))
 
@@ -250,6 +263,7 @@ class iParamMulti(QtGui.QWidget):
 
 
     def batchDummy(self):
+        iLog.debug("enter")
 
         pvObj = pvListFind(self.pvList, name = self.pvName)
         if not pvObj:
