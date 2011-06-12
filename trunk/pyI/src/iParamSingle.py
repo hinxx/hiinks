@@ -4,6 +4,12 @@ Created on Jun 3, 2011
 @author: hinko
 '''
 
+#===============================================================================
+# COMMENTS
+#===============================================================================
+# TODO: provide select all/none buttons in gui 
+#===============================================================================
+
 from lib.iConf import iLog
 
 from PyQt4 import QtCore, QtGui
@@ -140,7 +146,7 @@ class iParamSingle(QtGui.QWidget):
     @QtCore.pyqtSlot('QObject*')
     def caGetSlot(self, caJob):
         iLog.debug("enter")
-        
+
         for pvName, pvItem, pvObj in self.itemList:
             fullName = self.iocName + pvGetName(pvObj)
 
@@ -227,6 +233,7 @@ class iParamSingle(QtGui.QWidget):
                 pvObj.dump()
                 widget = QtGui.QComboBox()
                 l = []
+                iLog.info("combo pvName=%s" % pvObj.name)
                 for v, s in pvObj.enums:
                     l.append(s)
                 widget.addItems(l)

@@ -4,6 +4,14 @@ Created on Jun 6, 2011
 @author: hinko
 '''
 
+#===============================================================================
+# COMMENTS
+#===============================================================================
+# TODO: provide load/save gui of PV values from selected IOCs/PVs
+# TODO: provide application configuration gui
+# TODO: remove Qt signals from the hidden panels, reconnect on show
+#===============================================================================
+
 from lib.iConf import iLog
 
 import os
@@ -35,6 +43,7 @@ from ui.win1 import Ui_MainWindow
 from iPVSingle import iPVSingle
 from iParamSingle import iParamSingle
 from iParamMulti import iParamMulti
+from iParamLoadSave import iParamLoadSave
 
 class Main(QtGui.QMainWindow):
     def __init__(self, parent = None):
@@ -53,6 +62,7 @@ class Main(QtGui.QMainWindow):
 
         self.uiInit()
 
+        self.ui.toolBox.setCurrentIndex(0)
         self.uiToolboxChange(0)
 
     def uiInit(self):
@@ -72,9 +82,10 @@ class Main(QtGui.QMainWindow):
                                QtCore.SIGNAL("clicked()"), self.uiParamMultiShow)
 
         self.uiPanel = None
-        self.uiPanels["iParamSingle"] = iParamSingle(None, self.caAccess)
-        self.uiPanels["iParamMulti"] = iParamMulti(None, self.caAccess)
+        #self.uiPanels["iParamSingle"] = iParamSingle(None, self.caAccess)
+        #self.uiPanels["iParamMulti"] = iParamMulti(None, self.caAccess)
         self.uiPanels["iPVSingle"] = iPVSingle(None, self.caAccess)
+        self.uiPanels["iParamLoadSave"] = iParamLoadSave(None, self.caAccess)
 
     def uiToolboxChange(self, index):
         iLog.debug("enter")
@@ -83,12 +94,14 @@ class Main(QtGui.QMainWindow):
         iLog.debug("page=%s, panel=%s" % (page, self.uiPanel))
 
         if page == "Overview":
-            self.uiPanelShow("Overview", "iPVSingle")
+            self.uiPanelShow(page, "iPVSingle")
         elif page == "Parameters":
             if self.uiPanel == "iParamSingle":
-                self.uiPanelShow("Parameters", "iParamSingle")
+                self.uiPanelShow(page, "iParamSingle")
             elif self.uiPanel == "iParamMulti":
-                self.uiPanelShow("Parameters", "iParamMulti")
+                self.uiPanelShow(page, "iParamMulti")
+        elif page == "Load && save":
+            self.uiPanelShow(page, "iParamLoadSave")
         else:
             iLog.error("unknown page=%s" % page)
 
@@ -109,7 +122,6 @@ class Main(QtGui.QMainWindow):
         self.uiPanel = panel
         iLog.debug("page=%s, panel=%s" % (page, panel))
 
-        # TODO: remove Qt signals from the hidden widget!
         self.ui.scrollArea.setWidget(self.uiPanels[self.uiPanel])
         self.uiPanels[self.uiPanel].show()
 

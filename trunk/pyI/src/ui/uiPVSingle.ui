@@ -36,6 +36,9 @@
       </widget>
      </item>
      <item>
+      <widget class="QComboBox" name="comboBox_iocName"/>
+     </item>
+     <item>
       <widget class="QLineEdit" name="lineEdit_iocName">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -78,6 +81,9 @@
       </widget>
      </item>
      <item>
+      <widget class="QComboBox" name="comboBox_pvName"/>
+     </item>
+     <item>
       <widget class="QLineEdit" name="lineEdit_pvName">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -99,23 +105,17 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
-      <widget class="QLabel" name="label_5">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
+      <widget class="QLabel" name="label_pvName">
+       <property name="minimumSize">
         <size>
-         <width>100</width>
-         <height>16777215</height>
+         <width>0</width>
+         <height>24</height>
         </size>
        </property>
        <property name="text">
-        <string>PV connected</string>
+        <string>PV UDF</string>
        </property>
       </widget>
      </item>
@@ -128,35 +128,12 @@
         </size>
        </property>
        <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>PV read value</string>
+        <string>UDF</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_pvValueRead">
+      <widget class="QLabel" name="label_pvValue">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -164,7 +141,7 @@
         </size>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string>UDF</string>
        </property>
       </widget>
      </item>
@@ -187,12 +164,12 @@
         </size>
        </property>
        <property name="text">
-        <string>PV write value</string>
+        <string>New PV value</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_pvValueWrite">
+      <widget class="QLineEdit" name="lineEdit_pvValue">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>

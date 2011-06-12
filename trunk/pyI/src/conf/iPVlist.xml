@@ -4,9 +4,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema"
 >
 
-	<pv>
+	<pv name=":P:ai1">
 		<text>Dummy PV1</text>
-		<name>:P:ai1</name>
 		<group>dummy</group>
 		<getSuffix></getSuffix>
 		<putSuffix></putSuffix>
@@ -21,9 +20,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":P:ai2">
 		<text>Dummy PV2</text>
-		<name>:P:ai2</name>
 		<group>dummy</group>
 		<getSuffix></getSuffix>
 		<putSuffix></putSuffix>
@@ -38,9 +36,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":P:ai3">
 		<text>Dummy PV3</text>
-		<name>:P:ai3</name>
 		<group>dummy</group>
 		<getSuffix></getSuffix>
 		<putSuffix></putSuffix>
@@ -57,9 +54,8 @@
 	</pv>
 	
 	<!-- Button parameters -->
-	<pv>
+	<pv name=":ENV:ENV_KX">
 		<text>Button X coefficient</text>
-		<name>:ENV:ENV_X</name>
 		<group>buttons</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -74,9 +70,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_KY">
 		<text>Button Y coefficient</text>
-		<name>:ENV:ENV_Y</name>
 		<group>buttons</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -91,9 +86,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_X_OFFSET">
 		<text>Button X offset</text>
-		<name>:ENV:ENV_X_OFFSET</name>
 		<group>buttons</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -108,9 +102,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_Y_OFFSET">
 		<text>Button Y offset</text>
-		<name>:ENV:ENV_Y_OFFSET</name>
 		<group>buttons</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -125,9 +118,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_Q_OFFSET">
 		<text>Button Q offset</text>
-		<name>:ENV:ENV_Q_OFFSET</name>
 		<group>buttons</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -144,9 +136,8 @@
 	</pv>
 	
 	<!--  Signal & conditioning -->
-	<pv>
+	<pv name=":ENV:ENV_SWITCHES">
 		<text>Switches</text>
-		<name>:ENV:ENV_SWITCHES</name>
 		<group>signal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -161,9 +152,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_EXTSWITCH">
 		<text>External switching</text>
-		<name>:ENV:ENV_EXTSWITCH</name>
 		<group>signal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -181,9 +171,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_SWDELAY">
 		<text>Switching delay</text>
-		<name>:ENV:ENV_SWDELAY</name>
 		<group>signal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -198,9 +187,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_TRIGDELAY">
 		<text>Trigger delay</text>
-		<name>:ENV:ENV_TRIGDELAY</name>
 		<group>signal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -215,9 +203,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_GAIN">
 		<text>Gain</text>
-		<name>:ENV:ENV_GAIN</name>
 		<group>signal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -232,9 +219,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_AGC">
 		<text>Automatic gain control (AGC)</text>
-		<name>:ENV:ENV_AGC</name>
 		<group>signal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -252,9 +238,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_AGC">
 		<text>Digital signal conditioning (DSC)</text>
-		<name>:ENV:ENV_AGC</name>
 		<group>signal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -276,9 +261,8 @@
 	</pv>
 
 	<!-- Interlock -->
-	<pv>
+	<pv name=":ENV:ENV_ILK_MODE">
 		<text>Mode</text>
-		<name>:ENV:ENV_ILK_MODE</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -297,9 +281,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_ILK_X_LOW">
 		<text>X low</text>
-		<name>:ENV:ENV_ILK_X_LOW</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -314,9 +297,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_ILK_X_HIGH">
 		<text>X high</text>
-		<name>:ENV:ENV_ILK_X_HIGH</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -331,9 +313,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-		<pv>
+		<pv name=":ENV:ENV_ILK_Y_LOW">
 		<text>Y low</text>
-		<name>:ENV:ENV_ILK_Y_LOW</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -348,9 +329,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_ILK_Y_HIGH">
 		<text>Y high</text>
-		<name>:ENV:ENV_ILK_Y_HIGH</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -365,9 +345,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_ILK_OF_LIMIT">
 		<text>Overflow limit</text>
-		<name>:ENV:ENV_ILK_OF_LIMIT</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -382,9 +361,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_ILK_OF_DUR">
 		<text>Overflow duration</text>
-		<name>:ENV:ENV_ILK_OF_DUR</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -399,9 +377,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_ILK_GAIN_LIMIT">
 		<text>Gain limit</text>
-		<name>:ENV:ENV_ILK_GAIN_LIMIT</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -416,9 +393,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_ILK_STATUS">
 		<text>Status</text>
-		<name>:ENV:ENV_ILK_STATUS</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -440,9 +416,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_INTERLOCK">
 		<text>Interlock status monitor</text>
-		<name>:ENV:ENV_INTERLOCK</name>
 		<group>interlock</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -460,9 +435,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_INTERLOCK_CLEAR">
 		<text>Clear interlock status</text>
-		<name>:ENV:ENV_INTERLOCK_CLEAR</name>
 		<group>interlock</group>
 		<getSuffix></getSuffix>
 		<putSuffix></putSuffix>
@@ -477,9 +451,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:SET_INTERLOCK_PARAM">
 		<text>Set interlock parameters</text>
-		<name>:ENV:SET_INTERLOCK_PARAM</name>
 		<group>interlock</group>
 		<getSuffix></getSuffix>
 		<putSuffix></putSuffix>
@@ -496,9 +469,8 @@
 	</pv>
 
 	<!-- Post Mortem -->
-	<pv>
+	<pv name=":ENV:ENV_PM_MODE">
 		<text>Mode</text>
-		<name>:ENV:ENV_PM_MODE</name>
 		<group>post mortem</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -517,9 +489,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_PM_X_LOW">
 		<text>X low</text>
-		<name>:ENV:ENV_PM_X_LOW</name>
 		<group>post mortem</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -534,9 +505,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_PM_X_HIGH">
 		<text>X high</text>
-		<name>:ENV:ENV_PM_X_HIGH</name>
 		<group>post mortem</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -551,9 +521,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-		<pv>
+		<pv name=":ENV:ENV_PM_Y_LOW">
 		<text>Y low</text>
-		<name>:ENV:ENV_PM_Y_LOW</name>
 		<group>post mortem</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -568,9 +537,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_PM_Y_HIGH">
 		<text>Y high</text>
-		<name>:ENV:ENV_PM_Y_HIGH</name>
 		<group>post mortem</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -585,9 +553,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_PM_OF_LIMIT">
 		<text>Overflow limit</text>
-		<name>:ENV:ENV_PM_OF_LIMIT</name>
 		<group>post mortem</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -602,9 +569,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_PM_OF_DUR">
 		<text>Overflow duration</text>
-		<name>:ENV:ENV_PM_OF_DUR</name>
 		<group>post mortem</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -619,9 +585,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:SET_POSTMORTEM_PARAM">
 		<text>Set post mortem parameters</text>
-		<name>:ENV:SET_POSTMORTEM_PARAM</name>
 		<group>post mortem</group>
 		<getSuffix></getSuffix>
 		<putSuffix></putSuffix>
@@ -636,9 +601,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_PMDEC">
 		<text>Post mortem decimation</text>
-		<name>:ENV:ENV_PMDEC</name>
 		<group>post mortem</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -656,9 +620,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_PMOFFSET">
 		<text>Post mortem offset</text>
-		<name>:ENV:ENV_PMOFFSET</name>
 		<group>post mortem</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -675,9 +638,8 @@
 	</pv>
 
 	<!-- Health, fans -->
-	<pv>
+	<pv name=":ENV:ENV_FRONT_VENT_ACT">
 		<text>Front fan</text>
-		<name>:ENV:ENV_FRONT_VENT_ACT</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -692,9 +654,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_BACK_VENT_ACT">
 		<text>Back fan</text>
-		<name>:ENV:ENV_BACK_VENT_ACT</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -711,9 +672,8 @@
 	</pv>
 
 	<!-- Health, temperature -->
-	<pv>
+	<pv name=":ENV:ENV_TEMP">
 		<text>Temperature 1</text>
-		<name>:ENV:ENV_TEMP</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -728,9 +688,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_TEMP_ANALOG">
 		<text>Temperature 2</text>
-		<name>:ENV:ENV_TEMP_ANALOG</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -745,9 +704,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_TEMP_REMOTE">
 		<text>Temperature 3</text>
-		<name>:ENV:ENV_TEMP_REMOTE</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -764,9 +722,8 @@
 	</pv>
 
 	<!-- Health, voltage -->
-	<pv>
+	<pv name=":ENV:ENV_VOLTAGE0">
 		<text>Voltage 1.50 V</text>
-		<name>:ENV:ENV_VOLTAGE0</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -781,9 +738,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_VOLTAGE1">
 		<text>Voltage 1.80 V</text>
-		<name>:ENV:ENV_VOLTAGE1</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -798,9 +754,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_VOLTAGE2">
 		<text>Voltage 2.50 V</text>
-		<name>:ENV:ENV_VOLTAGE2</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -815,9 +770,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_VOLTAGE3">
 		<text>Voltage 3.30 V</text>
-		<name>:ENV:ENV_VOLTAGE3</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -832,9 +786,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_VOLTAGE4">
 		<text>Voltage 5.00 V</text>
-		<name>:ENV:ENV_VOLTAGE4</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -849,9 +802,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_VOLTAGE5">
 		<text>Voltage 12.00 V</text>
-		<name>:ENV:ENV_VOLTAGE5</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -866,9 +818,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_VOLTAGE6">
 		<text>Voltage -12.00 V</text>
-		<name>:ENV:ENV_VOLTAGE6</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -883,9 +834,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_VOLTAGE7">
 		<text>Voltage -5.00 V</text>
-		<name>:ENV:ENV_VOLTAGE7</name>
 		<group>health</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -902,9 +852,8 @@
 	</pv>
 
 	<!-- Errors -->
-	<pv>
+	<pv name=":ENV:ENV_SAFPGA_ERR">
 		<text>SA FPGA error</text>
-		<name>:ENV:ENV_SAFPGA_ERR</name>
 		<group>error</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -922,9 +871,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_SADRV_ERR">
 		<text>SA driver error</text>
-		<name>:ENV:ENV_SADRV_ERR</name>
 		<group>error</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -942,9 +890,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_DDFPGA_ERR">
 		<text>DD FPGA error</text>
-		<name>:ENV:ENV_DDFPGA_ERR</name>
 		<group>error</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix></putSuffix>
@@ -964,9 +911,8 @@
 	</pv>
 	
 	<!-- ADC single pass -->
-	<pv>
+	<pv name=":ENV:ENV_ADCSP_THRESHOLD">
 		<text>ADC count threshold</text>
-		<name>:ENV:ENV_ADCSP_THRESHOLD</name>
 		<group>single pass</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -981,9 +927,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_ADCSP_NBEFORE">
 		<text>Pre-threshold samples</text>
-		<name>:ENV:ENV_ADCSP_NBEFORE</name>
 		<group>single pass</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -998,9 +943,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_ADCSP_NAFTER">
 		<text>Post-threshold samples</text>
-		<name>:ENV:ENV_ADCSP_NAFTER</name>
 		<group>single pass</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -1017,9 +961,8 @@
 	</pv>
 		
 	<!-- Spike removal -->
-	<pv>
+	<pv name=":ENV:ENV_SR_ENABLE">
 		<text>Spike removal enable</text>
-		<name>:ENV:ENV_SR_ENABLE</name>
 		<group>spike removal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -1037,9 +980,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_SR_CSPI_ENABLE">
 		<text>Spike removal CSPI enable</text>
-		<name>:ENV:ENV_SR_CSPI_ENABLE</name>
 		<group>spike removal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -1057,9 +999,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_SR_AVERAGING_STOP">
 		<text>Spike removal averaging stop</text>
-		<name>:ENV:ENV_SR_AVERAGING_STOP</name>
 		<group>spike removal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -1074,9 +1015,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_SR_AVERAGING_WINDOW">
 		<text>Spike removal averaging window</text>
-		<name>:ENV:ENV_SR_AVERAGING_WINDOW</name>
 		<group>spike removal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -1091,9 +1031,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_SR_START">
 		<text>Spike removal start</text>
-		<name>:ENV:ENV_SR_START</name>
 		<group>spike removal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>
@@ -1108,9 +1047,8 @@
 		<comment></comment>
 		<value></value>
 	</pv>
-	<pv>
+	<pv name=":ENV:ENV_SR_WINDOW">
 		<text>Spike removal window</text>
-		<name>:ENV:ENV_SR_WINDOW</name>
 		<group>spike removal</group>
 		<getSuffix>_MONITOR</getSuffix>
 		<putSuffix>_SP</putSuffix>

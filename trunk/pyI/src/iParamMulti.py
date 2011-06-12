@@ -4,12 +4,17 @@ Created on Jun 3, 2011
 @author: hinko
 '''
 
+#===============================================================================
+# COMMENTS
+#===============================================================================
+# TODO: provide select all/none buttons in gui 
+#===============================================================================
+
 from lib.iConf import iLog
 
 from PyQt4 import QtCore, QtGui
 from lib.iHelper import *
 from ui.uiParamMulti import Ui_ParamMulti
-
 
 class iParamMulti(QtGui.QWidget):
     def __init__(self, parent, caAccess):

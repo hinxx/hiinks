@@ -4,10 +4,19 @@ Created on Jun 7, 2011
 @author: hinko
 '''
 
+#===============================================================================
+# COMMENTS
+#===============================================================================
+# TODO: provide combo boxes for known iocs and pvs, along with lineedit input 
+#===============================================================================
+
 from lib.iConf import iLog
+from lib.iPVTree import iPVTree
+from lib.iIOCTree import iIOCTree
 
 from PyQt4 import QtCore, QtGui
 from ui.uiPVSingle import Ui_PVSingle
+from lib.iCAWork import caActionMonitor
 
 class iPVSingle(QtGui.QWidget):
 
@@ -16,30 +25,30 @@ class iPVSingle(QtGui.QWidget):
         iLog.debug("enter")
 
         self.pvMonitors = dict()
+        self.pvName = None
 
         self.caAccess = caAccess
-        QtCore.QObject.connect(self.caAccess,
-                               QtCore.SIGNAL("sigGet(QObject*)"), self.caGetSlot)
-        QtCore.QObject.connect(self.caAccess,
-                               QtCore.SIGNAL("sigPut(QObject*)"), self.caPutSlot)
-        QtCore.QObject.connect(self.caAccess,
-                               QtCore.SIGNAL("sigMonitor(QObject*)"), self.caMonitorSlot)
+        self.caAccess.sigGet.connect(self.caGetSlot)
+        self.caAccess.sigPut.connect(self.caPutSlot)
+        self.caAccess.sigMonitor.connect(self.caMonitorSlot)
+        self.caAccess.sigConnected.connect(self.caConnectedSlot)
+        self.caAccess.sigDone.connect(self.caDoneSlot)
 
-        #self.ui = uic.loadUi('ui/uiPVSingle.ui', self)
         self.ui = Ui_PVSingle()
         self.ui.setupUi(self)
 
-        QtCore.QObject.connect(self.ui.pushButton_get,
-                               QtCore.SIGNAL("clicked()"), self.pvGet)
-        QtCore.QObject.connect(self.ui.pushButton_put,
-                               QtCore.SIGNAL("clicked()"), self.pvPut)
-        QtCore.QObject.connect(self.ui.pushButton_monitor,
-                               QtCore.SIGNAL("clicked()"), self.pvMonitor)
-        QtCore.QObject.connect(self.ui.pushButton_unmonitor,
-                               QtCore.SIGNAL("clicked()"), self.pvUnmonitor)
-        QtCore.QObject.connect(self.ui.tableWidget,
-                               QtCore.SIGNAL("itemSelectionChanged()"), self.tableSelect)
+        self.ui.pushButton_get.clicked.connect(self.pvGet)
+        self.ui.pushButton_put.clicked.connect(self.pvPut)
+        self.ui.pushButton_monitor.clicked.connect(self.pvMonitor)
+        self.ui.pushButton_unmonitor.clicked.connect(self.pvUnmonitor)
+        self.ui.tableWidget.itemSelectionChanged.connect(self.tableSelect)
         self.ui.pushButton_unmonitor.setDisabled(True)
+
+        iocName = str(self.ui.lineEdit_iocName.text())
+        pvName = str(self.ui.lineEdit_pvName.text())
+        if len(iocName) and len(pvName):
+            self.pvName = iocName + pvName
+            self.ui.label_pvName.setText("PV %s : " % (self.pvName))
 
     def show(self):
         iLog.debug("enter")
@@ -56,25 +65,32 @@ class iPVSingle(QtGui.QWidget):
         if len(iocName) == 0 or len(pvName) == 0:
             return
 
-        fullName = iocName + pvName
-        iLog.debug("pvName=%s" % fullName)
-        o = (fullName, None)
-        self.caAccess.get([o])
+        self.pvName = iocName + pvName
+        self.ui.label_pvName.setText("PV %s : " % (self.pvName))
+        iLog.debug("pvName=%s" % self.pvName)
+
+        self.caAccess.get([self.pvName])
 
     def pvPut(self):
         iLog.debug("enter")
 
         iocName = str(self.ui.lineEdit_iocName.text())
         pvName = str(self.ui.lineEdit_pvName.text())
-        pvValue = str(self.ui.lineEdit_pvValueWrite.text())
+        pvValue = str(self.ui.lineEdit_pvValue.text())
 
         if len(iocName) == 0 or len(pvName) == 0:
+            iLog.warning("Skipping due to missing iocName=%s and/or pvName=%s" % (iocName, pvName))
+            return
+        if len(pvValue) == 0:
+            iLog.warning("Skipping due to missing pvValue=%s" % (pvValue))
             return
 
-        fullName = iocName + pvName
-        iLog.debug("pvName=%s, pvValue=%s" % (fullName, pvValue))
-        o = (fullName, pvValue)
-        self.caAccess.put([o])
+        self.pvName = iocName + pvName
+        self.ui.label_pvName.setText("PV %s " % (self.pvName))
+        iLog.debug("pvName=%s, pvValue=%s" % (self.pvName, pvValue))
+
+        # NOTE: Tuple is the argument here!
+        self.caAccess.put([(self.pvName, pvValue)])
 
     def pvMonitor(self):
         iLog.debug("enter")
@@ -103,8 +119,8 @@ class iPVSingle(QtGui.QWidget):
         self.ui.tableWidget.resizeColumnToContents(0)
 
         iLog.debug("pvName=%s" % fullName)
-        o = (fullName, None)
-        self.pvMonitors[fullName] = self.caAccess.monitor([o])
+
+        self.pvMonitors[fullName] = self.caAccess.monitor([fullName])
 
     def pvUnmonitor(self):
         iLog.debug("enter")
@@ -116,10 +132,10 @@ class iPVSingle(QtGui.QWidget):
 
             pvName = str(item.text())
             if pvName in self.pvMonitors:
-                iLog.debug("removing monitor for pvName=%s" % pvName)
+                iLog.debug("Removing monitor for pvName=%s" % pvName)
 
-                pv = self.pvMonitors[pvName]
-                self.caAccess.monitorStop(pv)
+                seqId = self.pvMonitors[pvName]
+                self.caAccess.monitorStop(seqId, pvName)
                 del self.pvMonitors[pvName]
 
                 rows.append(item.row())
@@ -141,50 +157,66 @@ class iPVSingle(QtGui.QWidget):
 # CA callback slots
 #===============================================================================
 
-    @QtCore.pyqtSlot('QObject*')
-    def caGetSlot(self, caJob):
-        iLog.debug("enter")
+    @QtCore.pyqtSlot(dict)
+    def caGetSlot(self, pvData):
+        iLog.info("enter")
+        iLog.info("Called for pvName=%s, pvValue=%s, pvConnected=%s" % (pvData['name'], pvData['value'], pvData['connected']))
 
-        iocName = str(self.ui.lineEdit_iocName.text())
-        pvName = str(self.ui.lineEdit_pvName.text())
-        fullName = iocName + pvName
-        if fullName == caJob.pvName:
-            iLog.debug("pvName=%s, value=%s, success=%s" % (caJob.pvName, caJob.pvGetValue, caJob.success))
+        if self.pvName == pvData['name']:
+            iLog.info("pvName=%s, value=%s, success=%s" % (pvData['name'], pvData['value'], pvData['success']))
 
-            self.ui.label_pvValueRead.setText(str(caJob.pvGetValue))
+            self.ui.label_pvValue.setText("%s" % (str(pvData['value'])))
 
-            if caJob.connected:
-                self.ui.label_pvConnected.setText(str("True"))
+            if pvData['connected']:
+                self.ui.label_pvConnected.setText("(connected)")
             else:
-                self.ui.label_pvConnected.setText(str("False"))
+                self.ui.label_pvConnected.setText("(UN-CONNECTED)")
 
-    @QtCore.pyqtSlot('QObject*')
-    def caPutSlot(self, caJob):
-        iLog.debug("enter")
+    @QtCore.pyqtSlot(dict)
+    def caPutSlot(self, pvData):
+        iLog.info("enter")
+        iLog.info("Called for pvName=%s, pvValue=%s, pvConnected=%s" % (pvData['name'], pvData['value'], pvData['connected']))
 
-        iocName = str(self.ui.lineEdit_iocName.text())
-        pvName = str(self.ui.lineEdit_pvName.text())
-        fullName = iocName + pvName
-        if fullName == caJob.pvName:
+        if self.pvName == pvData['name']:
+            iLog.debug("pvName=%s, value=%s, success=%s" % (pvData['name'], pvData['value'], pvData['success']))
 
-            iLog.debug("pvName=%s, value=%s, success=%s" % (caJob.pvName, caJob.pvGetValue, caJob.success))
-            self.ui.label_pvValueRead.setText(str(caJob.pvGetValue))
+            self.ui.label_pvValue.setText("%s" % (str(pvData['value'])))
 
-            if caJob.connected:
-                self.ui.label_pvConnected.setText(str("True"))
+            if pvData['connected']:
+                self.ui.label_pvConnected.setText("(connected)")
             else:
-                self.ui.label_pvConnected.setText(str("False"))
+                self.ui.label_pvConnected.setText("(UN-CONNECTED)")
 
-    @QtCore.pyqtSlot('QObject*')
-    def caMonitorSlot(self, caJob):
-        iLog.debug("enter")
+    @QtCore.pyqtSlot(dict)
+    def caMonitorSlot(self, pvData):
+        iLog.info("enter")
+        iLog.info("Called for pvName=%s, pvValue=%s, pvConnected=%s" % (pvData['name'], pvData['value'], pvData['connected']))
 
-        if not caJob.pvName in self.pvMonitors:
+        if not pvData['name'] in self.pvMonitors:
+            iLog.warning("No monitor for pvName=%s, pvValue=%s, pvConnected=%s" % (pvData['name'], pvData['value'], pvData['connected']))
             return
 
-        iLog.debug("pvName=%s, value=%s, success=%s" % (caJob.pvName, caJob.pvGetValue, caJob.success))
-        for nameItem in self.ui.tableWidget.findItems(caJob.pvName, QtCore.Qt.MatchExactly):
+        iLog.debug("pvName=%s, value=%s, success=%s" % (pvData['name'], pvData['value'], pvData['success']))
+        for nameItem in self.ui.tableWidget.findItems(pvData['name'], QtCore.Qt.MatchExactly):
             item = self.ui.tableWidget.item(nameItem.row(), nameItem.column() + 1)
-            item.setText(str(caJob.pvGetValue))
+            item.setText(str(pvData['value']))
             item = self.ui.tableWidget.item(nameItem.row(), nameItem.column() + 2)
-            item.setText(str(caJob.connected))
+            item.setText(str(pvData['connected']))
+            if pvData['connected']:
+                item.setText(str(pvData['(connected)']))
+            else:
+                item.setText(str(pvData['(UN-CONNECTED)']))
+
+    @QtCore.pyqtSlot(dict)
+    def caConnectedSlot(self, pvData):
+        iLog.info("enter")
+        iLog.info("Called for pvName=%s, pvValue=%s, pvConnected=%s" % (pvData['name'], pvData['value'], pvData['connected']))
+
+        if not pvData['connected']:
+            self.caGetSlot(pvData)
+            self.caMonitorSlot(pvData)
+
+    @QtCore.pyqtSlot(dict)
+    def caDoneSlot(self, pvList):
+        iLog.info("enter")
+        iLog.info("Called for pvList=%s" % (repr(pvList)))

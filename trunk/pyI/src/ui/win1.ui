@@ -26,7 +26,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="page_overview">
          <property name="geometry">
@@ -34,7 +34,7 @@
            <x>0</x>
            <y>0</y>
            <width>150</width>
-           <height>342</height>
+           <height>313</height>
           </rect>
          </property>
          <attribute name="label">
@@ -46,8 +46,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>103</width>
-           <height>78</height>
+           <width>150</width>
+           <height>313</height>
           </rect>
          </property>
          <attribute name="label">
@@ -75,8 +75,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>98</width>
-           <height>28</height>
+           <width>150</width>
+           <height>313</height>
           </rect>
          </property>
          <attribute name="label">
@@ -88,8 +88,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>98</width>
-           <height>28</height>
+           <width>150</width>
+           <height>313</height>
           </rect>
          </property>
          <attribute name="label">
@@ -101,12 +101,17 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>98</width>
-           <height>28</height>
+           <width>150</width>
+           <height>313</height>
           </rect>
          </property>
          <attribute name="label">
           <string>Status</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="page">
+         <attribute name="label">
+          <string>Load &amp;&amp; save</string>
          </attribute>
         </widget>
        </widget>
