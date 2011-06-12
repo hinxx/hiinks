@@ -8,16 +8,13 @@ from iConf import *
 import threading, Queue
 from PyQt4 import QtCore
 
-class iThreader(QtCore.QObject):
-    def __init__(self, parent, numthreads = 1, workDoneCB = None):
-        QtCore.QObject.__init__(self, parent)
+#class iThreader(QtCore.QObject):
+class iThreader(object):
+#    def __init__(self, parent, numThreads = 1):
+    def __init__(self, numThreads = 1):
+        #QtCore.QObject.__init__(self, parent)
 
-        self._numthreads = numthreads
-        self.workDoneCB = None
-
-        if callable(workDoneCB):
-            self.workDoneCB = workDoneCB
-            iLog.debug("workDoneCB=%s" % workDoneCB)
+        self._numthreads = numThreads
 
     def get_data(self):
         raise NotImplementedError, "You must implement get_data as a function that returns an iterable"

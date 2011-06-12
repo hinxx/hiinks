@@ -3,6 +3,15 @@ Created on Jun 10, 2011
 
 @author: hinko
 '''
+
+#===============================================================================
+# COMMENTS
+#===============================================================================
+# TODO: provide other streams for logging (file, etc)
+# TODO: provide other logging logging level to separate (file, etc)
+# TODO: provide gui console for log output
+#===============================================================================
+
 import sys
 import logging
 
@@ -16,5 +25,6 @@ iLogFormatter = logging.Formatter("%(levelname)s %(asctime)s %(module)s %(funcNa
 iLogHandle.setFormatter(iLogFormatter)
 iLog.addHandler(iLogHandle)
 
-iDefaultIOClistXmlFile = "conf/iIOClist.xml"
-iDefaultPVlistXmlFile = "conf/iPVlist.xml"
+iDefaultIOCTreeXMLFile = "conf/iIOClist.xml"
+iDefaultPVTreeXMLFile = "conf/iPVlist.xml"
+iDefaultPVDataDir = "data"

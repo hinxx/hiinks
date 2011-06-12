@@ -4,38 +4,30 @@
 	xsi:noNamespaceSchemaLocation="iIOClist.xsd"
 >
 
-	<ioc>
-		<name>hinkoHost</name>
+	<ioc name="hinkoHost">
 		<group>rack</group>
 		<ip>ip</ip>
-		<value></value>
 		<enabled>True</enabled>
 		<comment></comment>
 		<text></text>
 	</ioc>
-	<ioc>
-		<name>hinkoHost1</name>
+	<ioc name="hinkoHost1">
 		<group>rack</group>
 		<ip>ip</ip>
-		<value></value>
 		<enabled>True</enabled>
 		<comment></comment>
 		<text></text>
 	</ioc>
-	<ioc>
-		<name>hinkoHost2</name>
+	<ioc name="hinkoHost2">
 		<group>rack</group>
 		<ip>ip</ip>
-		<value></value>
 		<enabled>True</enabled>
 		<comment></comment>
 		<text></text>
 	</ioc>
-	<ioc>
-		<name>hinkoHost3</name>
+	<ioc name="hinkoHost3">
 		<group>rack</group>
 		<ip>ip</ip>
-		<value></value>
 		<enabled>True</enabled>
 		<comment></comment>
 		<text></text>
