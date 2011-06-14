@@ -43,7 +43,9 @@ from iPVHandler import iPVHandler
 
 from ui.win1 import Ui_MainWindow
 from iPanelTest import iPanelTest
-
+from iPanelSingleIOCParam import iPanelSingleIOCParam
+from iPanelMultiIOCParam import iPanelMultiIOCParam
+from iPanelDummy import iPanelDummy
 
 class Main(QtGui.QMainWindow):
     def __init__(self, parent = None):
@@ -55,19 +57,12 @@ class Main(QtGui.QMainWindow):
         self.pvHandler.finished.connect(self.pvHandlerFinished)
         self.pvHandler.terminated.connect(self.pvHandlerTerminated)
 
-        # CA access layer
-        #self.caAccess = iCA(self)
-
-        #iocList = iIOCList()
         self.uiPanels = dict()
-
-        # Dictionary containing all known IOCs (IOCname: uIOC object)
-        self.iocList = dict()
 
         self.uiInit()
 
         self.ui.toolBox.setCurrentIndex(0)
-        #self.uiToolboxChange(0)
+        self.uiToolboxChange(0)
 
     def uiInit(self):
         iLog.debug("enter")
@@ -80,16 +75,18 @@ class Main(QtGui.QMainWindow):
 
         #self.ui.scrollAreaWidgetContents.hide()
 
-        QtCore.QObject.connect(self.ui.pushButton_parametersSingle,
-                               QtCore.SIGNAL("clicked()"), self.uiParamSingleShow)
-        QtCore.QObject.connect(self.ui.pushButton_parametersMulti,
-                               QtCore.SIGNAL("clicked()"), self.uiParamMultiShow)
-
         self.uiPanel = None
-        #self.uiPanels["iParamSingle"] = iParamSingle(None, self.caAccess)
-        #self.uiPanels["iParamMulti"] = iParamMulti(None, self.caAccess)
-        self.uiPanels["iPanelTest"] = iPanelTest(None, self.pvHandler)
-        #self.uiPanels["iParamLoadSave"] = iParamLoadSave(None, self.caAccess)
+        self.uiPanels['iPanelTest'] = iPanelTest(None, self.pvHandler)
+
+        self.uiPanels['iPanelSingleIOCParam'] = iPanelSingleIOCParam(None, self.pvHandler)
+        self.uiPanels['iPanelMultiIOCParam'] = iPanelMultiIOCParam(None, self.pvHandler)
+
+        # Dummy panels
+        self.uiPanels['iPanelOrbit'] = iPanelDummy(None, self.pvHandler)
+        self.uiPanels['iPanelOverview'] = iPanelDummy(None, self.pvHandler)
+        self.uiPanels['iPanelConfiguration'] = iPanelDummy(None, self.pvHandler)
+        self.uiPanels['iPanelStatus'] = iPanelDummy(None, self.pvHandler)
+        self.uiPanels['iPanelLoadSaveParam'] = iPanelDummy(None, self.pvHandler)
 
     def uiToolboxChange(self, index):
         iLog.debug("enter")
@@ -97,25 +94,26 @@ class Main(QtGui.QMainWindow):
         page = self.ui.toolBox.itemText(index)
         iLog.debug("page=%s, panel=%s" % (page, self.uiPanel))
 
-        if page == "Overview":
-            self.uiPanelShow(page, "iPanelTest")
-#        elif page == "Parameters":
-#            if self.uiPanel == "iParamSingle":
-#                self.uiPanelShow(page, "iParamSingle")
-#            elif self.uiPanel == "iParamMulti":
-#                self.uiPanelShow(page, "iParamMulti")
-#        elif page == "Load && save":
-#            self.uiPanelShow(page, "iParamLoadSave")
+        if page == 'Test':
+            self.uiPanelShow(page, 'iPanelTest')
+        elif page == 'Parameters (Single IOC)':
+            self.uiPanelShow(page, 'iPanelSingleIOCParam')
+        elif page == 'Parameters (Multi IOC)':
+            self.uiPanelShow(page, 'iPanelMultiIOCParam')
+        elif page == 'Load && save':
+            self.uiPanelShow(page, "iPanelLoadSaveParam")
+
+        # Dummy panels
+        elif page == 'Overview':
+            self.uiPanelShow(page, 'iPanelOverview')
+        elif page == 'Orbit':
+            self.uiPanelShow(page, 'iPanelOrbit')
+        elif page == 'Configuration':
+            self.uiPanelShow(page, 'iPanelConfiguration')
+        elif page == 'Status':
+            self.uiPanelShow(page, 'iPanelStatus')
         else:
             iLog.error("unknown page=%s" % page)
-
-    def uiParamSingleShow(self):
-        iLog.debug("enter")
-        self.uiPanelShow("Parameters", "iParamSingle")
-
-    def uiParamMultiShow(self):
-        iLog.debug("enter")
-        self.uiPanelShow("Parameters", "iParamMulti")
 
     def uiPanelShow(self, page, panel):
         iLog.debug("enter")
