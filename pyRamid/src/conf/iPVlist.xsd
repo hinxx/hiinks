@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:complexType name="pv_type">
+    	<xsd:sequence>
+    		<xsd:element name="name" type="xsd:string"></xsd:element>
+    		<xsd:element name="text" type="xsd:string"></xsd:element>
+    		<xsd:element name="group" type="xsd:string"></xsd:element>
+    		<xsd:element name="getSuffix" type="xsd:string"></xsd:element>
+    		<xsd:element name="putSuffix" type="xsd:string"></xsd:element>
+    		<xsd:element name="cmdSuffix" type="xsd:string"></xsd:element>
+    		<xsd:element name="mode" type="xsd:string"></xsd:element>
+    		<xsd:element name="access" type="xsd:string"></xsd:element>
+    		<xsd:element name="format" type="xsd:string"></xsd:element>
+    		<xsd:element name="widget" type="xsd:string"></xsd:element>
+    		<xsd:element name="strings" type="xsd:string"></xsd:element>
+    		<xsd:element name="enums" type="enumList_type" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+    		<xsd:element name="enabled" type="xsd:boolean"></xsd:element>
+    		<xsd:element name="comment" type="xsd:string"></xsd:element>
+    		<xsd:element name="value" type="xsd:string"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="pvList_type">
+    	<xsd:sequence>
+    		<xsd:element name="pv" type="pv_type" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="enum_type">
+    	<xsd:attribute name="val" type="xsd:string"></xsd:attribute>
+    	<xsd:attribute name="str" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="enumList_type">
+    	<xsd:sequence>
+    		<xsd:element name="enum" type="enum_type"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:element name="pvList" type="pvList_type"></xsd:element>
+</xsd:schema>
+  
