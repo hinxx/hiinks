@@ -108,12 +108,17 @@ class iPanelTest(QtGui.QWidget):
         iocName = str(self.ui.lineEdit_iocName.text())
         pvName = str(self.ui.lineEdit_pvName.text())
 
-        if len(iocName) == 0 or len(pvName) == 0:
+        if len(iocName) == 0:
+            iLog.error("Invalid iocName argument length")
+            return
+
+        if len(pvName) == 0:
+            iLog.error("Invalid pvName argument length")
             return
 
         self.iocName = iocName
         self.pvName = pvName
-        iLog.debug("self.pvName=%s" % self.pvName)
+        iLog.debug("self.iocName=%s, self.pvName=%s" % (self.iocName, self.pvName))
 
         pvGet = iocName + self.pvTree.pvGetName(pvName)
         pvPut = iocName + self.pvTree.pvPutName(pvName)
@@ -121,7 +126,7 @@ class iPanelTest(QtGui.QWidget):
         self.ui.label_pvMonitorName.setText("GET %s" % (pvGet))
         self.ui.label_pvSPName.setText("PUT %s" % (pvPut))
 
-        iLog.debug("Real PV name %s" % pvGet)
+        iLog.info("Handing over GET to pvHandler, PV %s" % pvGet)
         self.pvHandler.pvJobs.setPVProperty(pvGet, 'slotConnChanged', self.slotConnChanged)
         self.pvHandler.pvJobs.setPVProperty(pvGet, 'slotValueChanged', self.slotValueChanged)
         self.pvHandler.enqeue(iPVActionValGet, [pvGet])
@@ -151,7 +156,7 @@ class iPanelTest(QtGui.QWidget):
         self.ui.label_pvMonitorName.setText("GET %s" % (pvGet))
         self.ui.label_pvSPName.setText("PUT %s" % (pvPut))
 
-        iLog.debug("Real PV name %s" % pvPut)
+        iLog.info("Handing over PUT to pvHandler, PV %s" % pvPut)
         self.pvHandler.pvJobs.setPVProperty(pvPut, 'userValue', pvValue)
         self.pvHandler.pvJobs.setPVProperty(pvPut, 'slotConnChanged', self.slotConnChanged)
         self.pvHandler.pvJobs.setPVProperty(pvPut, 'slotValueChanged', self.slotValueChanged)
@@ -183,8 +188,7 @@ class iPanelTest(QtGui.QWidget):
 
         self.ui.tableWidget.resizeColumnToContents(0)
 
-        iLog.debug("pvName=%s" % fullName)
-
+        iLog.info("Handing over MONITOR to pvHandler, PV %s" % fullName)
         self.pvHandler.pvJobs.setPVProperty(fullName, 'doMonitor', True)
         self.pvHandler.pvJobs.setPVProperty(fullName, 'slotConnChanged', self.slotConnChanged)
         self.pvHandler.pvJobs.setPVProperty(fullName, 'slotValueChanged', self.slotValueChanged)
@@ -199,7 +203,7 @@ class iPanelTest(QtGui.QWidget):
                 continue
 
             pvName = str(item.text())
-            iLog.debug("Removing monitor for pvName=%s" % pvName)
+            iLog.info("Removing MONITOR for PV %s" % pvName)
 
             self.pvHandler.enqeue(iPVActionMonRem, [pvName])
             self.pvHandler.pvJobs.setPVProperty(pvName, 'doMonitor', False)

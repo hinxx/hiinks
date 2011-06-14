@@ -26,49 +26,43 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>5</number>
+         <number>0</number>
         </property>
+        <widget class="QWidget" name="page_test">
+         <attribute name="label">
+          <string>Test</string>
+         </attribute>
+        </widget>
         <widget class="QWidget" name="page_overview">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
            <width>150</width>
-           <height>313</height>
+           <height>255</height>
           </rect>
          </property>
          <attribute name="label">
           <string>Overview</string>
          </attribute>
         </widget>
-        <widget class="QWidget" name="page_parameters">
+        <widget class="QWidget" name="page_parametersSingleIOC">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
            <width>150</width>
-           <height>313</height>
+           <height>255</height>
           </rect>
          </property>
          <attribute name="label">
-          <string>Parameters</string>
+          <string>Parameters (Single IOC)</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QPushButton" name="pushButton_parametersSingle">
-            <property name="text">
-             <string>Single</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_parametersMulti">
-            <property name="text">
-             <string>Multi</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+        </widget>
+        <widget class="QWidget" name="page_parametersMultiIOC">
+         <attribute name="label">
+          <string>Parameters (Multi IOC)</string>
+         </attribute>
         </widget>
         <widget class="QWidget" name="page_orbit">
          <property name="geometry">
@@ -76,7 +70,7 @@
            <x>0</x>
            <y>0</y>
            <width>150</width>
-           <height>313</height>
+           <height>255</height>
           </rect>
          </property>
          <attribute name="label">
@@ -89,7 +83,7 @@
            <x>0</x>
            <y>0</y>
            <width>150</width>
-           <height>313</height>
+           <height>255</height>
           </rect>
          </property>
          <attribute name="label">
@@ -102,7 +96,7 @@
            <x>0</x>
            <y>0</y>
            <width>150</width>
-           <height>313</height>
+           <height>255</height>
           </rect>
          </property>
          <attribute name="label">
@@ -110,6 +104,14 @@
          </attribute>
         </widget>
         <widget class="QWidget" name="page">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>150</width>
+           <height>255</height>
+          </rect>
+         </property>
          <attribute name="label">
           <string>Load &amp;&amp; save</string>
          </attribute>
