@@ -1,0 +1,1068 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pvList
+	xsi:noNamespaceSchemaLocation="iPVlist.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+>
+
+	<pv name=":P:ai1">
+		<text>Dummy PV1</text>
+		<group>dummy</group>
+		<getSuffix></getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":P:ai2">
+		<text>Dummy PV2</text>
+		<group>dummy</group>
+		<getSuffix></getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":P:ai3">
+		<text>Dummy PV3</text>
+		<group>dummy</group>
+		<getSuffix></getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	
+	<!-- Button parameters -->
+	<pv name=":ENV:ENV_KX">
+		<text>Button X coefficient</text>
+		<group>buttons</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_KY">
+		<text>Button Y coefficient</text>
+		<group>buttons</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_X_OFFSET">
+		<text>Button X offset</text>
+		<group>buttons</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_Y_OFFSET">
+		<text>Button Y offset</text>
+		<group>buttons</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_Q_OFFSET">
+		<text>Button Q offset</text>
+		<group>buttons</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	
+	<!--  Signal & conditioning -->
+	<pv name=":ENV:ENV_SWITCHES">
+		<text>Switches</text>
+		<group>signal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_EXTSWITCH">
+		<text>External switching</text>
+		<group>signal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="Internal"></enum>
+			<enum val="1" str="External"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_SWDELAY">
+		<text>Switching delay</text>
+		<group>signal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_TRIGDELAY">
+		<text>Trigger delay</text>
+		<group>signal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_GAIN">
+		<text>Gain</text>
+		<group>signal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_AGC">
+		<text>Automatic gain control (AGC)</text>
+		<group>signal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="Disabled"></enum>
+			<enum val="1" str="Enabled"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_AGC">
+		<text>Digital signal conditioning (DSC)</text>
+		<group>signal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="Disabled"></enum>
+			<enum val="1" str="Unity"></enum>
+			<enum val="2" str="Enabled"></enum>
+			<enum val="3" str="Save factors"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+
+	<!-- Interlock -->
+	<pv name=":ENV:ENV_ILK_MODE">
+		<text>Mode</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="Disabled"></enum>
+			<enum val="1" str="Enabled"></enum>
+			<enum val="2" str="Gain dep"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_ILK_X_LOW">
+		<text>X low</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_ILK_X_HIGH">
+		<text>X high</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+		<pv name=":ENV:ENV_ILK_Y_LOW">
+		<text>Y low</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_ILK_Y_HIGH">
+		<text>Y high</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_ILK_OF_LIMIT">
+		<text>Overflow limit</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_ILK_OF_DUR">
+		<text>Overflow duration</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_ILK_GAIN_LIMIT">
+		<text>Gain limit</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_ILK_STATUS">
+		<text>Status</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="None"></enum>
+			<enum val="1" str="X position"></enum>
+			<enum val="2" str="Y position"></enum>
+			<enum val="4" str="Attenuator limit"></enum>
+			<enum val="8" str="ADC overflow"></enum>
+			<enum val="16" str="Unfiltered ADC overflow"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_INTERLOCK">
+		<text>Interlock status monitor</text>
+		<group>interlock</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="No interlock"></enum>
+			<enum val="1" str="INTERLOCK!"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_INTERLOCK_CLEAR">
+		<text>Clear interlock status</text>
+		<group>interlock</group>
+		<getSuffix></getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix>_CMD</cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:SET_INTERLOCK_PARAM">
+		<text>Set interlock parameters</text>
+		<group>interlock</group>
+		<getSuffix></getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix>_CMD</cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+
+	<!-- Post Mortem -->
+	<pv name=":ENV:ENV_PM_MODE">
+		<text>Mode</text>
+		<group>post mortem</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="External"></enum>
+			<enum val="1" str="Internal"></enum>
+			<enum val="2" str="Position"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_PM_X_LOW">
+		<text>X low</text>
+		<group>post mortem</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_PM_X_HIGH">
+		<text>X high</text>
+		<group>post mortem</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+		<pv name=":ENV:ENV_PM_Y_LOW">
+		<text>Y low</text>
+		<group>post mortem</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_PM_Y_HIGH">
+		<text>Y high</text>
+		<group>post mortem</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_PM_OF_LIMIT">
+		<text>Overflow limit</text>
+		<group>post mortem</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_PM_OF_DUR">
+		<text>Overflow duration</text>
+		<group>post mortem</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:SET_POSTMORTEM_PARAM">
+		<text>Set post mortem parameters</text>
+		<group>post mortem</group>
+		<getSuffix></getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix>_CMD</cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_PMDEC">
+		<text>Post mortem decimation</text>
+		<group>post mortem</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="1" str="No decimation"></enum>
+			<enum val="64" str="Decimate by 64"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_PMOFFSET">
+		<text>Post mortem offset</text>
+		<group>post mortem</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+
+	<!-- Health, fans -->
+	<pv name=":ENV:ENV_FRONT_VENT_ACT">
+		<text>Front fan</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_BACK_VENT_ACT">
+		<text>Back fan</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+
+	<!-- Health, temperature -->
+	<pv name=":ENV:ENV_TEMP">
+		<text>Temperature 1</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_TEMP_ANALOG">
+		<text>Temperature 2</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_TEMP_REMOTE">
+		<text>Temperature 3</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+
+	<!-- Health, voltage -->
+	<pv name=":ENV:ENV_VOLTAGE0">
+		<text>Voltage 1.50 V</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_VOLTAGE1">
+		<text>Voltage 1.80 V</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_VOLTAGE2">
+		<text>Voltage 2.50 V</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_VOLTAGE3">
+		<text>Voltage 3.30 V</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_VOLTAGE4">
+		<text>Voltage 5.00 V</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_VOLTAGE5">
+		<text>Voltage 12.00 V</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_VOLTAGE6">
+		<text>Voltage -12.00 V</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_VOLTAGE7">
+		<text>Voltage -5.00 V</text>
+		<group>health</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QLabel</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+
+	<!-- Errors -->
+	<pv name=":ENV:ENV_SAFPGA_ERR">
+		<text>SA FPGA error</text>
+		<group>error</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="OK"></enum>
+			<enum val="1" str="Error"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_SADRV_ERR">
+		<text>SA driver error</text>
+		<group>error</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="OK"></enum>
+			<enum val="1" str="Error"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_DDFPGA_ERR">
+		<text>DD FPGA error</text>
+		<group>error</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix></putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-only</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="OK"></enum>
+			<enum val="1" str="Error"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	
+	<!-- ADC single pass -->
+	<pv name=":ENV:ENV_ADCSP_THRESHOLD">
+		<text>ADC count threshold</text>
+		<group>single pass</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_ADCSP_NBEFORE">
+		<text>Pre-threshold samples</text>
+		<group>single pass</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_ADCSP_NAFTER">
+		<text>Post-threshold samples</text>
+		<group>single pass</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+		
+	<!-- Spike removal -->
+	<pv name=":ENV:ENV_SR_ENABLE">
+		<text>Spike removal enable</text>
+		<group>spike removal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="Off"></enum>
+			<enum val="1" str="On"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_SR_CSPI_ENABLE">
+		<text>Spike removal CSPI enable</text>
+		<group>spike removal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QComboBox</widget>
+		<strings></strings>
+		<enums>
+			<enum val="0" str="Off"></enum>
+			<enum val="1" str="On"></enum>
+		</enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_SR_AVERAGING_STOP">
+		<text>Spike removal averaging stop</text>
+		<group>spike removal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_SR_AVERAGING_WINDOW">
+		<text>Spike removal averaging window</text>
+		<group>spike removal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_SR_START">
+		<text>Spike removal start</text>
+		<group>spike removal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+	<pv name=":ENV:ENV_SR_WINDOW">
+		<text>Spike removal window</text>
+		<group>spike removal</group>
+		<getSuffix>_MONITOR</getSuffix>
+		<putSuffix>_SP</putSuffix>
+		<cmdSuffix></cmdSuffix>
+		<mode>value</mode>
+		<access>read-write</access>
+		<format>int</format>
+		<widget>QLineEdit</widget>
+		<strings></strings>
+		<enums></enums>
+		<enabled>True</enabled>
+		<comment></comment>
+		<value></value>
+	</pv>
+
+</pvList>
+
