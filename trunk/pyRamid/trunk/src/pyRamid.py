@@ -12,7 +12,6 @@ Created on Jun 13, 2011
 # TODO: remove Qt signals from the hidden panels, reconnect on show
 #===============================================================================
 
-from iHelper import iRaise, iLog
 
 # TODO: Fix this EPICS stuff
 import os
@@ -34,12 +33,15 @@ print 'exporting EPICS_CA_ADDR_LIST: ', ips
 os.putenv('EPICS_CA_ADDR_LIST', ips)
 
 
+from iGLobals import iLog, iInitIOCs, iDefaultIOCTreeXMLFile, iInitPVs, \
+    iDefaultPVTreeXMLFile, iInitHandler, iGlobalHandle
+from iHelper import xmlToObjectParser
+from iPVHandler import iPVHandler
+
 
 from PyQt4 import QtCore, QtGui
 import sys
 import time
-
-from iPVHandler import iPVHandler
 
 from ui.win1 import Ui_MainWindow
 from iPanelTest import iPanelTest
@@ -51,15 +53,21 @@ class Main(QtGui.QMainWindow):
     def __init__(self, parent = None):
         QtGui.QMainWindow.__init__(self, None)
 
-        iLog.debug("Log started")
+        iLog.info("Log started")
 
-        self.pvHandler = iPVHandler(self)
-        self.pvHandler.finished.connect(self.pvHandlerFinished)
-        self.pvHandler.terminated.connect(self.pvHandlerTerminated)
+        # Initialize global objects
+        iInitIOCs(xmlToObjectParser(iDefaultIOCTreeXMLFile, 'iIOCObj'))
+        iInitPVs(xmlToObjectParser(iDefaultPVTreeXMLFile, 'iPVObj'))
+        iInitHandler(iPVHandler(self))
+        iLog.info("Globals initialized..")
+
+#        pvHandler = globalPVhandle()
+#        pvHandler.finished.connect(self.pvHandlerFinished)
+#        pvHandler.terminated.connect(self.pvHandlerTerminated)
 
         self.uiPanels = dict()
-
         self.uiInit()
+        iLog.info("UI initialized..")
 
         self.ui.toolBox.setCurrentIndex(0)
         self.uiToolboxChange(0)
@@ -73,20 +81,23 @@ class Main(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.pushButton_exit, QtCore.SIGNAL("clicked()"), self.doClose)
         QtCore.QObject.connect(self.ui.toolBox, QtCore.SIGNAL("currentChanged(int)"), self.uiToolboxChange)
 
-        #self.ui.scrollAreaWidgetContents.hide()
-
         self.uiPanel = None
-        self.uiPanels['iPanelTest'] = iPanelTest(None, self.pvHandler)
+        panel = iPanelTest()
+        self.uiPanels[str(panel.objectName())] = panel
+        panel = iPanelDummy()#iPanelSingleIOCParam()
+        self.uiPanels[str(panel.objectName())] = panel
+        panel = iPanelDummy()#iPanelMultiIOCParam()
+        self.uiPanels[str(panel.objectName())] = panel
+        panel = iPanelDummy()
+        self.uiPanels[str(panel.objectName())] = panel
 
-        self.uiPanels['iPanelSingleIOCParam'] = iPanelSingleIOCParam(None, self.pvHandler)
-        self.uiPanels['iPanelMultiIOCParam'] = iPanelMultiIOCParam(None, self.pvHandler)
-
+        iLog.debug("self.uiPanels: %s" % (self.uiPanels))
         # Dummy panels
-        self.uiPanels['iPanelOrbit'] = iPanelDummy(None, self.pvHandler)
-        self.uiPanels['iPanelOverview'] = iPanelDummy(None, self.pvHandler)
-        self.uiPanels['iPanelConfiguration'] = iPanelDummy(None, self.pvHandler)
-        self.uiPanels['iPanelStatus'] = iPanelDummy(None, self.pvHandler)
-        self.uiPanels['iPanelLoadSaveParam'] = iPanelDummy(None, self.pvHandler)
+#        self.uiPanels['iPanelOrbit'] = iPanelDummy()
+#        self.uiPanels['iPanelOverview'] = iPanelDummy()
+#        self.uiPanels['iPanelConfiguration'] = iPanelDummy()
+#        self.uiPanels['iPanelStatus'] = iPanelDummy()
+#        self.uiPanels['iPanelLoadSaveParam'] = iPanelDummy()
 
     def uiToolboxChange(self, index):
         iLog.debug("enter")
@@ -95,25 +106,26 @@ class Main(QtGui.QMainWindow):
         iLog.debug("page=%s, panel=%s" % (page, self.uiPanel))
 
         if page == 'Test':
-            self.uiPanelShow(page, 'iPanelTest')
-        elif page == 'Parameters (Single IOC)':
-            self.uiPanelShow(page, 'iPanelSingleIOCParam')
-        elif page == 'Parameters (Multi IOC)':
-            self.uiPanelShow(page, 'iPanelMultiIOCParam')
-        elif page == 'Load && save':
-            self.uiPanelShow(page, "iPanelLoadSaveParam")
+            self.uiPanelShow(page, 'PanelTest')
+#        elif page == 'Parameters (Single IOC)':
+#            self.uiPanelShow(page, 'PanelSingleIOCParam')
+#        elif page == 'Parameters (Multi IOC)':
+#            self.uiPanelShow(page, 'PanelMultiIOCParam')
 
         # Dummy panels
+        elif page == 'Load && save':
+            self.uiPanelShow(page, "PanelDummy")
         elif page == 'Overview':
-            self.uiPanelShow(page, 'iPanelOverview')
+            self.uiPanelShow(page, 'PanelDummy')
         elif page == 'Orbit':
-            self.uiPanelShow(page, 'iPanelOrbit')
+            self.uiPanelShow(page, 'PanelDummy')
         elif page == 'Configuration':
-            self.uiPanelShow(page, 'iPanelConfiguration')
+            self.uiPanelShow(page, 'PanelDummy')
         elif page == 'Status':
-            self.uiPanelShow(page, 'iPanelStatus')
+            self.uiPanelShow(page, 'PanelDummy')
         else:
             iLog.error("unknown page=%s" % page)
+            self.uiPanelShow(page, 'PanelDummy')
 
     def uiPanelShow(self, page, panel):
         iLog.debug("enter")
@@ -139,8 +151,8 @@ class Main(QtGui.QMainWindow):
     def close(self):
         iLog.debug("enter")
 
-        self.pvHandler.close()
-        self.pvHandler = None
+        pvHandler = iGlobalHandle()
+        pvHandler.close()
         app.closeAllWindows()
 
     def doClose(self):

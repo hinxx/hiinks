@@ -7,32 +7,29 @@ Created on Jun 7, 2011
 #===============================================================================
 # COMMENTS
 #===============================================================================
-# TODO: provide combo boxes for known iocs and pvs, along with lineedit input 
+#
 #===============================================================================
 
-from iHelper import iRaise, iLog, iPVActionValGet, iPVActionValPut, \
-    iPVActionMonAdd, iPVActionMonRem
+from iGLobals import iRaise, iLog, iGlobalPVs, iGlobalIOCs, iGlobalHandle
 
 from PyQt4 import QtCore, QtGui
 
-from iPVTree import iPVTree
-from iIOCTree import iIOCTree
-
 from ui.uiPanelTest import Ui_PanelTest
+from lib.iWidgets import iQTableWidgetItem, iQLabel
 
 class iPanelTest(QtGui.QWidget):
 
-    def __init__(self, parent, pvHandler):
+    def __init__(self, parent = None):
         QtGui.QWidget.__init__(self, parent)
         iLog.debug("enter")
 
         self.pvMonitors = dict()
         self.iocName = None
         self.pvName = None
-        self.pvTree = iPVTree(self)
-        self.iocTree = iIOCTree(self)
+        self.pvs = iGlobalPVs()
+        self.iocs = iGlobalIOCs()
 
-        self.pvHandler = pvHandler
+        self.pvHandler = iGlobalHandle()
 
         self.ui = Ui_PanelTest()
         self.ui.setupUi(self)
@@ -40,22 +37,19 @@ class iPanelTest(QtGui.QWidget):
         self.ui.pushButton_get.clicked.connect(self.pvGet)
         self.ui.pushButton_put.clicked.connect(self.pvPut)
         self.ui.pushButton_monitor.clicked.connect(self.pvMonitor)
-        self.ui.pushButton_unmonitor.clicked.connect(self.pvUnmonitor)
-        self.ui.tableWidget.itemSelectionChanged.connect(self.tableSelect)
+        self.ui.tableWidget.itemClicked.connect(self.pvUnmonitor)
         self.ui.lineEdit_iocName.textChanged.connect(self.iocTextChanged)
         self.ui.lineEdit_pvName.textChanged.connect(self.pvTextChanged)
         self.connect(self.ui.comboBox_iocName, QtCore.SIGNAL('activated(QString)'), self.iocComboChanged)
         self.connect(self.ui.comboBox_pvName, QtCore.SIGNAL('activated(QString)'), self.pvComboChanged)
 
-        self.ui.pushButton_unmonitor.setDisabled(True)
-
         iocName = str(self.ui.lineEdit_iocName.text())
         pvName = str(self.ui.lineEdit_pvName.text())
 
         self.ui.comboBox_iocName.addItem('-- unknown --')
-        self.ui.comboBox_iocName.addItems(self.iocTree.mGetAttribute('name'))
+        self.ui.comboBox_iocName.addItems([ioc for ioc in self.iocs['__myid__']])
         self.ui.comboBox_pvName.addItem('-- unknown --')
-        self.ui.comboBox_pvName.addItems(self.pvTree.mGetAttribute('name'))
+        self.ui.comboBox_pvName.addItems([pv for pv in self.pvs['__myid__']])
         self.iocTextChanged(iocName)
         self.pvTextChanged(pvName)
 
@@ -120,16 +114,14 @@ class iPanelTest(QtGui.QWidget):
         self.pvName = pvName
         iLog.debug("self.iocName=%s, self.pvName=%s" % (self.iocName, self.pvName))
 
-        pvGet = iocName + self.pvTree.pvGetName(pvName)
-        pvPut = iocName + self.pvTree.pvPutName(pvName)
+        ioc = self.iocs[self.iocName]
+        pv = ioc.pv(self.pvName)
+        pv.connectOneShotSignal(self.ui.label_pvValue.slotOneShot)
 
-        self.ui.label_pvMonitorName.setText("GET %s" % (pvGet))
-        self.ui.label_pvSPName.setText("PUT %s" % (pvPut))
+        self.ui.label_pvName.setText("%s" % (pv.nameGetFull()))
 
-        iLog.info("Handing over GET to pvHandler, PV %s" % pvGet)
-        self.pvHandler.pvJobs.setPVProperty(pvGet, 'slotConnChanged', self.slotConnChanged)
-        self.pvHandler.pvJobs.setPVProperty(pvGet, 'slotValueChanged', self.slotValueChanged)
-        self.pvHandler.enqeue(iPVActionValGet, [pvGet])
+        iLog.debug("Handing over PV '%s' to handler" % pv.nameGetFull())
+        pv.scheduleGet()
 
     def pvPut(self):
         iLog.debug("enter")
@@ -149,18 +141,14 @@ class iPanelTest(QtGui.QWidget):
         self.pvName = pvName
         iLog.debug("self.pvName=%s, pvValue=%s" % (self.pvName, pvValue))
 
-        # FIXME: Handle _CMD!
-        pvGet = iocName + self.pvTree.pvGetName(pvName)
-        pvPut = iocName + self.pvTree.pvPutName(pvName)
+        ioc = self.iocs[self.iocName]
+        pv = ioc.pv(self.pvName)
+        pv.userValue = pvValue
 
-        self.ui.label_pvMonitorName.setText("GET %s" % (pvGet))
-        self.ui.label_pvSPName.setText("PUT %s" % (pvPut))
+        self.ui.label_pvName.setText("PV %s" % (pv.nameGetFull()))
 
-        iLog.info("Handing over PUT to pvHandler, PV %s" % pvPut)
-        self.pvHandler.pvJobs.setPVProperty(pvPut, 'userValue', pvValue)
-        self.pvHandler.pvJobs.setPVProperty(pvPut, 'slotConnChanged', self.slotConnChanged)
-        self.pvHandler.pvJobs.setPVProperty(pvPut, 'slotValueChanged', self.slotValueChanged)
-        self.pvHandler.enqeue(iPVActionValPut, [pvPut])
+        iLog.debug("Handing over PV '%s' to handler" % pv.namePutFull())
+        pv.schedulePut()
 
     def pvMonitor(self):
         iLog.debug("enter")
@@ -168,106 +156,62 @@ class iPanelTest(QtGui.QWidget):
         iocName = str(self.ui.lineEdit_iocName.text())
         pvName = str(self.ui.lineEdit_pvName.text())
 
-        if len(iocName) == 0 or len(pvName) == 0:
+        if len(iocName) == 0:
+            iLog.error("Invalid iocName argument length")
             return
 
-        fullName = iocName + self.pvTree.pvGetName(pvName)
-
-        if fullName in self.pvMonitors:
-            iLog.warning("iocName=%s, pvName=%s is already monitored!" % (iocName, pvName))
+        if len(pvName) == 0:
+            iLog.error("Invalid pvName argument length")
             return
+
+        iLog.debug("iocName=%s, pvName=%s" % (iocName, pvName))
+
+        ioc = self.iocs[iocName]
+        pv = ioc.pv(pvName)
 
         row = self.ui.tableWidget.rowCount()
         self.ui.tableWidget.setRowCount(row + 1)
-        item = QtGui.QTableWidgetItem(fullName)
+
+        item = QtGui.QTableWidgetItem(pv.iocName)
         self.ui.tableWidget.setItem(row, 0, item)
-        item = QtGui.QTableWidgetItem("UDF")
+
+        item = QtGui.QTableWidgetItem(pv.nameGetSuffix())
         self.ui.tableWidget.setItem(row, 1, item)
-        item = QtGui.QTableWidgetItem("UDF")
+
+        item = iQTableWidgetItem('')
+        self.ui.tableWidget.setCellWidget(row, 2, item._widget)
+        pv.connectPeriodicSignal(item.slotPeriodic)
         self.ui.tableWidget.setItem(row, 2, item)
+
+        item = QtGui.QTableWidgetItem("UDF")
+        item.setCheckState(QtCore.Qt.Checked)
+        self.ui.tableWidget.setItem(row, 3, item)
 
         self.ui.tableWidget.resizeColumnToContents(0)
 
-        iLog.info("Handing over MONITOR to pvHandler, PV %s" % fullName)
-        self.pvHandler.pvJobs.setPVProperty(fullName, 'doMonitor', True)
-        self.pvHandler.pvJobs.setPVProperty(fullName, 'slotConnChanged', self.slotConnChanged)
-        self.pvHandler.pvJobs.setPVProperty(fullName, 'slotValueChanged', self.slotValueChanged)
-        self.pvHandler.enqeue(iPVActionMonAdd, [fullName])
+        iLog.debug("Handing over MONITOR to pvHandler, PV %s" % pv.nameGetFull())
 
-    def pvUnmonitor(self):
+        pv.scheduleMonitor(True)
+
+    def pvUnmonitor(self, item):
         iLog.debug("enter")
+        iLog.info("clicked on item: %s" % (item.text()))
 
-        rows = []
-        for item in self.ui.tableWidget.selectedItems():
-            if item.column() != 0:
-                continue
+        if item.column() != 3:
+            return
 
-            pvName = str(item.text())
-            iLog.info("Removing MONITOR for PV %s" % pvName)
+        if item.checkState() != QtCore.Qt.Checked:
+            row = item.row()
 
-            self.pvHandler.enqeue(iPVActionMonRem, [pvName])
-            self.pvHandler.pvJobs.setPVProperty(pvName, 'doMonitor', False)
+            iocItem = self.ui.tableWidget.item(row, 0)
+            pvItem = self.ui.tableWidget.item(row, 1)
+            valueItem = self.ui.tableWidget.item(row, 2)
 
-            rows.append(item.row())
+            ioc = self.iocs[str(iocItem.text())]
+            pv = ioc.pv(str(pvItem.text()))
+            pv.disconnectPeriodicSignal(valueItem.slotPeriodic)
 
-        rows.reverse()
-        for row in rows:
             self.ui.tableWidget.removeRow(row)
             self.ui.tableWidget.resizeColumnToContents(0)
 
-    def tableSelect(self):
-        iLog.debug("enter")
-
-        if self.ui.tableWidget.selectedItems():
-            self.ui.pushButton_unmonitor.setEnabled(True)
-        else:
-            self.ui.pushButton_unmonitor.setDisabled(True)
-
-#===============================================================================
-# CA callback slots
-#===============================================================================
-
-    @QtCore.pyqtSlot('QObject*')
-    def slotConnChanged(self, pvObj):
-        iLog.debug("enter")
-        iLog.debug("Called for pvName=%s, pvValue=%s, pvConnected=%s" %
-                   (pvObj.name, pvObj.value, pvObj.connected))
-
-        self.slotValueChanged(pvObj)
-
-    @QtCore.pyqtSlot('QObject*')
-    def slotValueChanged(self, pvObj):
-        iLog.debug("enter")
-        iLog.debug("Called for pvName=%s, pvValue=%s, pvConnected=%s" %
-                   (pvObj.name, pvObj.value, pvObj.connected))
-
-        if self.iocName and self.pvName:
-            iLog.info("GET/PUT pvName=%s, value=%s, success=%s" % (pvObj.name, pvObj.value, pvObj.connected))
-
-            pvGet = self.iocName + self.pvTree.pvGetName(self.pvName)
-            pvPut = self.iocName + self.pvTree.pvPutName(self.pvName)
-            if pvObj.name == pvGet:
-                self.ui.label_pvMonitorValue.setText("%s" % (str(pvObj.value)))
-                if pvObj.connected:
-                    self.ui.label_pvMonitorConnected.setText("(connected)")
-                else:
-                    self.ui.label_pvMonitorConnected.setText("(UN-CONNECTED)")
-            elif pvObj.name == pvPut:
-                self.ui.label_pvSPValue.setText("%s" % (str(pvObj.value)))
-                if pvObj.connected:
-                    self.ui.label_pvSPConnected.setText("(connected)")
-                else:
-                    self.ui.label_pvSPConnected.setText("(UN-CONNECTED)")
-
-        if pvObj.doMonitor:
-            iLog.info("MONITOR pvName=%s, value=%s, success=%s" % (pvObj.name, pvObj.value, pvObj.connected))
-
-            for nameItem in self.ui.tableWidget.findItems(pvObj.name, QtCore.Qt.MatchExactly):
-                item = self.ui.tableWidget.item(nameItem.row(), nameItem.column() + 1)
-                item.setText(str(pvObj.value))
-                item = self.ui.tableWidget.item(nameItem.row(), nameItem.column() + 2)
-                item.setText(str(pvObj.connected))
-                if pvObj.connected:
-                    item.setText(str('(connected)'))
-                else:
-                    item.setText(str('(UN-CONNECTED)'))
+            iLog.info("removing monitor PV %s" % (pv.nameGetFull()))

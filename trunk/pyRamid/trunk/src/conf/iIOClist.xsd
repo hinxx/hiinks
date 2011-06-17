@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <xsd:element name="root" type="list_type"></xsd:element>
+
+    <xsd:complexType name="item_type">
+    	<xsd:sequence>
+    		<xsd:element name="prop" type="prop_type"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</xsd:element>
+    	</xsd:sequence>
+    	<xsd:attribute name="name" type="xsd:string"></xsd:attribute>
+    </xsd:complexType>
     
-    <xsd:complexType name="ioc_type">
+    <xsd:complexType name="list_type">
     	<xsd:sequence>
-    		<xsd:element name="name" type="xsd:string"></xsd:element>
-    		<xsd:element name="text" type="xsd:string"></xsd:element>
-    		<xsd:element name="group" type="xsd:string"></xsd:element>
-    		<xsd:element name="ip" type="xsd:string"></xsd:element>
-    		<xsd:element name="enabled" type="xsd:boolean"></xsd:element>
-    		<xsd:element name="comment" type="xsd:string"></xsd:element>
+    		<xsd:element name="item" type="item_type"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</xsd:element>
     	</xsd:sequence>
+    	<xsd:attribute name="name" type="xsd:string"></xsd:attribute>
     </xsd:complexType>
 
-    <xsd:complexType name="iocList_type">
+    <xsd:complexType name="prop_type">
     	<xsd:sequence>
-    		<xsd:element name="ioc" type="ioc_type" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+    		<xsd:element name="value" type="xsd:string"></xsd:element>
     	</xsd:sequence>
+    	<xsd:attribute name="name" type="xsd:string"></xsd:attribute>
     </xsd:complexType>
 
-
-    <xsd:element name="iocList" type="iocList_type"></xsd:element>
 </xsd:schema>

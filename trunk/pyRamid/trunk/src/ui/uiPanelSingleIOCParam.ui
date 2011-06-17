@@ -104,6 +104,15 @@
      <property name="itemsExpandable">
       <bool>true</bool>
      </property>
+     <attribute name="headerVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="headerDefaultSectionSize">
+      <number>100</number>
+     </attribute>
+     <attribute name="headerStretchLastSection">
+      <bool>true</bool>
+     </attribute>
      <column>
       <property name="text">
        <string>Property</string>
@@ -117,6 +126,11 @@
      <column>
       <property name="text">
        <string>Apply</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>PV name</string>
       </property>
      </column>
     </widget>
