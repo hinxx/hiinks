@@ -3,13 +3,13 @@ Created on Jun 8, 2011
 
 @author: hinko
 '''
-from iHelper import iRaise, iLog
+from iGLobals import iRaise, iLog
 
 import threading, Queue
 from PyQt4 import QtCore
 
 class iThreader(QtCore.QObject):
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         QtCore.QObject.__init__(self, parent)
 
     def initData(self):

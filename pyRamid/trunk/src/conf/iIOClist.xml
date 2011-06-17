@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<iocList
+<root
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema"
 	xsi:noNamespaceSchemaLocation="iIOClist.xsd"
+	name="IOCList"
 >
 
-	<ioc name="hinkoHost">
-		<group>rack</group>
-		<ip>ip</ip>
-		<enabled>True</enabled>
-		<comment></comment>
-		<text></text>
-	</ioc>
-	<ioc name="hinkoHost1">
-		<group>rack</group>
-		<ip>ip</ip>
-		<enabled>True</enabled>
-		<comment></comment>
-		<text></text>
-	</ioc>
-	<ioc name="hinkoHost2">
-		<group>rack</group>
-		<ip>ip</ip>
-		<enabled>True</enabled>
-		<comment></comment>
-		<text></text>
-	</ioc>
-	<ioc name="hinkoHost3">
-		<group>rack</group>
-		<ip>ip</ip>
-		<enabled>True</enabled>
-		<comment></comment>
-		<text></text>
-	</ioc>
+	<!-- This is list of IOCs -->
+	
+	<item name="hinkoHost">
+		<prop name="group">rack</prop>
+		<prop name="ip">ip</prop>
+		<prop name="enabled">True</prop>
+		<prop name="comment"></prop>
+		<prop name="text"></prop>
+	</item>
 
-</iocList>
+	<item name="hinkoHost1">
+		<prop name="group">rack</prop>
+		<prop name="ip">ip</prop>
+		<prop name="enabled">True</prop>
+		<prop name="comment"></prop>
+		<prop name="text"></prop>
+	</item>
+
+	<item name="hinkoHost2">
+		<prop name="group">rack</prop>
+		<prop name="ip">ip</prop>
+		<prop name="enabled">True</prop>
+		<prop name="comment"></prop>
+		<prop name="text"></prop>
+	</item>
+
+	<item name="hinkoHost3">
+		<prop name="group">rack</prop>
+		<prop name="ip">ip</prop>
+		<prop name="enabled">True</prop>
+		<prop name="comment"></prop>
+		<prop name="text"></prop>
+	</item>
+
+</root>
