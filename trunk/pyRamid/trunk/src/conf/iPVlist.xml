@@ -6,6 +6,7 @@
 
 	<!-- This is list of PVs -->
 
+	<!-- Dummies .. used for debug -->
 	<item name=":P:ai1">
 		<prop name="text">Dummy PV1</prop>
 		<prop name="group">dummy</prop>
@@ -54,6 +55,12 @@
 		<prop name="comment"></prop>
 		<prop name="value"></prop>
 	</item>
+
+	<!--
+
+	Environment PVs
+
+	 -->
 	
 	<!-- Button parameters -->
 	<item name=":ENV:ENV_KX">
@@ -1031,6 +1038,69 @@
 		<prop name="comment"></prop>
 		<prop name="value"></prop>
 	</item>
+
+
+	<!--
+
+	SA PVs
+
+	 -->
+
+	<item name=":SA:SA_X">
+		<prop name="text">X position</prop>
+		<prop name="group">SA stream</prop>
+		<prop name="getSuffix">_MONITOR</prop>
+		<prop name="putSuffix"></prop>
+		<prop name="cmdSuffix"></prop>
+		<prop name="mode">value</prop>
+		<prop name="access">read-only</prop>
+		<prop name="format">int</prop>
+		<prop name="widget">iQLabel</prop>
+		<prop name="strings"></prop>
+		<prop name="enums"></prop>
+		<prop name="enabled">True</prop>
+		<prop name="comment"></prop>
+		<prop name="value"></prop>
+	</item>
+	<item name=":SA:SA_X">
+		<prop name="text">Y position</prop>
+		<prop name="group">SA stream</prop>
+		<prop name="getSuffix">_MONITOR</prop>
+		<prop name="putSuffix"></prop>
+		<prop name="cmdSuffix"></prop>
+		<prop name="mode">value</prop>
+		<prop name="access">read-only</prop>
+		<prop name="format">int</prop>
+		<prop name="widget">iQLabel</prop>
+		<prop name="strings"></prop>
+		<prop name="enums"></prop>
+		<prop name="enabled">True</prop>
+		<prop name="comment"></prop>
+		<prop name="value"></prop>
+	</item>
+	<item name=":SA:SA_SUM">
+		<prop name="text">Signal SUM</prop>
+		<prop name="group">SA stream</prop>
+		<prop name="getSuffix">_MONITOR</prop>
+		<prop name="putSuffix"></prop>
+		<prop name="cmdSuffix"></prop>
+		<prop name="mode">value</prop>
+		<prop name="access">read-only</prop>
+		<prop name="format">int</prop>
+		<prop name="widget">iQLabel</prop>
+		<prop name="strings"></prop>
+		<prop name="enums"></prop>
+		<prop name="enabled">True</prop>
+		<prop name="comment"></prop>
+		<prop name="value"></prop>
+	</item>
+
+
+	<!--
+
+	xxx PVs
+
+	 -->
 
 </root>
 
