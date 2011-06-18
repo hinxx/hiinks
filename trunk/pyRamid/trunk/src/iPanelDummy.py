@@ -10,29 +10,25 @@ Created on Jun 7, 2011
 #  
 #===============================================================================
 
-from iHelper import iRaise, iLog, iPVActionValGet, iPVActionValPut, \
-    iPVActionMonAdd, iPVActionMonRem
+from iGLobals import iRaise, iLog, iGlobalHandle, iGlobalPVs, iGlobalIOCs
 
 from PyQt4 import QtCore, QtGui
-
-from iPVTree import iPVTree
-from iIOCTree import iIOCTree
 
 from ui.uiPanelDummy import Ui_PanelDummy
 
 class iPanelDummy(QtGui.QWidget):
 
-    def __init__(self, parent, pvHandler):
+    def __init__(self, parent = None):
         QtGui.QWidget.__init__(self, parent)
         iLog.debug("enter")
 
         self.pvMonitors = dict()
         self.iocName = None
         self.pvName = None
-        self.pvTree = iPVTree(self)
-        self.iocTree = iIOCTree(self)
 
-        self.pvHandler = pvHandler
+        self.pvHandler = iGlobalHandle()
+        self.pvs = iGlobalPVs()
+        self.iocs = iGlobalIOCs()
 
         self.ui = Ui_PanelDummy()
         self.ui.setupUi(self)

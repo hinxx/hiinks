@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>439</width>
+    <width>535</width>
     <height>397</height>
    </rect>
   </property>
@@ -57,25 +57,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_changePV">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Change PV</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -96,7 +77,7 @@
       <enum>QAbstractItemView::NoSelection</enum>
      </property>
      <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
+      <enum>QAbstractItemView::SelectItems</enum>
      </property>
      <property name="uniformRowHeights">
       <bool>true</bool>
@@ -104,8 +85,14 @@
      <property name="itemsExpandable">
       <bool>true</bool>
      </property>
+     <attribute name="headerVisible">
+      <bool>true</bool>
+     </attribute>
      <attribute name="headerDefaultSectionSize">
       <number>100</number>
+     </attribute>
+     <attribute name="headerStretchLastSection">
+      <bool>true</bool>
      </attribute>
      <column>
       <property name="text">
@@ -125,6 +112,11 @@
      <column>
       <property name="text">
        <string>Apply</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>PV name</string>
       </property>
      </column>
     </widget>

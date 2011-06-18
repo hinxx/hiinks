@@ -25,7 +25,7 @@ class iPanelSingleIOCParam(QtGui.QWidget):
 
         self.iocName = None
         self.pvName = None
-        self.pvs = iGlobalPVs()
+        #self.pvs = iGlobalPVs()
         self.iocs = iGlobalIOCs()
 
         self.config = xmlToDictParser('conf/iSingleIOCPVList.xml')
@@ -170,7 +170,7 @@ class iPanelSingleIOCParam(QtGui.QWidget):
                 if child.checkState(2) != QtCore.Qt.Checked:
                     continue
 
-                pv.userValue = str(child._widget.text())
+                pv.userValue = child.iValueGet()
 
                 child.connectPVObj(pv)
 
