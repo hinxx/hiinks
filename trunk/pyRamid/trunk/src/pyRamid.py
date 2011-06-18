@@ -61,10 +61,6 @@ class Main(QtGui.QMainWindow):
         iInitHandler(iPVHandler(self))
         iLog.info("Globals initialized..")
 
-#        pvHandler = globalPVhandle()
-#        pvHandler.finished.connect(self.pvHandlerFinished)
-#        pvHandler.terminated.connect(self.pvHandlerTerminated)
-
         self.uiPanels = dict()
         self.uiInit()
         iLog.info("UI initialized..")
@@ -84,7 +80,7 @@ class Main(QtGui.QMainWindow):
         self.uiPanel = None
         panel = iPanelTest()
         self.uiPanels[str(panel.objectName())] = panel
-        panel = iPanelDummy()#iPanelSingleIOCParam()
+        panel = iPanelSingleIOCParam()
         self.uiPanels[str(panel.objectName())] = panel
         panel = iPanelDummy()#iPanelMultiIOCParam()
         self.uiPanels[str(panel.objectName())] = panel
@@ -107,8 +103,8 @@ class Main(QtGui.QMainWindow):
 
         if page == 'Test':
             self.uiPanelShow(page, 'PanelTest')
-#        elif page == 'Parameters (Single IOC)':
-#            self.uiPanelShow(page, 'PanelSingleIOCParam')
+        elif page == 'Parameters (Single IOC)':
+            self.uiPanelShow(page, 'PanelSingleIOCParam')
 #        elif page == 'Parameters (Multi IOC)':
 #            self.uiPanelShow(page, 'PanelMultiIOCParam')
 

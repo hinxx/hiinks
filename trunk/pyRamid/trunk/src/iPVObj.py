@@ -222,10 +222,12 @@ class iPVObj(QtCore.QObject):
     def _caRefreshValue(self, value, periodic = False):
         iLog.debug("enter")
 
-        iLog.info("PV old value %s is %s" % (self.name, str(self.value)))
+        iLog.debug("PV old value %s is '%s' (%s)" % (self.name, self.value, type(self.value)))
+        iLog.debug("PV new value %s is '%s' (%s)" % (self.name, value, type(value)))
+
         self.value = value
 
-        iLog.info("PV value changed %s is %s" % (self.name, str(self.value)))
+        iLog.debug("PV value changed %s is '%s' (%s)" % (self.name, self.value, type(self.value)))
         if periodic:
             self.localPeriodic.emit()
         else:
@@ -234,12 +236,13 @@ class iPVObj(QtCore.QObject):
     def _caRefreshConn(self, state):
         iLog.debug("enter")
 
-        iLog.info("PV old connect state %s is %s" % (self.name, str(self.connected)))
+        iLog.debug("PV old connect state %s is %s" % (self.name, str(self.connected)))
+
         self.connected = state
         if not self.connected:
-            self.value = 'UDF'
+            self.value = None
 
-        iLog.info("PV connect state changed %s is %s" % (self.name, str(self.connected)))
+        iLog.debug("PV connect state changed %s is %s" % (self.name, str(self.connected)))
 
         self.localPeriodic.emit()
         self.localOneShot.emit()
@@ -315,7 +318,7 @@ class iPVObj(QtCore.QObject):
             iLog.error("GET CASeverityException pvName=%s, exception=%s" % (name, caex))
             #ca.show_cache()
         finally:
-            iLog.debug("GET pvName=%s, value=%s" % (name, str(value)))
+            iLog.info("GET pvName=%s, value=%s" % (name, str(value)))
 
             self._caRefreshValue(value)
 

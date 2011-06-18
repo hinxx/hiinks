@@ -143,7 +143,7 @@ def xmlToObjectParser2(xmlFile, className, matchItemName = None):
 
     iLog.debug("Class %s module %s" % (className, mod))
 
-    iLog.info("parsing XML xmlFile '%s' into class '%s' (%s)" % (xmlFile, className, mod))
+    iLog.debug("parsing XML xmlFile '%s' into class '%s' (%s)" % (xmlFile, className, mod))
     xmlTree = etree.parse(str(xmlFile))
     if not xmlTree:
         iRaise(None, "Failed to parse XML file %s" % (xmlFile))
@@ -168,10 +168,10 @@ def xmlToObjectParser2(xmlFile, className, matchItemName = None):
             itemText = item.text
             itemText = itemText.strip()
 
-        iLog.info("Item tag='%s', text='%s', attrib='%s'" % (item.tag, itemText, item.attrib))
+        iLog.debug("Item tag='%s', text='%s', attrib='%s'" % (item.tag, itemText, item.attrib))
 
         if found is None and matchItemName.startswith(itemName):
-            iLog.info("Match '%s' startswith '%s'" % (matchItemName, itemName))
+            iLog.debug("Match '%s' startswith '%s'" % (matchItemName, itemName))
 
             for prop in item:
                 if prop.tag != 'prop':
@@ -185,13 +185,13 @@ def xmlToObjectParser2(xmlFile, className, matchItemName = None):
                         propText = prop.text
                         propText = propText.strip()
 
-                    iLog.info("Found prefix '%s' for '%s'" % (propText, itemName))
+                    iLog.debug("Found prefix '%s' for '%s'" % (propText, itemName))
                     if itemName + propText == matchItemName:
                         found = item
                         break
 
         if found is None:
-            iLog.info("Item '%s' not OK" % (itemName))
+            iLog.debug("Item '%s' not OK" % (itemName))
             continue
 
         # We found our match
@@ -206,6 +206,8 @@ def xmlToObjectParser2(xmlFile, className, matchItemName = None):
 
             propName = prop.get('name')
             if hasattr(propObj, propName):
+                if len(propText) == 0:
+                    propText = None
                 setattr(propObj, propName, propText)
             else:
                 iLog.error("Object type '%s' has no property '%s'" % (className, propName))

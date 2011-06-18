@@ -15,7 +15,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -31,7 +31,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -47,7 +47,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -65,7 +65,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -81,7 +81,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -97,7 +97,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -113,7 +113,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -129,7 +129,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -147,7 +147,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -163,7 +163,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1</prop>
 		<prop name="enumStr">Internal External</prop>
@@ -180,7 +180,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -196,7 +196,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -212,7 +212,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -228,7 +228,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1</prop>
 		<prop name="enumStr">Disabled Enabled</prop>
@@ -245,7 +245,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1 2 3</prop>
 		<prop name="enumStr">Disabled Unity Enabled Save</prop>
@@ -264,7 +264,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1 2</prop>
 		<prop name="enumStr">Disabled Enabled GainDep</prop>
@@ -281,7 +281,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -297,7 +297,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -313,7 +313,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -329,7 +329,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -345,7 +345,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -361,7 +361,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -377,7 +377,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -393,7 +393,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1 2 4 8 16</prop>
 		<prop name="enumStr">None Xposition Yposition AttenLimit ADCoverflowFil ADCoverflow</prop>
@@ -410,7 +410,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1</prop>
 		<prop name="enumStr">OK INTERLOCK</prop>
@@ -427,7 +427,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -443,7 +443,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -461,7 +461,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1 2</prop>
 		<prop name="enumStr">External Internal Position</prop>
@@ -478,7 +478,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -494,7 +494,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -510,7 +510,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -526,7 +526,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -542,7 +542,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -558,7 +558,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -574,7 +574,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -590,7 +590,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">1 64</prop>
 		<prop name="enumStr">DEC-1 DEC-64</prop>
@@ -607,7 +607,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -625,7 +625,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -641,7 +641,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -659,7 +659,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -675,7 +675,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -691,7 +691,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -709,7 +709,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -725,7 +725,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -741,7 +741,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -757,7 +757,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -773,7 +773,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -789,7 +789,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -805,7 +805,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -821,7 +821,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLabel</prop>
+		<prop name="widget">iQLabel</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -839,7 +839,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1</prop>
 		<prop name="enumStr">OK ERROR</prop>
@@ -856,7 +856,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1</prop>
 		<prop name="enumStr">OK ERROR</prop>
@@ -873,7 +873,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-only</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1</prop>
 		<prop name="enumStr">OK ERROR</prop>
@@ -892,7 +892,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -908,7 +908,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -924,7 +924,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -942,7 +942,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1</prop>
 		<prop name="enumStr">Off On</prop>
@@ -959,7 +959,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QComboBox</prop>
+		<prop name="widget">iQComboBox</prop>
 		<prop name="strings"></prop>
 		<prop name="enumInt">0 1</prop>
 		<prop name="enumStr">Off On</prop>
@@ -976,7 +976,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -992,7 +992,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -1008,7 +1008,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>
@@ -1024,7 +1024,7 @@
 		<prop name="mode">value</prop>
 		<prop name="access">read-write</prop>
 		<prop name="format">int</prop>
-		<prop name="widget">QLineEdit</prop>
+		<prop name="widget">iQLineEdit</prop>
 		<prop name="strings"></prop>
 		<prop name="enums"></prop>
 		<prop name="enabled">True</prop>

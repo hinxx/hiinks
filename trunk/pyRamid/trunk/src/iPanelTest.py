@@ -23,13 +23,10 @@ class iPanelTest(QtGui.QWidget):
         QtGui.QWidget.__init__(self, parent)
         iLog.debug("enter")
 
-        self.pvMonitors = dict()
         self.iocName = None
         self.pvName = None
         self.pvs = iGlobalPVs()
         self.iocs = iGlobalIOCs()
-
-        self.pvHandler = iGlobalHandle()
 
         self.ui = Ui_PanelTest()
         self.ui.setupUi(self)
@@ -47,9 +44,10 @@ class iPanelTest(QtGui.QWidget):
         pvName = str(self.ui.lineEdit_pvName.text())
 
         self.ui.comboBox_iocName.addItem('-- unknown --')
-        self.ui.comboBox_iocName.addItems([ioc for ioc in self.iocs['__myid__']])
+        self.ui.comboBox_iocName.addItems(self.iocs['__myid__'])
         self.ui.comboBox_pvName.addItem('-- unknown --')
-        self.ui.comboBox_pvName.addItems([pv for pv in self.pvs['__myid__']])
+        self.ui.comboBox_pvName.addItems(self.pvs['__myid__'])
+
         self.iocTextChanged(iocName)
         self.pvTextChanged(pvName)
 
@@ -180,7 +178,7 @@ class iPanelTest(QtGui.QWidget):
 
         item = iQTableWidgetItem('')
         self.ui.tableWidget.setCellWidget(row, 2, item._widget)
-        pv.connectPeriodicSignal(item.slotPeriodic)
+        item.connectPVObj(pv, True)
         self.ui.tableWidget.setItem(row, 2, item)
 
         item = QtGui.QTableWidgetItem("UDF")
@@ -189,7 +187,7 @@ class iPanelTest(QtGui.QWidget):
 
         self.ui.tableWidget.resizeColumnToContents(0)
 
-        iLog.debug("Handing over MONITOR to pvHandler, PV %s" % pv.nameGetFull())
+        iLog.debug("Handing over MONITOR to handler, PV %s" % pv.nameGetFull())
 
         pv.scheduleMonitor(True)
 
@@ -209,7 +207,7 @@ class iPanelTest(QtGui.QWidget):
 
             ioc = self.iocs[str(iocItem.text())]
             pv = ioc.pv(str(pvItem.text()))
-            pv.disconnectPeriodicSignal(valueItem.slotPeriodic)
+            valueItem.disconnectPVObj(pv, True)
 
             self.ui.tableWidget.removeRow(row)
             self.ui.tableWidget.resizeColumnToContents(0)
