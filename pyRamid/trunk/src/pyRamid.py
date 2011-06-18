@@ -48,6 +48,7 @@ from iPanelTest import iPanelTest
 from iPanelSingleIOCParam import iPanelSingleIOCParam
 from iPanelMultiIOCParam import iPanelMultiIOCParam
 from iPanelDummy import iPanelDummy
+from iSAOrbit import iPanelSAOrbit
 
 class Main(QtGui.QMainWindow):
     def __init__(self, parent = None):
@@ -84,6 +85,8 @@ class Main(QtGui.QMainWindow):
         self.uiPanels[str(panel.objectName())] = panel
         panel = iPanelMultiIOCParam()
         self.uiPanels[str(panel.objectName())] = panel
+        panel = iPanelSAOrbit()
+        self.uiPanels[str(panel.objectName())] = panel
         panel = iPanelDummy()
         self.uiPanels[str(panel.objectName())] = panel
 
@@ -107,6 +110,8 @@ class Main(QtGui.QMainWindow):
             self.uiPanelShow(page, 'PanelSingleIOCParam')
         elif page == 'Parameters (Multi IOC)':
             self.uiPanelShow(page, 'PanelMultiIOCParam')
+        elif page == 'SA orbit':
+            self.uiPanelShow(page, 'PanelSAOrbit')
 
         # Dummy panels
         elif page == 'Load && save':
