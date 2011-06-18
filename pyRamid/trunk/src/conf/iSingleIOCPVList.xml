@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xsi:noNamespaceSchemaLocation="iSingleIOCPVList.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+	name="SingleIOCPVList"
+>
+
+	<!-- Single IOC parameter watch list -->
+
+ 	<item name="Dummy">
+		<prop name=":P:ai1">value</prop>
+		<prop name=":P:ai2">value</prop>
+		<prop name=":P:ai3">value</prop>
+	</item>
+
+ 	<item name="Geometrical parameters">
+		<prop name=":ENV:ENV_KX">value</prop>
+		<prop name=":ENV:ENV_KY">value</prop>
+	</item>
+
+ 	<item name="Interlock">
+		<prop name=":ENV:ENV_ILK_MODE">value</prop>
+		<prop name=":ENV:ENV_ILK_X_LOW">value</prop>
+		<prop name=":ENV:ENV_ILK_X_HIGH">value</prop>
+		<prop name=":ENV:ENV_ILK_Y_LOW">value</prop>
+		<prop name=":ENV:ENV_ILK_Y_HIGH">value</prop>
+		<prop name=":ENV:ENV_ILK_OF_DUR">value</prop>
+		<prop name=":ENV:ENV_ILK_OF_LIMIT">value</prop>
+		<prop name=":ENV:ENV_ILK_GAIN_LIMIT">value</prop>
+		<prop name=":ENV:ENV_ILK_STATUS">status</prop>
+		<prop name=":ENV:ENV_INTERLOCK">status</prop>
+		<prop name=":ENV:ENV_INTERLOCK_CLEAR">command</prop>
+		<prop name=":ENV:SET_INTERLOCK_PARAM">command</prop>
+	</item>
+
+</root>
+

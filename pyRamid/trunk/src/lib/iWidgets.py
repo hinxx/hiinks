@@ -44,6 +44,12 @@ class iQLabel(QtGui.QLabel):
         self.defaultLook = self.styleSheet()
         self.pvObj = None
 
+    def iValueSet(self, value):
+        self.setText(value)
+
+    def iValueGet(self):
+        return self.text()
+
     #===========================================================================
     # CA callback slots
     #===========================================================================
@@ -111,6 +117,12 @@ class iQLineEdit(QtGui.QLineEdit):
 
         self.defaultLook = self.styleSheet()
         self.pvObj = None
+
+    def iValueSet(self, value):
+        self.setText(value)
+
+    def iValueGet(self):
+        return self.text()
 
     #===========================================================================
     # CA callback slots
@@ -180,6 +192,13 @@ class iQComboBox(QtGui.QComboBox):
         self.defaultLook = self.styleSheet()
         self.pvObj = None
         self.iText = text
+
+    def iValueSet(self, value):
+        value = value - 1
+        self.setCurrentIndex(value)
+
+    def iValueGet(self):
+        return self.currentIndex() - 1
 
     #===========================================================================
     # CA callback slots
@@ -263,6 +282,12 @@ class iQTableWidgetItem(QtGui.QTableWidgetItem):
 
         self.iType = iType
 
+    def iValueSet(self, value):
+        return self._widget.iValueSet(value)
+
+    def iValueGet(self):
+        return self._widget.iValueGet()
+
     def connectPVObj(self, pvObj, periodic = False):
         iLog.debug("enter")
 
@@ -299,6 +324,12 @@ class iQTreeWidgetItem(QtGui.QTreeWidgetItem):
             iRaise(self, "widget type '%s' not supported" % (iType))
 
         self.iType = iType
+
+    def iValueSet(self, value):
+        return self._widget.iValueSet(value)
+
+    def iValueGet(self):
+        return self._widget.iValueGet()
 
     def connectPVObj(self, pvObj, periodic = False):
         iLog.debug("enter")

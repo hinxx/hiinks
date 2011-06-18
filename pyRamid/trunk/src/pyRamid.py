@@ -82,7 +82,7 @@ class Main(QtGui.QMainWindow):
         self.uiPanels[str(panel.objectName())] = panel
         panel = iPanelSingleIOCParam()
         self.uiPanels[str(panel.objectName())] = panel
-        panel = iPanelDummy()#iPanelMultiIOCParam()
+        panel = iPanelMultiIOCParam()
         self.uiPanels[str(panel.objectName())] = panel
         panel = iPanelDummy()
         self.uiPanels[str(panel.objectName())] = panel
@@ -105,8 +105,8 @@ class Main(QtGui.QMainWindow):
             self.uiPanelShow(page, 'PanelTest')
         elif page == 'Parameters (Single IOC)':
             self.uiPanelShow(page, 'PanelSingleIOCParam')
-#        elif page == 'Parameters (Multi IOC)':
-#            self.uiPanelShow(page, 'PanelMultiIOCParam')
+        elif page == 'Parameters (Multi IOC)':
+            self.uiPanelShow(page, 'PanelMultiIOCParam')
 
         # Dummy panels
         elif page == 'Load && save':

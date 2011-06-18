@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>439</width>
+    <width>523</width>
     <height>397</height>
    </rect>
   </property>
@@ -77,7 +77,7 @@
       <enum>QAbstractItemView::NoSelection</enum>
      </property>
      <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
+      <enum>QAbstractItemView::SelectItems</enum>
      </property>
      <property name="uniformRowHeights">
       <bool>true</bool>
