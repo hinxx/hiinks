@@ -7,51 +7,43 @@ Created on Jun 7, 2011
 #===============================================================================
 # COMMENTS
 #===============================================================================
-# TODO: provide combo boxes for known iocs and pvs, along with lineedit input 
+# 
 #===============================================================================
 
-from iHelper import iRaise, iLog, iPVActionValGet, iPVActionValPut, \
-    iPVActionMonAdd, iPVActionMonRem
-
+from iGLobals import iRaise, iLog, iGlobalHandle, iGlobalPVs, iGlobalIOCs, iPVActionValGet
+from iHelper import xmlToDictParser
 from PyQt4 import QtCore, QtGui
 
-from iPVTree import iPVTree
-from iIOCTree import iIOCTree
-
 from ui.uiPanelSingleIOCParam import Ui_PanelSingleIOCParam
+from lib.iWidgets import iQTreeWidgetItem
 
 class iPanelSingleIOCParam(QtGui.QWidget):
 
-    def __init__(self, parent, pvHandler):
+    def __init__(self, parent = None):
         QtGui.QWidget.__init__(self, parent)
         iLog.debug("enter")
 
-        self.pvMonitors = dict()
         self.iocName = None
         self.pvName = None
-        self.pvTree = iPVTree(self)
-        self.iocTree = iIOCTree(self)
+        self.pvs = iGlobalPVs()
+        self.iocs = iGlobalIOCs()
 
-        self.pvHandler = pvHandler
+        self.config = xmlToDictParser('conf/iSingleIOCPVList.xml')
 
         self.ui = Ui_PanelSingleIOCParam()
         self.ui.setupUi(self)
 
         self.ui.pushButton_apply.clicked.connect(self.pvApply)
         self.ui.pushButton_refresh.clicked.connect(self.pvRefresh)
-        self.ui.pushButton_changeIOC.clicked.connect(self.iocChange)
         self.ui.lineEdit_iocName.textChanged.connect(self.iocTextChanged)
         self.connect(self.ui.comboBox_iocName, QtCore.SIGNAL('activated(QString)'), self.iocComboChanged)
 
         iocName = str(self.ui.lineEdit_iocName.text())
 
         self.ui.comboBox_iocName.addItem('-- unknown --')
-        self.ui.comboBox_iocName.addItems(self.iocTree.mGetAttribute('name'))
+        self.ui.comboBox_iocName.addItems(self.iocs['__myid__'])
 
         self.iocTextChanged(iocName)
-
-        #self.iocChange()
-        #self.populate()
 
     def show(self):
         iLog.debug("enter")
@@ -99,95 +91,90 @@ class iPanelSingleIOCParam(QtGui.QWidget):
 
         iLog.debug("new iocName=%s" % self.iocName)
 
-        self.pvRefresh()
+    def pvPopulate(self):
+        iLog.info("enter")
 
-    def populate(self):
-        iLog.debug("enter")
-        """
-        iocObj = pvListFind(self.iocList, name = self.iocName)
-        if not iocObj:
+        if self.ui.treeWidget.topLevelItemCount() != 0:
+            iLog.warning("Tree widget is already populated")
             return
 
-        if len(self.itemList) != 0:
-            return
+        for iKey in self.config['__myid__']:
+            iVal = self.config[iKey]
+            iLog.info("iKey=%s, iVal=%s" % (iKey, iVal))
+            item = QtGui.QTreeWidgetItem([iKey])
+            self.ui.treeWidget.addTopLevelItem(item)
 
-        item = QtGui.QTreeWidgetItem(["Dummy"])
-        self.ui.treeWidget.addTopLevelItem(item)
-        self.addItems('dummy', item)
+            for pKey in iVal['__myid__']:
+                pVal = iVal[pKey]
+                iLog.info("pKey=%s, pVal=%s" % (pKey, pVal))
 
-        item = QtGui.QTreeWidgetItem(["Interlock"])
-        self.ui.treeWidget.addTopLevelItem(item)
-        self.addItems('interlock', item)
+                ioc = self.iocs[self.iocName]
+                pv = ioc.pv(pKey)
 
+                child = iQTreeWidgetItem([pv.text], pv.widget)
+                item.addChild(child)
+                child.setText(3, pKey)
+                if pv.widget:
+                    child.setCheckState(2, QtCore.Qt.Unchecked)
+                    self.ui.treeWidget.setItemWidget(child, 1, child._widget)
+                else:
+                    child.setText(1, "UDF")
 
+        self.ui.treeWidget.expandAll()
 
-        # Some tree widgets properties
-        self.ui.treeWidget.setColumnWidth(0, 180)
-        self.ui.treeWidget.setColumnWidth(1, 120)
-        self.ui.treeWidget.setColumnWidth(2, 100)
-        self.ui.treeWidget.setFocusPolicy(QtCore.Qt.NoFocus)
-        """
 
     def pvRefresh(self):
-        iLog.debug("enter")
+        iLog.info("enter")
 
-        iocName = str(self.ui.lineEdit_iocName.text())
+        self.iocChange()
+        self.pvPopulate()
 
-        if len(iocName) == 0:
+        if len(self.iocName) == 0:
             iLog.error("Invalid iocName argument length")
             return
 
-        self.iocName = iocName
         iLog.info("self.iocName=%s" % self.iocName)
 
-        for pvName in self.pvTree.mGetAttribute('name'):
-            pvNameWSuffix = self.pvTree.pvGetName(pvName)
-            iLog.info("PV %s, PV w suffix %s" % (pvName, pvNameWSuffix))
+        for x in range(0, self.ui.treeWidget.topLevelItemCount()):
+            item = self.ui.treeWidget.topLevelItem(x)
+            for xx in range(0, item.childCount()):
+                child = item.child(xx)
 
+                ioc = self.iocs[self.iocName]
+                pvName = str(child.text(3))
+                pv = ioc.pv(pvName)
+
+                child.connectPVObj(pv)
+
+                iLog.debug("Handing over PV '%s' to handler" % pv.nameGetFull())
+                pv.scheduleGet()
 
     def pvApply(self):
-        iLog.debug("enter")
+        iLog.info("enter")
 
-#===============================================================================
-# Tree items
-#===============================================================================
-    def addItems(self, group, parent):
-        iLog.debug("enter")
+        if len(self.iocName) == 0:
+            iLog.error("Invalid iocName argument length")
+            return
 
-        for pvObj in self.pvList:
-            if pvObj.group != group:
-                continue
+        iLog.info("self.iocName=%s" % self.iocName)
 
-            fullName = self.iocName + pvObj.name
-            pvItem = QtGui.QTreeWidgetItem([pvObj.text])
-            parent.addChild(pvItem)
+        for x in range(0, self.ui.treeWidget.topLevelItemCount()):
+            item = self.ui.treeWidget.topLevelItem(x)
+            for xx in range(0, item.childCount()):
+                child = item.child(xx)
 
-            if pvObj.widget == 'QLabel':
-                widget = QtGui.QLabel()
-                if pvObj.strings:
-                    widget.setText(pvObj.strings[0])
-                    pvItem.setCheckState(2, False)
-                else:
-                    widget.setText("UDF")
-            elif pvObj.widget == 'QLineEdit':
-                widget = QtGui.QLineEdit()
-                widget.setText("UDF")
-                pvItem.setCheckState(2, False)
-            elif pvObj.widget == "QComboBox":
-                pvObj.dump()
-                widget = QtGui.QComboBox()
-                l = []
-                iLog.info("combo pvName=%s" % pvObj.name)
-                for v, s in pvObj.enums:
-                    l.append(s)
-                widget.addItems(l)
-                pvItem.setCheckState(2, False)
-            else:
-                pvItem.setText(1, "UDF")
+                ioc = self.iocs[self.iocName]
+                pvName = str(child.text(3))
+                pv = ioc.pv(pvName)
 
-            if pvObj.widget:
-                self.ui.treeWidget.setItemWidget(pvItem, 1, widget)
+                if child.checkState(2) != QtCore.Qt.Checked:
+                    continue
 
-            iLog.debug("new pvName=%s" % pvObj.name)
+                pv.userValue = str(child._widget.text())
 
-            self.itemList.append((fullName, pvItem, pvObj))
+                child.connectPVObj(pv)
+
+                iLog.debug("Handing over PV '%s' to handler" % pv.namePutFull())
+                pv.schedulePut()
+
+                child.setCheckState(2, QtCore.Qt.Unchecked)
