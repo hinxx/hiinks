@@ -53,7 +53,10 @@ class iPanelSAOrbit(QtGui.QWidget):
         for iocName in self.iocs['__myid__']:
             ioc = self.iocs[iocName]
             pv = ioc.pv(pvName)
-            item = iQGraphicsWidget(self.ui.graphicsView, idx)
+            item = iQGraphicsWidget(self.ui.graphicsView, pv)
+
+            #self.ui.graphicsView.iWidgets[pv.nameGetFull()] = item
+            self.ui.graphicsView.addWidget(item)
 
             self.items[pv.nameGetFull()] = item
             iLog.info("added PV '%s' to view, index %d" % (pv.nameGetFull(), idx))

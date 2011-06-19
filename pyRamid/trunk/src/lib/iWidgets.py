@@ -372,8 +372,10 @@ class iQGraphicsView(QtGui.QGraphicsView):
         QtGui.QGraphicsView.__init__(self, parent)
         iLog.info("enter")
 
+        self.iWidgets = []
         self.yMax = 0
         self.yScale = 10000
+        self.iXslice = 0
 
         self.range = [(0, 0), (0, 0)]
         self.scene = QtGui.QGraphicsScene()
@@ -381,6 +383,7 @@ class iQGraphicsView(QtGui.QGraphicsView):
 
         self.boundingrect = QtGui.QGraphicsRectItem(0, 0, 0, 0)
         self.centerLine = QtGui.QGraphicsLineItem(0, 0, 0, 0)
+
         self.scene.addItem(self.boundingrect)
         self.scene.addItem(self.centerLine)
 
@@ -404,13 +407,31 @@ class iQGraphicsView(QtGui.QGraphicsView):
         y2 = h / 2
         self.centerLine.setLine(0, y2, w - 10, y2)
 
+        if len(self.iWidgets):
+            self.iXslice = int(w / (len(self.iWidgets) + 1))
+
         self.setYMaxValue(self.yMax, True)
 
-        # Refresh the plot
-        #for item in self.elements:
-        #    item.setPos()
 
-        #self.showElements()
+        # Refresh the plot
+        self.positionWidgets()
+        #self.showWidgets()
+
+    def addWidget(self, widget):
+        widget.iIndexSet(len(self.iWidgets))
+        self.iWidgets.append(widget)
+        self.iXslice = int(self.width() / (len(self.iWidgets) + 1))
+
+        # Refresh the plot
+        self.positionWidgets()
+
+    def showWidgets(self, start = None, end = None):
+        for w in self.iWidgets:
+            w.show()
+
+    def positionWidgets(self, start = None, end = None):
+        for w in self.iWidgets:
+            w.setPos()
 
     def setYMaxValue(self, value, force = False):
         iLog.debug("enter")
@@ -432,29 +453,29 @@ class iQGraphicsView(QtGui.QGraphicsView):
             iLog.info("new Y scale %d, Y span %d" % (self.yScale, self.ySpan))
 
             # Refresh the plot
-            #for item in self.elements:
-            #    item.setPos()
+            self.positionWidgets()
 
 class iQGraphicsWidget(QtGui.QGraphicsWidget):
     """
     iQGraphicsWidget is extended QtGui.QGraphicsWidget that is aware of PV property changes.
     """
 
-    def __init__(self, view, idx):
+    def __init__(self, view, pvObj):
         QtGui.QGraphicsWidget.__init__(self)
         iLog.info("enter")
 
-        self.pvObj = None
-        self.idx = idx
+        self.pvObj = pvObj
+        self.iIndex = 0
         self.iView = view
 
         self.line = QtGui.QGraphicsLineItem(0, 0, 0, 0)
         self.bubble = QtGui.QGraphicsEllipseItem(0, 0, 0, 0)
-        self.bubble.setToolTip("unknown")
-        self.cross = QtGui.QGraphicsEllipseItem(0, 0, 0, 0)
-        self.cross.setToolTip("unknown")
+        #self.cross = QtGui.QGraphicsEllipseItem(0, 0, 0, 0)
 
-        #self.hide()
+        # Tooltip has name and value
+        tip = "%s: <b>UDF</b> <i>(UDF)</i>" % (self.pvObj.nameGetFull())
+        self.bubble.setToolTip(tip)
+        #self.cross.setToolTip(tip)
 
         view.scene.addItem(self.line)
         view.scene.addItem(self.bubble)
@@ -464,6 +485,9 @@ class iQGraphicsWidget(QtGui.QGraphicsWidget):
 
     def iValueGet(self):
         return self.y()
+
+    def iIndexSet(self, iIndex):
+        self.iIndex = iIndex
 
     #===========================================================================
     # CA callback slots
@@ -485,19 +509,7 @@ class iQGraphicsWidget(QtGui.QGraphicsWidget):
                 self.pvObj.disconnectOneShotSignal(self.slotOneShot)
             self.pvObj = pvObj
 
-        iLog.info("my scene: %s" % (self.scene()))
-
-        self.setPos(pvObj)
-
-#        if pvObj.value is None:
-#            self.setText('UDF')
-#        else:
-#            self.setText(str(pvObj.value))
-#
-#        if pvObj.connected:
-#            self.setStyleSheet(self.defaultLook)
-#        else:
-#            self.setStyleSheet("QLabel { background-color : darkRed; color : red; }");
+        self.setPos()
 
     @QtCore.pyqtSlot('QObject*')
     def slotPeriodic(self, pvObj):
@@ -515,15 +527,7 @@ class iQGraphicsWidget(QtGui.QGraphicsWidget):
                 self.pvObj.disconnectOneShotSignal(self.slotOneShot)
             self.pvObj = pvObj
 
-#        if pvObj.value is None:
-#            self.setText('UDF')
-#        else:
-#            self.setText(str(pvObj.value))
-#
-#        if pvObj.connected:
-#            self.setStyleSheet(self.defaultLook)
-#        else:
-#            self.setStyleSheet("QLabel { background-color : darkRed; color : red; }");
+        self.setPos()
 
     def connectPVObj(self, pvObj, periodic = False):
         iLog.debug("enter")
@@ -541,44 +545,45 @@ class iQGraphicsWidget(QtGui.QGraphicsWidget):
         else:
             pvObj.disconnectPeriodicSignal(self.slotPeriodic)
 
-    def setPos(self, pvObj):
+    def setPos(self):
         iLog.debug("enter")
 
-        nrItems = 4 #len(self.parent().elements)
-        viewWidth = self.iView.width()
-        viewHeight = self.iView.height()
-        viewSlice = int(viewWidth / (nrItems + 1))
-        iLog.info("%s: idx %d, nr items %d, view slice %d, value %s" %
-                   (pvObj.nameGetFull(), self.idx, nrItems, viewSlice, pvObj.value))
-
-        if not pvObj.value:
+        if not self.pvObj:
+            iLog.warning("called before self.pvObj was set?!?!")
             return
 
-        yValue = int(pvObj.value)
-
-        xPos = int(viewSlice * (self.idx + 1))
-        yPosMiddle = int(viewHeight / 2)
-
-        # FIXME!!!
-        yScale = self.iView.yScale
-
+        xPos = int(self.iView.iXslice * (self.iIndex + 1))
+        yPosMiddle = int(self.iView.height() / 2)
+        # Initial position
         yPosOther = yPosMiddle
-#        print "uPlotItem.setPos: yValue", yValue
-#        print "uPlotItem.setPos: yPosOther", yPosOther
-        if yValue != 0:
-            yPosOther = int(yValue / yScale)
-#        print "uPlotItem.setPos: yPosOther", yPosOther
 
-        if yValue >= 0:
-            yPosOther = yPosMiddle + yPosOther
-        else:
-            yPosOther = yPosMiddle - yPosOther
+        iLog.info("%s: value %s, xPos %d, yPosMiddle %d, yPosOther %d" %
+                   (self.pvObj.nameGetFull(), self.pvObj.value, xPos, yPosMiddle, yPosOther))
 
-        self.line.setLine(xPos, yPosMiddle, xPos, yPosOther)
+        if self.pvObj.value:
+            self.iView.setYMaxValue(self.pvObj.value)
 
-#        print "uPlotItem.setPos: ", yValue, (xPos, yPosMiddle), (xPos, yPosOther)
-        iLog.info("%s: yValue %d, (xPos %d, yPosMiddle %d), (xPos %d, yPosOther %d)" %
-                   (pvObj.nameGetFull(), yValue, xPos, yPosMiddle, xPos, yPosOther))
+            yValue = int(self.pvObj.value)
+
+            # FIXME!!!
+            yScale = self.iView.yScale
+
+            if yValue != 0:
+                yPosOther = yPosMiddle - int(yValue / yScale)
+
+            iLog.info("%s: value %s, xPos %d, yPosMiddle %d, yPosOther %d, yScale %d" %
+                   (self.pvObj.nameGetFull(), self.pvObj.value, xPos, yPosMiddle, yPosOther, yScale))
+
 
         self.line.setLine(xPos, yPosMiddle, xPos, yPosOther)
         self.bubble.setRect(xPos - 4, yPosOther - 3, 8, 5)
+
+        if self.pvObj.connected:
+            self.bubble.setBrush(QtGui.QColor(0, 255, 0, 160))
+            tip = "%s: <b>%s</b> <i>(connected)</i>" % (self.pvObj.nameGetFull(), self.pvObj.value)
+        else:
+            self.bubble.setBrush(QtGui.QColor(255, 0, 0, 160))
+            tip = "%s: <b>%s</b> <b><i>(UNCONNECTED)</i><b>" % (self.pvObj.nameGetFull(), self.pvObj.value)
+
+        # Tooltip has name and value
+        self.bubble.setToolTip(tip)
